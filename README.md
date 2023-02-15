@@ -88,4 +88,4 @@ Mobile app that helps drivers to seek help from other cars on the same route.
 
 ## contributor
 
-- [Michael Nandi](https://github.com/mikenandi)
+- Neema Faida
