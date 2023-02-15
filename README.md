@@ -1,4 +1,4 @@
-# ** Vehicle breakdown assistance system.**
+# **Vehicle breakdown assistance system.**
 
 Mobile app that helps drivers to seek help from other cars on the same route.
 
