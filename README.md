@@ -87,5 +87,3 @@ Mobile app that helps drivers to seek help from other cars on the same route.
 - We will use Pascal case to name all files inside the src folder.
 
 ## contributor
-
-- Neema Faida
