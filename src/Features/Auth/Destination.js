@@ -1,5 +1,5 @@
 import React from "react";
-import {StyleSheet, View, StatusBar} from "react-native";
+import {StyleSheet, View, StatusBar, TextInput} from "react-native";
 import {HeadingL, HeadingM, HeadingS} from "../../Components/Typography";
 import Color from "../../Components/Color";
 import {ButtonL, OutlineButtonL} from "../../Components/Buttons";
@@ -7,9 +7,9 @@ import {useDispatch} from "react-redux";
 import WelcomeSvg from "../../../assets/svg/welcome_landlord.svg";
 import {ModalScreenWhite} from "../../Layouts/ModalScreen";
 import {BottomSheet, PostQn} from "../../Components/PostQn";
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {Logo} from "./Logo";
 
-function Welcome(props) {
+function Destination(props) {
 	const dispatch = useDispatch();
 
 	const handleSignIn = async () => {
@@ -26,31 +26,17 @@ function Welcome(props) {
 
 	return (
 		<>
-			<StatusBar backgroundColor={Color.primary} />
-
 			<View style={styles.container}>
-				<View style={styles.WelcomeContainer}>
-					<MaterialCommunityIcons
-						name='tow-truck'
-						size={64}
-						color={Color.warning}
-					/>
-					<HeadingS style={styles.descText}>
-						Vehicle breakdown assistance system
-					</HeadingS>
-				</View>
-				<BottomSheet />
+				<Logo />
+
+				<HeadingS style={styles.qnText}>where are you going to?</HeadingS>
+
+				<TextInput style={styles.textInput} />
 
 				<ButtonL
-					action='Register'
+					action='Done'
 					onPress={handleSignUp}
-					style={styles.buttonAbsolute}
-				/>
-
-				<OutlineButtonL
-					action='Sign in'
-					onPress={handleSignIn}
-					style={styles.buttonAbsolute1}
+					// style={styles.buttonAbsolute}
 				/>
 			</View>
 		</>
@@ -62,6 +48,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		flex: 1,
 		backgroundColor: Color.white,
+		justifyContent: "center",
 	},
 	forgotPasswordContainer: {
 		width: 260,
@@ -115,6 +102,17 @@ const styles = StyleSheet.create({
 		color: Color.warning,
 		fontSize: 64,
 	},
+	textInput: {
+		fontSize: 30,
+		borderBottomWidth: 2.5,
+		width: 240,
+		height: 60,
+		borderBottomColor: Color.warning,
+	},
+	qnText: {
+		color: Color.dimblack,
+		marginTop: 20,
+	},
 });
 
-export default React.memo(Welcome);
+export default React.memo(Destination);

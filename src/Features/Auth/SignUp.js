@@ -1,167 +1,181 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { HeadingM, Body } from "../../Components/Typography";
+import {StyleSheet, View} from "react-native";
+import {HeadingM, Body} from "../../Components/Typography";
 import Color from "../../Components/Color";
 import AuthScreen from "../../Layouts/AuthScreen";
-import { InputText, InputPassword } from "../../Components/Inputs";
-import { ButtonL, TextButton } from "../../Components/Buttons";
-import { useDispatch } from "react-redux";
-import { signUp } from "../../Api/Auth/Auth";
+import {InputText, InputPassword} from "../../Components/Inputs";
+import {ButtonL, TextButton} from "../../Components/Buttons";
+import {useDispatch} from "react-redux";
+import {signUp} from "../../Api/Auth/Auth";
 import {
-    resetConfirmEmailFrom,
-    saveDataFromSignUp,
-    saveEmail,
-    saveFullnameReducer,
-    savePassword,
+	carTypeReducer,
+	companyReducer,
+	driverReducer,
+	passwordReducer,
+	plateNumberReducer,
+	resetConfirmEmailFrom,
+	saveDataFromSignUp,
 } from "../../Redux/Features/Auth/AuthSlice";
-import { ErrorMsg } from "../../Components/ErrorMsg";
-import { errorMsg } from "../../Redux/Components/ErrorMsgSlice";
+import {ErrorMsg} from "../../Components/ErrorMsg";
+import {errorMsg} from "../../Redux/Components/ErrorMsgSlice";
 import Loader from "../../Components/Loader";
-import { useSelector } from "react-redux";
-import { isEmail } from "../../Helpers/EmailCheck";
-import { Logo } from "./Logo";
+import {useSelector} from "react-redux";
+import {isEmail} from "../../Helpers/EmailCheck";
+import {Logo} from "./Logo";
 
 function SignUp(props) {
-    const dispatch = useDispatch();
-    const [isLoading, setIsLoading] = React.useState(false);
+	const dispatch = useDispatch();
+	const [isLoading, setIsLoading] = React.useState(false);
 
-    const { email, fullname, password } = useSelector((state) => {
-        return state.auth;
-    });
+	const {carType, company, plateNumber, password} = useSelector((state) => {
+		return state.auth;
+	});
 
-    const handleEmail = (email) => {
-        dispatch(saveEmail(email));
+	const handlePlateNumber = (plateNumber) => {
+		dispatch(plateNumberReducer(plateNumber));
 
-        return;
-    };
+		return;
+	};
 
-    const handleFullname = (fullname) => {
-        dispatch(saveFullnameReducer(fullname));
+	const handleCarType = (carType) => {
+		dispatch(carTypeReducer(carType));
+	};
 
-        return;
-    };
+	const handleCompany = (company) => {
+		dispatch(companyReducer(company));
 
-    const handlePassword = (password) => {
-        dispatch(savePassword(password));
+		return;
+	};
 
-        return;
-    };
+	const handlePassword = (password) => {
+		dispatch(passwordReducer(password));
 
-    // Navigating to sign in screen
-    const handleSignIn = () => {
-        props.navigation.navigate("SignIn");
+		return;
+	};
 
-        return;
-    };
+	const handleDriver = (driver) => {
+		dispatch(driverReducer(driver));
 
-    // Navigating to confirm email screen
-    const handleSignUp = async () => {
-        if (!email || !password) {
-            dispatch(errorMsg("fill all fields"));
+		return;
+	};
+	// Navigating to sign in screen
+	const handleSignIn = () => {
+		dispatch(companyReducer(""));
+		dispatch(plateNumberReducer(""));
+		dispatch(passwordReducer(""));
+		dispatch(carTypeReducer(""));
+		props.navigation.navigate("SignIn");
 
-            return;
-        }
+		return;
+	};
 
-        if (!isEmail(email)) {
-            dispatch(errorMsg("Invalid email address"));
+	// Navigating to confirm email screen
+	const handleSignUp = async () => {
+		if (!plateNumber || !company || !carType || !password) {
+			dispatch(errorMsg("fill all fields"));
 
-            return;
-        }
+			return;
+		}
 
-        if (password.length < 6) {
-            dispatch(errorMsg("password should have at least 6 charracters"));
+		if (password.length < 6) {
+			dispatch(errorMsg("password should have at least 6 charracters"));
 
-            return;
-        }
+			return;
+		}
 
-        setIsLoading(true);
+		setIsLoading(true);
 
-        dispatch(resetConfirmEmailFrom());
+		let data = {
+			company,
+			password,
+			plateNumber,
+			carType,
+		};
 
-        let fullnameArray = fullname.split(" ", 2);
+		let response = await signUp(data);
 
-        let data = {
-            email,
-            password,
-            firstname: fullnameArray[0],
-            lastname: fullnameArray[1],
-        };
+		if (response.success) {
+			dispatch(saveDataFromSignUp(response.data));
+			dispatch(companyReducer(""));
+			dispatch(plateNumberReducer(""));
+			dispatch(passwordReducer(""));
+			dispatch(carTypeReducer(""));
 
-        let response = await signUp(data);
+			setIsLoading(false);
+			return;
+		}
 
-        if (response.success) {
-            dispatch(saveDataFromSignUp(response.data));
-            dispatch(resetConfirmEmailFrom());
-            props.navigation.navigate("ConfirmEmail");
-            setIsLoading(false);
-            return;
-        }
+		dispatch(errorMsg(response.message));
 
-        dispatch(errorMsg(response.message));
+		setIsLoading(false);
 
-        setIsLoading(false);
+		return;
+	};
 
-        return;
-    };
+	if (isLoading) {
+		return (
+			<>
+				<Loader />
+			</>
+		);
+	}
 
-    if (isLoading) {
-        return (
-            <>
-                <Loader />
-            </>
-        );
-    }
+	return (
+		<>
+			<AuthScreen>
+				<Logo />
 
-    return (
-        <>
-            <AuthScreen>
-                <Logo />
+				<ErrorMsg />
 
-                <ErrorMsg />
+				<InputText
+					label='Company'
+					value={company}
+					onChangeText={handleCompany}
+				/>
 
-                <InputText
-                    label="Full name"
-                    value={fullname}
-                    onChangeText={handleFullname}
-                />
+				<InputText
+					label='Plate number'
+					value={plateNumber}
+					onChangeText={handlePlateNumber}
+				/>
 
-                <InputText
-                    label="Email"
-                    value={email}
-                    onChangeText={handleEmail}
-                />
+				<InputText
+					label='Car type'
+					value={carType}
+					onChangeText={handleCarType}
+				/>
 
-                <InputPassword
-                    label="Password"
-                    value={password}
-                    onChangeText={handlePassword}
-                />
+				<InputPassword
+					label='Password'
+					value={password}
+					onChangeText={handlePassword}
+				/>
 
-                <ButtonL action="sign up" onPress={handleSignUp} />
+				<ButtonL action='register' onPress={handleSignUp} />
 
-                <View style={styles.bottomQuestionContainer}>
-                    <Body style={styles.questionText}>Have acount?</Body>
-                    <TextButton action="sign in" onPress={handleSignIn} />
-                </View>
-            </AuthScreen>
-        </>
-    );
+				<View style={styles.bottomQuestionContainer}>
+					<Body style={styles.questionText}>Have acount?</Body>
+					<TextButton action='sign in' onPress={handleSignIn} />
+				</View>
+			</AuthScreen>
+		</>
+	);
 }
 
 const styles = StyleSheet.create({
-    forgotPasswordContainer: {
-        width: 260,
-        alignItems: "flex-end",
-    },
-    bottomQuestionContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 5,
-    },
-    questionText: {
-        marginTop: 15,
-        marginRight: 5,
-    },
+	forgotPasswordContainer: {
+		width: 260,
+		alignItems: "flex-end",
+	},
+	bottomQuestionContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		marginBottom: 5,
+	},
+	questionText: {
+		marginTop: 15,
+		marginRight: 5,
+	},
 });
 
 export default React.memo(SignUp);

@@ -16,6 +16,7 @@ import {logInReducer} from "../Redux/Features/Auth/AuthSlice";
 import {useFonts} from "expo-font";
 import {useTranslation} from "react-i18next";
 import * as Notifications from "expo-notifications";
+import Destination from "../Features/Auth/Destination";
 
 const Stack = createNativeStackNavigator();
 
@@ -97,67 +98,76 @@ function Auth() {
 
 	return (
 		<Stack.Navigator initialRouteName='Welcome'>
-			{isLogedOut ? (
-				<>
-					<Stack.Screen
-						name='Welcome'
-						component={Welcome}
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name='SignIn'
-						component={SignIn}
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name='ForgotPassword'
-						component={ForgotPassword}
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name='SignUp'
-						component={SignUp}
-						options={{headerShown: false}}
-					/>
-					<Stack.Screen
-						name='ConfirmEmail'
-						component={ConfirmEmail}
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name='VeficationCode'
-						component={Screen}
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name='RecoverPassword'
-						component={RecoverPassword}
-						options={{
-							headerShown: false,
-						}}
-					/>
-				</>
-			) : (
-				<>
-					<Stack.Screen
-						name='AppTabs'
-						component={AppTabs}
-						options={{
-							headerShown: false,
-						}}
-					/>
-				</>
-			)}
+			{
+				/* isLogedOut */ false ? (
+					<>
+						<Stack.Screen
+							name='Welcome'
+							component={Welcome}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name='SignIn'
+							component={SignIn}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name='Destination'
+							component={Destination}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name='ForgotPassword'
+							component={ForgotPassword}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name='SignUp'
+							component={SignUp}
+							options={{headerShown: false}}
+						/>
+						<Stack.Screen
+							name='ConfirmEmail'
+							component={ConfirmEmail}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name='VeficationCode'
+							component={Screen}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen
+							name='RecoverPassword'
+							component={RecoverPassword}
+							options={{
+								headerShown: false,
+							}}
+						/>
+					</>
+				) : (
+					<>
+						<Stack.Screen
+							name='AppTabs'
+							component={AppTabs}
+							options={{
+								headerShown: false,
+							}}
+						/>
+					</>
+				)
+			}
 		</Stack.Navigator>
 	);
 }

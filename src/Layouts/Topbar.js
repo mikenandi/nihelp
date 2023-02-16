@@ -1,6 +1,6 @@
 import React from "react";
 import Color from "../Components/Color";
-import {HeadingL, HeadingM} from "../Components/Typography";
+import {HeadingL, HeadingM, HeadingS} from "../Components/Typography";
 import {Ionicons} from "@expo/vector-icons";
 import {StyleSheet, View, TouchableOpacity, Modal, Text} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
@@ -23,10 +23,10 @@ function Topbar(props) {
 	return (
 		<>
 			<View style={styles.container}>
-				<HeadingM style={styles.logoText}>VBAS</HeadingM>
+				<HeadingM style={styles.logoText}>Profile</HeadingM>
 
 				{/* Hightlighting component */}
-				<TouchableOpacity
+				{/* <TouchableOpacity
 					// underlayColor={Color.dimblack}
 					activeOpacity={0.8}
 					onPress={handleNotification}>
@@ -39,7 +39,7 @@ function Topbar(props) {
 						/>
 						<View style={styles.dot} />
 					</View>
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 			</View>
 
 			<Modal transparent={false} animationType='fade' visible={visible}>
@@ -60,10 +60,10 @@ const styles = StyleSheet.create({
 		backgroundColor: Color.white,
 	},
 	logoText: {
-		color: Color.primary,
+		color: Color.dimblack,
 		// fontWeight: "bold",
-		fontFamily: "poppins",
-		fontSize: 30,
+		// fontFamily: "poppins",
+		// fontSize: ,
 	},
 	icon: {},
 	avatar: {

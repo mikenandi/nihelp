@@ -14,7 +14,7 @@ const inputs = {
 			<>
 				<View style={styles.container}>
 					<View>
-						<BodyS style={styles.inputTextLabel}>{props.label}</BodyS>
+						<Body style={styles.inputTextLabel}>{props.label}</Body>
 						<View
 							style={{
 								...styles.inputContainer,
@@ -51,7 +51,7 @@ const inputs = {
 			<>
 				<View style={styles.container}>
 					<View>
-						<BodyS style={styles.inputTextLabel}>{props.label}</BodyS>
+						<Body style={styles.inputTextLabel}>{props.label}</Body>
 						<View
 							style={{
 								...styles.inputContainer,
@@ -95,7 +95,7 @@ const inputs = {
 			<>
 				<View style={styles.container}>
 					<View>
-						<BodyS style={styles.inputTextLabel}>{props.label}</BodyS>
+						<Body style={styles.inputTextLabel}>{props.label}</Body>
 						<View
 							style={{
 								...styles.inputPasswordContainer,
@@ -144,7 +144,7 @@ const inputs = {
 		return (
 			<>
 				<View style={styles.container}>
-					<BodyS style={styles.inputTextLabel}>{props.label}</BodyS>
+					<Body style={styles.inputTextLabel}>{props.label}</Body>
 					<View
 						style={{
 							...styles.inputMoneyContainer,

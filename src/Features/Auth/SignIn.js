@@ -1,198 +1,200 @@
 import React from "react";
-import { StyleSheet, View, Modal } from "react-native";
-import { HeadingM, Body } from "../../Components/Typography";
+import {StyleSheet, View, Modal} from "react-native";
+import {HeadingM, Body} from "../../Components/Typography";
 import Color from "../../Components/Color";
 import AuthScreen from "../../Layouts/AuthScreen";
-import { InputText, InputPassword } from "../../Components/Inputs";
-import { ButtonL, TextButton } from "../../Components/Buttons";
-import { signIn } from "../../Api/Auth/Auth";
-import { ErrorMsg } from "../../Components/ErrorMsg";
-import { errorMsg } from "../../Redux/Components/ErrorMsgSlice";
-import { useDispatch, useSelector } from "react-redux";
+import {InputText, InputPassword} from "../../Components/Inputs";
+import {ButtonL, TextButton} from "../../Components/Buttons";
+import {signIn} from "../../Api/Auth/Auth";
+import {ErrorMsg} from "../../Components/ErrorMsg";
+import {errorMsg} from "../../Redux/Components/ErrorMsgSlice";
+import {useDispatch, useSelector} from "react-redux";
 import {
-    logInReducer,
-    saveEmail,
-    savePassword,
+	companyReducer,
+	driverReducer,
+	logInReducer,
+	passwordReducer,
+	plateNumberReducer,
+	saveEmail,
+	savePassword,
 } from "../../Redux/Features/Auth/AuthSlice";
 import * as SecureStore from "expo-secure-store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Loader, { Loading } from "../../Components/Loader";
-import { isEmail } from "../../Helpers/EmailCheck";
-import { Logo } from "./Logo";
+import Loader from "../../Components/Loader";
+import {isEmail} from "../../Helpers/EmailCheck";
+import {Logo} from "./Logo";
 
 function SignIn(props) {
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-    // Seting states
-    const [isLoading, setIsLoading] = React.useState(false);
-    const email = useSelector((state) => {
-        return state.auth.email;
-    });
+	// Seting states
+	const [isLoading, setIsLoading] = React.useState(false);
+	const {plateNumber, password, driver} = useSelector((state) => {
+		return state.auth;
+	});
 
-    const password = useSelector((state) => {
-        return state.auth.password;
-    });
+	// Input function for email entry
+	const handlePlateNumber = (plateNumber) => {
+		dispatch(plateNumberReducer(plateNumber));
 
-    // Input function for email entry
-    const handleEmail = (email) => {
-        dispatch(saveEmail(email));
+		return;
+	};
 
-        return;
-    };
+	// Input function for password entry
+	const handlePassword = (password) => {
+		dispatch(passwordReducer(password));
 
-    // Input function for password entry
-    const handlePassword = (password) => {
-        dispatch(savePassword(password));
+		return;
+	};
 
-        return;
-    };
+	const handleDriver = (driver) => {
+		dispatch(driverReducer(driver));
 
-    // Handling SingIn
-    const handleSignIn = async () => {
-        if (!email || !password) {
-            dispatch(errorMsg("fill all fields"));
+		return;
+	};
 
-            return;
-        }
+	// Handling SingIn
+	const handleSignIn = async () => {
+		if (true) {
+			props.navigation.navigate("Destination");
 
-        if (!isEmail(email)) {
-            dispatch(errorMsg("Invalid email"));
+			return;
+		}
 
-            return;
-        }
+		if (!plateNumber || !password) {
+			dispatch(errorMsg("fill all fields"));
 
-        if (password.length < 6) {
-            dispatch(errorMsg("password should have altleast 4 characters"));
+			return;
+		}
 
-            return;
-        }
+		if (password.length < 6) {
+			dispatch(errorMsg("password should have altleast 4 characters"));
 
-        setIsLoading(true);
+			return;
+		}
 
-        let data = { email, password };
+		setIsLoading(true);
 
-        let response = await signIn(data);
+		let data = {plateNumber, password};
 
-        if (response.success) {
-            await SecureStore.setItemAsync(
-                "authToken",
-                response.data.auth_token
-            );
+		let response = await signIn(data);
 
-            await AsyncStorage.setItem("userId", response.data.user_id);
+		if (response.success) {
+			await SecureStore.setItemAsync("authToken", response.data.auth_token);
 
-            dispatch(
-                logInReducer({
-                    userId: response.data.user_id,
-                    authToken: response.data.auth_token,
-                })
-            );
+			await AsyncStorage.setItem("userId", response.data.user_id);
 
-            dispatch(saveEmail(""));
+			dispatch(
+				logInReducer({
+					userId: response.data.user_id,
+					authToken: response.data.auth_token,
+				}),
+			);
 
-            dispatch(savePassword(""));
+			dispatch(companyReducer(""));
 
-            setIsLoading(false);
+			dispatch(passwordReducer(""));
 
-            return;
-        }
+			setIsLoading(false);
 
-        setIsLoading(false);
+			return;
+		}
 
-        // console.log(response);
-        if (response.code === "not_found") {
-            dispatch(errorMsg(response.message));
+		setIsLoading(false);
 
-            return;
-        }
+		// console.log(response);
+		if (response.code === "not_found") {
+			dispatch(errorMsg(response.message));
 
-        if (response.code === "incorrect") {
-            dispatch(errorMsg(response.message));
+			return;
+		}
 
-            return;
-        }
+		if (response.code === "incorrect") {
+			dispatch(errorMsg(response.message));
 
-        dispatch(errorMsg("Failed to sign in"));
+			return;
+		}
 
-        return;
-    };
+		dispatch(errorMsg("Failed to sign in"));
 
-    // Navigate to sign up screen
-    const handleSignUp = () => {
-        dispatch(saveEmail(""));
+		return;
+	};
 
-        dispatch(savePassword(""));
+	// Navigate to sign up screen
+	const handleSignUp = () => {
+		dispatch(plateNumberReducer(""));
 
-        props.navigation.navigate("SignUp");
+		dispatch(passwordReducer(""));
 
-        return;
-    };
+		props.navigation.navigate("SignUp");
 
-    const handleForgotPassword = () => {
-        dispatch(saveEmail(""));
-        dispatch(savePassword(""));
+		return;
+	};
 
-        props.navigation.navigate("ForgotPassword");
+	const handleForgotPassword = () => {
+		dispatch(saveEmail(""));
+		dispatch(savePassword(""));
 
-        return;
-    };
+		props.navigation.navigate("ForgotPassword");
 
-    return (
-        <>
-            <AuthScreen>
-                <Logo />
+		return;
+	};
 
-                <ErrorMsg />
+	return (
+		<>
+			<AuthScreen>
+				<Logo />
 
-                <InputText
-                    label="Email"
-                    value={email}
-                    onChangeText={handleEmail}
-                />
+				<ErrorMsg />
 
-                <InputPassword
-                    label="Password"
-                    value={password}
-                    onChangeText={handlePassword}
-                />
+				<InputText label='Driver' value={driver} onChangeText={handleDriver} />
 
-                <View style={styles.forgotPasswordContainer}>
-                    <TextButton
-                        action="forgot password"
-                        onPress={handleForgotPassword}
-                    />
-                </View>
+				<InputText
+					label='Plate number'
+					value={plateNumber}
+					onChangeText={handlePlateNumber}
+				/>
 
-                <ButtonL action="sign in" onPress={handleSignIn} />
+				<InputPassword
+					label='Password'
+					value={password}
+					onChangeText={handlePassword}
+				/>
 
-                <View style={styles.bottomQuestionContainer}>
-                    <Body style={styles.questionText}>Don't have acount?</Body>
+				<View style={styles.forgotPasswordContainer}>
+					{/* <TextButton action='forgot password' onPress={handleForgotPassword} /> */}
+				</View>
 
-                    <TextButton action="sign up" onPress={handleSignUp} />
-                </View>
-            </AuthScreen>
+				<ButtonL action='sign in' onPress={handleSignIn} />
 
-            <Modal animationType="fade" visible={isLoading} transparent={false}>
-                <Loader />
-            </Modal>
-        </>
-    );
+				<View style={styles.bottomQuestionContainer}>
+					<Body style={styles.questionText}>Don't have acount?</Body>
+
+					<TextButton action='Register' onPress={handleSignUp} />
+				</View>
+			</AuthScreen>
+
+			<Modal animationType='fade' visible={isLoading} transparent={false}>
+				<Loader />
+			</Modal>
+		</>
+	);
 }
 
 const styles = StyleSheet.create({
-    forgotPasswordContainer: {
-        width: 260,
-        alignItems: "flex-end",
-    },
-    bottomQuestionContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 5,
-    },
-    questionText: {
-        marginTop: 15,
-        marginRight: 5,
-    },
+	forgotPasswordContainer: {
+		width: 260,
+		alignItems: "flex-end",
+	},
+	bottomQuestionContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		marginBottom: 5,
+	},
+	questionText: {
+		marginTop: 15,
+		marginRight: 5,
+	},
 });
 
 export default React.memo(SignIn);
