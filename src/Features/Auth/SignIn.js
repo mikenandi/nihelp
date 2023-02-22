@@ -55,12 +55,6 @@ function SignIn(props) {
 
 	// Handling SingIn
 	const handleSignIn = async () => {
-		if (true) {
-			props.navigation.navigate("Destination");
-
-			return;
-		}
-
 		if (!plateNumber || !password) {
 			dispatch(errorMsg("fill all fields"));
 
@@ -68,7 +62,7 @@ function SignIn(props) {
 		}
 
 		if (password.length < 6) {
-			dispatch(errorMsg("password should have altleast 4 characters"));
+			dispatch(errorMsg("password should have altleast 6 characters"));
 
 			return;
 		}
@@ -92,9 +86,9 @@ function SignIn(props) {
 			);
 
 			dispatch(companyReducer(""));
-
+			dispatch(plateNumberReducer(""));
 			dispatch(passwordReducer(""));
-
+			props.navigation.navigate("Destination");
 			setIsLoading(false);
 
 			return;
@@ -146,8 +140,6 @@ function SignIn(props) {
 				<Logo />
 
 				<ErrorMsg />
-
-				<InputText label='Driver' value={driver} onChangeText={handleDriver} />
 
 				<InputText
 					label='Plate number'

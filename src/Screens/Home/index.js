@@ -24,7 +24,7 @@ function Home(props) {
 					}}>
 					<Marker
 						coordinate={{latitude: -6.823, longitude: 39.26}}
-						title='Dar es Salaam'
+						title='T 123 ABZ needs car jack'
 					/>
 					<Marker
 						coordinate={{latitude: -8.9, longitude: 33.45}}

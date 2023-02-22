@@ -17,11 +17,16 @@ const authSlice = createSlice({
 	initialState,
 	reducers: {
 		logInReducer: (state, actions) => {
-			state.isLogedOut = false;
+			// state.isLogedOut = false;
 			state.authToken = actions.payload.authToken;
 			state.userId = actions.payload.userId;
 		},
 		signUpReducer: (state, actions) => {
+			// state.isLogedOut = false;
+			state.authToken = actions.payload.authToken;
+			state.userId = actions.payload.userId;
+		},
+		signinReducer: (state, actions) => {
 			state.isLogedOut = false;
 		},
 		logOutReducer: (state, actions) => {
@@ -45,10 +50,10 @@ const authSlice = createSlice({
 			state.plateNumber = actions.payload;
 		},
 		driverReducer: (state, actions) => {
-			state.plateNumber = actions.payload;
+			state.driver = actions.payload;
 		},
 		carTypeReducer: (state, actions) => {
-			state.driver = actions.payload;
+			state.carType = actions.payload;
 		},
 		saveDataFromSignUp: (state, actions) => {
 			state.authToken = actions.payload.auth_token;
@@ -69,6 +74,7 @@ export const {
 	passwordReducer,
 	plateNumberReducer,
 	driverReducer,
+	signinReducer,
 } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -2,26 +2,56 @@ import React from "react";
 import {StyleSheet, View, StatusBar, TextInput} from "react-native";
 import {HeadingL, HeadingM, HeadingS} from "../../Components/Typography";
 import Color from "../../Components/Color";
-import {ButtonL, OutlineButtonL} from "../../Components/Buttons";
-import {useDispatch} from "react-redux";
-import WelcomeSvg from "../../../assets/svg/welcome_landlord.svg";
-import {ModalScreenWhite} from "../../Layouts/ModalScreen";
-import {BottomSheet, PostQn} from "../../Components/PostQn";
+import {ButtonL} from "../../Components/Buttons";
+import {useDispatch, useSelector} from "react-redux";
+
 import {Logo} from "./Logo";
+import {
+	destinationReducer,
+	startingReducer,
+} from "../../Redux/Features/Location/locationSlice";
+import {postRoute} from "../../Api/Services/Backend/Report";
+import {signinReducer} from "../../Redux/Features/Auth/AuthSlice";
 
 function Destination(props) {
 	const dispatch = useDispatch();
 
-	const handleSignIn = async () => {
-		props.navigation.navigate("SignIn");
+	const {starting, destination} = useSelector((state) => {
+		return state.location;
+	});
+
+	const {userId, authToken} = useSelector((state) => {
+		return state.auth;
+	});
+
+	const handleStarting = (starting) => {
+		dispatch(startingReducer(starting));
+		return;
+	};
+
+	const handleDestination = (destination) => {
+		dispatch(destinationReducer(destination));
 		return;
 	};
 
 	// Navigate to sign up screen
-	const handleSignUp = () => {
-		props.navigation.navigate("SignUp");
+	const handleDone = async () => {
+		try {
+			let data = {
+				userId,
+				authToken,
+				starting,
+				destination,
+			};
 
-		return;
+			let response = await postRoute(data);
+
+			dispatch(signinReducer());
+
+			return;
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
@@ -29,13 +59,29 @@ function Destination(props) {
 			<View style={styles.container}>
 				<Logo />
 
-				<HeadingS style={styles.qnText}>where are you going to?</HeadingS>
+				<HeadingS style={styles.qnText}>what is your route?</HeadingS>
 
-				<TextInput style={styles.textInput} />
+				<TextInput
+					placeholder='From'
+					value={starting}
+					onChangeText={handleStarting}
+					style={{
+						...styles.textInput,
+						borderBottomColor: Color.primary,
+						marginBottom: 20,
+					}}
+				/>
+
+				<TextInput
+					value={destination}
+					onChangeText={handleDestination}
+					placeholder='To'
+					style={styles.textInput}
+				/>
 
 				<ButtonL
 					action='Done'
-					onPress={handleSignUp}
+					onPress={handleDone}
 					// style={styles.buttonAbsolute}
 				/>
 			</View>

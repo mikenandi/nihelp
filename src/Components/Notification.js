@@ -1,6 +1,6 @@
 import React from "react";
 import Color from "../Components/Color";
-import {Ionicons} from "@expo/vector-icons";
+import {Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
 import {StyleSheet, View, TouchableOpacity, Modal, Text} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 import {notificationVisibleReducer} from "../Redux/Features/Notification/NotificationModalSlice";
@@ -27,13 +27,11 @@ function Notification(props) {
 				activeOpacity={0.8}
 				onPress={handleNotification}>
 				<View style={styles.container}>
-					<Ionicons
-						name='md-notifications'
+					<MaterialCommunityIcons
+						name='bell-ring'
 						size={28}
 						color={Color.warning}
-						style={styles.icon}
 					/>
-					<View style={styles.dot} />
 				</View>
 			</TouchableOpacity>
 

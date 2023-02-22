@@ -13,23 +13,23 @@ import {
 	driverReducer,
 	passwordReducer,
 	plateNumberReducer,
-	resetConfirmEmailFrom,
 	saveDataFromSignUp,
 } from "../../Redux/Features/Auth/AuthSlice";
 import {ErrorMsg} from "../../Components/ErrorMsg";
 import {errorMsg} from "../../Redux/Components/ErrorMsgSlice";
 import Loader from "../../Components/Loader";
 import {useSelector} from "react-redux";
-import {isEmail} from "../../Helpers/EmailCheck";
 import {Logo} from "./Logo";
 
 function SignUp(props) {
 	const dispatch = useDispatch();
 	const [isLoading, setIsLoading] = React.useState(false);
 
-	const {carType, company, plateNumber, password} = useSelector((state) => {
-		return state.auth;
-	});
+	const {carType, company, plateNumber, password, driver} = useSelector(
+		(state) => {
+			return state.auth;
+		},
+	);
 
 	const handlePlateNumber = (plateNumber) => {
 		dispatch(plateNumberReducer(plateNumber));
@@ -64,6 +64,7 @@ function SignUp(props) {
 		dispatch(plateNumberReducer(""));
 		dispatch(passwordReducer(""));
 		dispatch(carTypeReducer(""));
+		dispatch(driverReducer(""));
 		props.navigation.navigate("SignIn");
 
 		return;
@@ -71,7 +72,7 @@ function SignUp(props) {
 
 	// Navigating to confirm email screen
 	const handleSignUp = async () => {
-		if (!plateNumber || !company || !carType || !password) {
+		if (!plateNumber || !company || !driver || !carType || !password) {
 			dispatch(errorMsg("fill all fields"));
 
 			return;
@@ -86,10 +87,11 @@ function SignUp(props) {
 		setIsLoading(true);
 
 		let data = {
-			company,
+			owner: company,
 			password,
-			plateNumber,
-			carType,
+			plateNumber: plateNumber.replace(/ /gi, "-"),
+			vehicleType: carType,
+			driver,
 		};
 
 		let response = await signUp(data);
@@ -100,8 +102,10 @@ function SignUp(props) {
 			dispatch(plateNumberReducer(""));
 			dispatch(passwordReducer(""));
 			dispatch(carTypeReducer(""));
+			dispatch(driverReducer(""));
 
 			setIsLoading(false);
+			props.navigation.navigate("Destination");
 			return;
 		}
 
@@ -127,11 +131,9 @@ function SignUp(props) {
 
 				<ErrorMsg />
 
-				<InputText
-					label='Company'
-					value={company}
-					onChangeText={handleCompany}
-				/>
+				<InputText label='Owner' value={company} onChangeText={handleCompany} />
+
+				<InputText label='Driver' value={driver} onChangeText={handleDriver} />
 
 				<InputText
 					label='Plate number'

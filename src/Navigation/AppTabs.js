@@ -1,6 +1,6 @@
 import * as React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import {Entypo, MaterialIcons} from "@expo/vector-icons";
+import {Entypo, FontAwesome5, MaterialIcons} from "@expo/vector-icons";
 import Home from "../Screens/Home";
 import Profile from "../Screens/Profile";
 import Color from "../Components/Color";
@@ -34,7 +34,7 @@ function AppTabs() {
 						tabBarLabel: "",
 						title: "",
 						tabBarIcon: ({color, size}) => (
-							<Entypo name='home' size={size} color={color} />
+							<FontAwesome5 name='map-marked-alt' size={size} color={color} />
 						),
 					}}
 				/>
@@ -46,7 +46,7 @@ function AppTabs() {
 						title: "",
 						tabBarLabel: "",
 						tabBarIcon: ({color, size}) => (
-							<MaterialIcons name='person' size={size} color={color} />
+							<FontAwesome5 name='car' size={size} color={color} />
 						),
 					}}
 				/>
