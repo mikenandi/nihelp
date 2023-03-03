@@ -1,6 +1,6 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
-import {HeadingM, Body, HeadingS} from "../../Components/Typography";
+import {HeadingM, Body} from "../../Components/Typography";
 import Color from "../../Components/Color";
 import AuthScreen from "../../Layouts/AuthScreen";
 import {InputText, InputPassword} from "../../Components/Inputs";
@@ -8,10 +8,9 @@ import {ButtonL, TextButton} from "../../Components/Buttons";
 import {useDispatch} from "react-redux";
 import {signUp} from "../../Api/Auth/Auth";
 import {
-	brandReducer,
+	carTypeReducer,
+	companyReducer,
 	driverReducer,
-	modelReducer,
-	ownerReducer,
 	passwordReducer,
 	plateNumberReducer,
 	saveDataFromSignUp,
@@ -22,13 +21,15 @@ import Loader from "../../Components/Loader";
 import {useSelector} from "react-redux";
 import {Logo} from "./Logo";
 
-function SignUp(props) {
+function VehicleCategory(props) {
 	const dispatch = useDispatch();
 	const [isLoading, setIsLoading] = React.useState(false);
 
-	const {model, owner, plateNumber, brand} = useSelector((state) => {
-		return state.auth;
-	});
+	const {carType, company, plateNumber, password, driver} = useSelector(
+		(state) => {
+			return state.auth;
+		},
+	);
 
 	const handlePlateNumber = (plateNumber) => {
 		dispatch(plateNumberReducer(plateNumber));
@@ -36,90 +37,123 @@ function SignUp(props) {
 		return;
 	};
 
-	const handleModel = (model) => {
-		dispatch(modelReducer(model));
+	const handleCarType = (carType) => {
+		dispatch(carTypeReducer(carType));
 	};
 
-	const handleOwner = (owner) => {
-		dispatch(ownerReducer(owner));
+	const handleCompany = (company) => {
+		dispatch(companyReducer(company));
 
 		return;
 	};
 
-	const handleBrand = (brand) => {
-		dispatch(brandReducer(brand));
+	const handlePassword = (password) => {
+		dispatch(passwordReducer(password));
+
+		return;
+	};
+
+	const handleDriver = (driver) => {
+		dispatch(driverReducer(driver));
 
 		return;
 	};
 	// Navigating to sign in screen
 	const handleSignIn = () => {
-		dispatch(ownerReducer(""));
+		dispatch(companyReducer(""));
 		dispatch(plateNumberReducer(""));
-		dispatch(modelReducer(""));
-		dispatch(brandReducer(""));
+		dispatch(passwordReducer(""));
+		dispatch(carTypeReducer(""));
+		dispatch(driverReducer(""));
 		props.navigation.navigate("SignIn");
 
 		return;
 	};
 
 	// Navigating to confirm email screen
-	const handleNext = () => {
-		if (!owner) {
-			dispatch(errorMsg("Enter owner's name"));
+	const handleSignUp = async () => {
+		if (!plateNumber || !company || !driver || !carType || !password) {
+			dispatch(errorMsg("fill all fields"));
 
 			return;
 		}
 
-		if (!brand) {
-			dispatch(errorMsg("Enter car brand"));
+		if (password.length < 6) {
+			dispatch(errorMsg("password should have at least 6 charracters"));
 
 			return;
 		}
 
-		if (!model) {
-			dispatch(errorMsg("Enter car model"));
+		setIsLoading(true);
 
+		let data = {
+			owner: company,
+			password,
+			plateNumber: plateNumber.replace(/ /gi, "-"),
+			vehicleType: carType,
+			driver,
+		};
+
+		let response = await signUp(data);
+
+		if (response.success) {
+			dispatch(saveDataFromSignUp(response.data));
+			dispatch(companyReducer(""));
+			dispatch(plateNumberReducer(""));
+			dispatch(passwordReducer(""));
+			dispatch(carTypeReducer(""));
+			dispatch(driverReducer(""));
+
+			setIsLoading(false);
+			props.navigation.navigate("Destination");
 			return;
 		}
 
-		if (!plateNumber) {
-			dispatch(errorMsg("Enter car plate number"));
+		dispatch(errorMsg(response.message));
 
-			return;
-		}
-
-		props.navigation.navigate("DriverDetails");
+		setIsLoading(false);
 
 		return;
 	};
+
+	if (isLoading) {
+		return (
+			<>
+				<Loader />
+			</>
+		);
+	}
 
 	return (
 		<>
 			<AuthScreen>
 				<Logo />
 
-				<HeadingS>Vehicle Details</HeadingS>
-
 				<ErrorMsg />
 
-				<InputText label='Owner' value={owner} onChangeText={handleOwner} />
+				<InputText label='Owner' value={company} onChangeText={handleCompany} />
 
-				<InputText label='Brand' value={brand} onChangeText={handleBrand} />
+				<InputText label='Driver' value={driver} onChangeText={handleDriver} />
 
-				<InputText label='Model' value={model} onChangeText={handleModel} />
 				<InputText
 					label='Plate number'
 					value={plateNumber}
 					onChangeText={handlePlateNumber}
 				/>
 
-				{/* <InputPassword
+				<InputText
+					label='Car type'
+					value={carType}
+					onChangeText={handleCarType}
+				/>
+
+				<InputPassword
 					label='Password'
 					value={password}
 					onChangeText={handlePassword}
-				/> */}
+				/>
 
-				<ButtonL action='next' onPress={handleNext} />
+				<ButtonL action='register' onPress={handleSignUp} />
 
 				<View style={styles.bottomQuestionContainer}>
 					<Body style={styles.questionText}>Have acount?</Body>
@@ -146,4 +180,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default React.memo(SignUp);
+export default React.memo(VehicleCategory);

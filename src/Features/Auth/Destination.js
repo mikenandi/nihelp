@@ -1,5 +1,11 @@
 import React from "react";
-import {StyleSheet, View, StatusBar, TextInput} from "react-native";
+import {
+	StyleSheet,
+	View,
+	StatusBar,
+	TextInput,
+	ActivityIndicator,
+} from "react-native";
 import {HeadingL, HeadingM, HeadingS} from "../../Components/Typography";
 import Color from "../../Components/Color";
 import {ButtonL} from "../../Components/Buttons";
@@ -12,9 +18,13 @@ import {
 } from "../../Redux/Features/Location/locationSlice";
 import {postRoute} from "../../Api/Services/Backend/Report";
 import {signinReducer} from "../../Redux/Features/Auth/AuthSlice";
+import {errorMsg} from "../../Redux/Components/ErrorMsgSlice";
+import {ErrorMsg} from "../../Components/ErrorMsg";
 
 function Destination(props) {
 	const dispatch = useDispatch();
+
+	const [isLoading, setIsLoading] = React.useState(false);
 
 	const {starting, destination} = useSelector((state) => {
 		return state.location;
@@ -37,6 +47,18 @@ function Destination(props) {
 	// Navigate to sign up screen
 	const handleDone = async () => {
 		try {
+			if (!starting) {
+				dispatch(errorMsg("Enter where are you from"));
+
+				return;
+			}
+
+			if (!destination) {
+				dispatch(errorMsg("Enter where are you going to"));
+			}
+
+			setIsLoading(true);
+
 			let data = {
 				userId,
 				authToken,
@@ -44,13 +66,20 @@ function Destination(props) {
 				destination,
 			};
 
-			let response = await postRoute(data);
+			await postRoute(data);
+
+			dispatch(destinationReducer(""));
+			dispatch(startingReducer(starting));
 
 			dispatch(signinReducer());
+
+			setIsLoading(false);
 
 			return;
 		} catch (error) {
 			console.log(error);
+
+			return;
 		}
 	};
 
@@ -58,6 +87,8 @@ function Destination(props) {
 		<>
 			<View style={styles.container}>
 				<Logo />
+
+				<ErrorMsg />
 
 				<HeadingS style={styles.qnText}>what is your route?</HeadingS>
 
@@ -79,11 +110,13 @@ function Destination(props) {
 					style={styles.textInput}
 				/>
 
-				<ButtonL
-					action='Done'
-					onPress={handleDone}
-					// style={styles.buttonAbsolute}
-				/>
+				{isLoading ? (
+					<View style={{marginTop: 20}}>
+						<ActivityIndicator size={40} color={Color.primary} />
+					</View>
+				) : (
+					<ButtonL action='Done' onPress={handleDone} />
+				)}
 			</View>
 		</>
 	);

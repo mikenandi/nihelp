@@ -6,8 +6,8 @@ import Screen from "../Layouts/Screen";
 import AppTabs from "./AppTabs";
 import SignIn from "../Features/Auth/SignIn";
 import SignUp from "../Features/Auth/SignUp";
-import ForgotPassword from "../Features/Auth/ForgotPassword";
-import ConfirmEmail from "../Features/Auth/ConfirmEmail";
+import VehicleCategory from "../Features/Auth/VehicleCategory";
+import DriverDetails from "../Features/Auth/DriverDetails";
 import RecoverPassword from "../Features/Auth/RecoverPassword";
 import Welcome from "../Features/Auth/Welcome";
 import {useDispatch, useSelector} from "react-redux";
@@ -124,8 +124,8 @@ function Auth() {
 						}}
 					/>
 					<Stack.Screen
-						name='ForgotPassword'
-						component={ForgotPassword}
+						name='VehicleCategory'
+						component={VehicleCategory}
 						options={{
 							headerShown: false,
 						}}
@@ -136,8 +136,8 @@ function Auth() {
 						options={{headerShown: false}}
 					/>
 					<Stack.Screen
-						name='ConfirmEmail'
-						component={ConfirmEmail}
+						name='DriverDetails'
+						component={DriverDetails}
 						options={{
 							headerShown: false,
 						}}

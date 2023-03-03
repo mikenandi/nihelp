@@ -13,6 +13,7 @@ import {
 	companyReducer,
 	driverReducer,
 	logInReducer,
+	ownerReducer,
 	passwordReducer,
 	plateNumberReducer,
 	saveEmail,
@@ -85,7 +86,7 @@ function SignIn(props) {
 				}),
 			);
 
-			dispatch(companyReducer(""));
+			// dispatch(ownerReducer(""));
 			dispatch(plateNumberReducer(""));
 			dispatch(passwordReducer(""));
 			props.navigation.navigate("Destination");

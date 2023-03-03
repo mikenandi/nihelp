@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
 	},
 	titleTxt: {
 		color: Color.dimblack,
+		width: "70%",
 	},
 });
 

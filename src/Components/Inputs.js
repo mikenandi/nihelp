@@ -56,7 +56,7 @@ const inputs = {
 							style={{
 								...styles.inputContainer,
 								...props.style,
-								borderWidth: 1.5,
+								borderWidth: 1.8,
 								borderColor: isFocused ? Color.primary : Color.lightgray,
 								backgroundColor: isFocused ? Color.white : Color.lightgray,
 							}}>

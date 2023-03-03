@@ -14,6 +14,7 @@ import ProfileDetailSlice from "./Features/Account/ProfileDetailSlice";
 import MultilanguageModalSlice from "./Features/MultiLanguage/MultilanguageModalSlice";
 import MultilanguageSlice from "./Features/MultiLanguage/MultilanguageSlice";
 import LogoutModalSlice from "./Features/Logout/LogoutModalSlice";
+import HelpTypeSlice from "./Features/Notification/HelpTypeSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -32,6 +33,7 @@ export const store = configureStore({
 		multilanguageModal: MultilanguageModalSlice,
 		multilanguage: MultilanguageSlice,
 		logout: LogoutModalSlice,
+		helpType: HelpTypeSlice,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({

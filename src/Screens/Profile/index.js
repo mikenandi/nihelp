@@ -1,10 +1,9 @@
 import React from "react";
-import {StyleSheet, ScrollView, View} from "react-native";
+import {StyleSheet, ScrollView, View, TouchableOpacity} from "react-native";
 import Screen from "../../Layouts/Screen";
 import {useDispatch, useSelector} from "react-redux";
-import {Body, HeadingM, HeadingS} from "../../Components/Typography";
+import {Body, HeadingM} from "../../Components/Typography";
 import {
-	SimpleLineIcons,
 	MaterialCommunityIcons,
 	Fontisto,
 	Octicons,
@@ -12,14 +11,58 @@ import {
 	Ionicons,
 	FontAwesome,
 	FontAwesome5,
-	AntDesign,
 } from "@expo/vector-icons";
 import Color from "../../Components/Color";
 import {ProfileDetail} from "./ProfileDetail";
 import Topbar from "../../Layouts/Topbar";
+import {
+	logOutReducer,
+	profileDataReducer,
+} from "../../Redux/Features/Auth/AuthSlice";
+import * as SecureStore from "expo-secure-store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {getUserProfile} from "../../Api/Services/Backend/Profile";
 
 function Profile(props) {
 	const dispatch = useDispatch();
+
+	const {userId, authToken} = useSelector((state) => {
+		return state.auth;
+	});
+
+	const {plateNumber, phoneNumber, brand, model, owner} = useSelector(
+		(state) => {
+			return state.auth;
+		},
+	);
+
+	const handleLogout = async () => {
+		/* Delete token and userId */
+		await SecureStore.deleteItemAsync("authToken");
+		await AsyncStorage.removeItem("userId");
+
+		dispatch(logOutReducer());
+
+		return;
+	};
+
+	React.useEffect(() => {
+		(async () => {
+			try {
+				let data = {userId, authToken};
+
+				let response = await getUserProfile(data);
+
+				dispatch(profileDataReducer(response.data));
+
+				return;
+			} catch (error) {
+				console.log(error);
+
+				return;
+			}
+		})();
+	}, []);
 
 	return (
 		<>
@@ -31,16 +74,10 @@ function Profile(props) {
 					<View style={styles.container}>
 						<View style={styles.plateNUmberContainer}>
 							<View style={styles.carAvatar}>
-								{/* <MaterialCommunityIcons
-								name='truck-cargo-container'
-								size={64}
-								color={Color.primary}
-							/> */}
-
 								<Fontisto name='truck' size={60} color={Color.primary} />
 							</View>
 							<View style={styles.plate}>
-								<HeadingM>🇹🇿 T 123 ABZ</HeadingM>
+								<HeadingM>🇹🇿 {plateNumber.replace(/-/gi, " ")}</HeadingM>
 							</View>
 
 							<View style={styles.abInfo}>
@@ -51,17 +88,17 @@ function Profile(props) {
 								/>
 							</View>
 						</View>
-						<ProfileDetail label='Company' value='NIT Transporters'>
+						<ProfileDetail label='Owner' value={owner}>
 							<Octicons name='organization' size={24} color={Color.primary} />
 						</ProfileDetail>
-						<ProfileDetail label='Plate No' value='T 123 ADF'>
+						<ProfileDetail label='Model' value={`${brand} ${model}`}>
 							<Ionicons
 								name='ios-car-outline'
 								size={28}
 								color={Color.primary}
 							/>
 						</ProfileDetail>
-						<ProfileDetail label='Driver' value='Neema Faida'>
+						<ProfileDetail label='Driver' value={phoneNumber}>
 							<FontAwesome
 								name='drivers-license-o'
 								size={24}
@@ -72,10 +109,12 @@ function Profile(props) {
 							<FontAwesome5 name='route' size={24} color={Color.primary} />
 						</ProfileDetail>
 
-						<View style={styles.logoutContainer}>
-							<Entypo name='log-out' size={24} color={Color.error} />
-							<Body style={styles.logoutText}>Log out</Body>
-						</View>
+						<TouchableOpacity onPress={handleLogout} activeOpacity={0.9}>
+							<View style={styles.logoutContainer}>
+								<Entypo name='log-out' size={24} color={Color.error} />
+								<Body style={styles.logoutText}>Log out</Body>
+							</View>
+						</TouchableOpacity>
 					</View>
 				</ScrollView>
 			</Screen>

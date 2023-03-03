@@ -5,11 +5,14 @@ const initialState = {
 	fromForgotPassword: false,
 	authToken: "",
 	userId: "",
-	company: "",
-	driver: "",
+	owner: "",
+	brand: "",
+	model: "",
+	driverName: "",
+	phoneNumber: "",
 	plateNumber: "",
-	carType: "",
 	password: "",
+	profileData: {},
 };
 
 const authSlice = createSlice({
@@ -40,8 +43,11 @@ const authSlice = createSlice({
 		resetConfirmEmailFrom: (state, actions) => {
 			state.fromForgotPassword = false;
 		},
-		companyReducer: (state, actions) => {
-			state.company = actions.payload;
+		ownerReducer: (state, actions) => {
+			state.owner = actions.payload;
+		},
+		brandReducer: (state, actions) => {
+			state.brand = actions.payload;
 		},
 		passwordReducer: (state, actions) => {
 			state.password = actions.payload;
@@ -50,14 +56,24 @@ const authSlice = createSlice({
 			state.plateNumber = actions.payload;
 		},
 		driverReducer: (state, actions) => {
-			state.driver = actions.payload;
+			state.driverName = actions.payload;
 		},
-		carTypeReducer: (state, actions) => {
-			state.carType = actions.payload;
+		phoneNumberReducer: (state, actions) => {
+			state.phoneNumber = actions.payload;
+		},
+		modelReducer: (state, actions) => {
+			state.model = actions.payload;
 		},
 		saveDataFromSignUp: (state, actions) => {
 			state.authToken = actions.payload.auth_token;
 			state.userId = actions.payload.user_id;
+		},
+		profileDataReducer: (state, actions) => {
+			state.owner = actions.payload.owner;
+			state.model = actions.payload.vehicle_model;
+			state.brand = actions.payload.vehicle_brand;
+			state.phoneNumber = actions.payload.driver_phone;
+			state.plateNumber = actions.payload.plate_number;
 		},
 	},
 });
@@ -69,12 +85,15 @@ export const {
 	resetConfirmEmailFrom,
 	saveDataFromSignUp,
 	signUpReducer,
-	companyReducer,
-	carTypeReducer,
+	ownerReducer,
+	brandReducer,
+	modelReducer,
 	passwordReducer,
 	plateNumberReducer,
 	driverReducer,
 	signinReducer,
+	phoneNumberReducer,
+	profileDataReducer,
 } = authSlice.actions;
 
 export default authSlice.reducer;
