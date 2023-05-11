@@ -10,7 +10,7 @@ import {
 } from "../Redux/Components/CodeInputSlice";
 
 // atomic number component
-function Key(props) {
+function Key(props: any) {
     return (
         <>
             <TouchableOpacity activeOpacity={0.6} onPress={props.onPress}>
@@ -24,7 +24,7 @@ function Key(props) {
 }
 
 // custom number keyboard
-function NumberKeyBoard(props) {
+function NumberKeyBoard(props: any) {
     const dispatch = useDispatch();
 
     return (
@@ -109,6 +109,7 @@ function NumberKeyBoard(props) {
                     <TouchableOpacity
                         activeOpacity={0.8}
                         onPress={() => {
+                            // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
                             dispatch(deleteCodeReducer());
                         }}
                     >

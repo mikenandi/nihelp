@@ -23,42 +23,51 @@ import {
 import {notificationVisibleReducer} from "../../Redux/Features/Notification/NotificationModalSlice";
 import {HelpType} from "./HelpType";
 
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 function Notifications(props) {
 	const dispatch = useDispatch();
 
 	const [isLoading, setIsLoading] = React.useState(false);
 
 	const handleBack = () => {
+// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 		dispatch(notificationVisibleReducer());
+// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 		dispatch(resetHelpReducer());
 		return;
 	};
 
 	const {jack, toolbox, mechanic, battery, tyre} = useSelector((state) => {
+// @ts-expect-error TS(2571): Object is of type 'unknown'.
 		return state.helpType;
 	});
 
 	const handleJack = () => {
+// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 		dispatch(jackReducer());
 		return;
 	};
 
 	const handleMechanic = () => {
+// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 		dispatch(mechanicReducer());
 		return;
 	};
 
 	const handleToolbox = () => {
+// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 		dispatch(toolboxReducer());
 		return;
 	};
 
 	const handleBattery = () => {
+// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 		dispatch(batteryReducer());
 		return;
 	};
 
 	const handleTyre = () => {
+// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 		dispatch(tyreReducer());
 		return;
 	};

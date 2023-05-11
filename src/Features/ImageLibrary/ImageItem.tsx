@@ -16,12 +16,13 @@ import {
 import { infoMsg } from "../../Redux/Components/ErrorMsgSlice";
 import { Body } from "../../Components/Typography";
 
-function ImageItem(props) {
+function ImageItem(props: any) {
     const { width } = useWindowDimensions();
 
     const [selected, setSelected] = React.useState(false);
 
     const savedIds = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.imageLibrary.savedIds;
     });
 

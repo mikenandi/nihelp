@@ -6,10 +6,11 @@ import { saveFromLibrary } from "../../Redux/Features/ImageLibrary/ImageSlice";
 import Avatar from "./Avatar";
 import Color from "../../Components/Color";
 
-function AvatarLibrary(props) {
+function AvatarLibrary(props: any) {
     const dispatch = useDispatch();
 
     const imageData = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.imageLibrary.photos;
     });
 
@@ -26,7 +27,9 @@ function AvatarLibrary(props) {
         })();
     }, []);
 
-    const renderItem = ({ item }) => {
+    const renderItem = ({
+        item
+    }: any) => {
         return (
             <>
                 <Avatar source={item.uri} id={item.id} />

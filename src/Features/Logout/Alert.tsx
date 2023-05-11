@@ -19,13 +19,16 @@ function LogoutAlert() {
         await SecureStore.deleteItemAsync("authToken");
         await AsyncStorage.removeItem("userId");
 
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(logOutReducer());
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(logoutVisibleReducer());
 
         return;
     };
 
     const handleCancel = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(logoutVisibleReducer());
 
         return;

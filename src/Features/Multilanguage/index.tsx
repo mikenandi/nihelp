@@ -12,17 +12,19 @@ import { useTranslation } from "react-i18next";
 import { currentLanguageReducer } from "../../Redux/Features/MultiLanguage/MultilanguageSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-function Languages(props) {
+function Languages(props: any) {
     const dispatch = useDispatch();
 
     const { t, i18n } = useTranslation();
 
     const handleBack = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(multilanguageVisibleReducer());
         return;
     };
 
     const language = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.multilanguage.currentLanguage;
     });
 

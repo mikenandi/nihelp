@@ -4,7 +4,7 @@ import Color from "../../../Components/Color";
 import { Body } from "../../../Components/Typography";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-function ProfileDetail(props) {
+function ProfileDetail(props: any) {
     return (
         <View style={styles.detailContainer}>
             {props.children}

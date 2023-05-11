@@ -13,43 +13,45 @@ import {
 } from "../Redux/Components/InputCode";
 
 /* Input Verifcation Code */
-function InputVerificationCode(props) {
+function InputVerificationCode(props: any) {
     const dispatch = useDispatch();
 
     const value = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.inputCode.value;
     });
 
     const editable = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.inputCode.editable;
     });
 
     // handling inputs
-    const handleFirstCode = (firstCode) => {
+    const handleFirstCode = (firstCode: any) => {
         dispatch(saveFirstCode(firstCode));
 
         return;
     };
 
-    const handleSecondCode = (secondCode) => {
+    const handleSecondCode = (secondCode: any) => {
         dispatch(saveSecondCode(secondCode));
 
         return;
     };
 
-    const handleThirdCode = (thirdCode) => {
+    const handleThirdCode = (thirdCode: any) => {
         dispatch(saveThirdCode(thirdCode));
 
         return;
     };
 
-    const handleFourthCode = (fourthCode) => {
+    const handleFourthCode = (fourthCode: any) => {
         dispatch(saveFourthCode(fourthCode));
 
         return;
     };
 
-    const handleFifthCode = (fifthCode) => {
+    const handleFifthCode = (fifthCode: any) => {
         dispatch(saveFifthCode(fifthCode));
 
         return;

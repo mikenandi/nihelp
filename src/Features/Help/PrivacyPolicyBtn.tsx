@@ -7,16 +7,18 @@ import { HelpType } from "./HelpType";
 import { PrivacPolicyScreen } from "./PrivacyPolicyScreen";
 import { privacyPolicyVisibleReducer } from "../../Redux/Features/Help/HelpModalSlice";
 
-function PrivacyPolicyBtn(props) {
+function PrivacyPolicyBtn(props: any) {
     const dispatch = useDispatch();
 
     const handleShowPrivacyPolicy = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(privacyPolicyVisibleReducer());
 
         return;
     };
 
     const visible = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.helpModal.privacyPolicyVisible;
     });
 

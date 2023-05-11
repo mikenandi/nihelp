@@ -5,14 +5,16 @@ import Color from "../../Components/Color";
 import { ModalNavBackWhite } from "../../Components/ModalNavBack";
 import { ModalScreenWhite } from "../../Layouts/ModalScreen";
 import { useDispatch } from "react-redux";
+// @ts-expect-error TS(2307): Cannot find module '../../Redux/Features/Insights/... Remove this comment to see the full error message
 import { insightsVisibleReducer } from "../../Redux/Features/Insights/InsightsModalSlice";
+// @ts-expect-error TS(2307): Cannot find module '../../Components/HomeSummary' ... Remove this comment to see the full error message
 import { HomeSummary } from "../../Components/HomeSummary";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { Insight } from "./Insight";
 import { PieChart } from "./PieChart";
 import { Graph } from "./Graph";
 
-function Insights(props) {
+function Insights(props: any) {
     const dispatch = useDispatch();
     const iconSize = 28;
 
@@ -49,6 +51,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         marginTop: 8,
+        // @ts-expect-error TS(1117): An object literal cannot have multiple properties ... Remove this comment to see the full error message
         alignItems: "center",
         width: "95%",
     },

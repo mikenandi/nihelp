@@ -7,10 +7,11 @@ import { useDispatch } from "react-redux";
 import { privacyPolicyVisibleReducer } from "../../Redux/Features/Help/HelpModalSlice";
 import { TermOfService, Use } from "./TermOfService";
 
-function PrivacPolicyScreen(props) {
+function PrivacPolicyScreen(props: any) {
     const dispatch = useDispatch();
 
     const handleBack = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(privacyPolicyVisibleReducer());
 
         return;

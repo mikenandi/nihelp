@@ -5,7 +5,7 @@ import { Body, HeadingS, HeadingM, BodyS } from "../../Components/Typography";
 import { addComma } from "../../Helpers/StringFormater";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 
-function Insight(props) {
+function Insight(props: any) {
     return (
         <>
             <View style={styles.container}>

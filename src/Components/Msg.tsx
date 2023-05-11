@@ -6,11 +6,12 @@ import Color from "./Color";
 import { useDispatch, useSelector } from "react-redux";
 import { infoMsg } from "../Redux/Components/ErrorMsgSlice";
 
-function Msg(props) {
+function Msg(props: any) {
     // setting states
     const dispatch = useDispatch();
 
     const msg = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.errorMsg.info;
     });
 

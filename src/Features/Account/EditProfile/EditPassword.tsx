@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Modal } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+// @ts-expect-error TS(2307): Cannot find module '../../../Api/Services/RentalFe... Remove this comment to see the full error message
 import { updatePassword } from "../../../Api/Services/RentalFeed/UserProfile";
 import { ErrorMsg } from "../../../Components/ErrorMsg";
 import { InputPassword } from "../../../Components/Inputs";
@@ -9,7 +10,7 @@ import { ModalNavDone } from "../../../Components/ModalNav";
 import { errorMsg } from "../../../Redux/Components/ErrorMsgSlice";
 import { editPasswordVisibleReducer } from "../../../Redux/Features/Account/EditProfileModalSlice";
 
-function EditPassword(props) {
+function EditPassword(props: any) {
     const dispatch = useDispatch();
 
     const [oldPassword, setOldPassword] = React.useState("");
@@ -17,23 +18,25 @@ function EditPassword(props) {
     const [isLoading, setIsLoading] = React.useState(false);
 
     const handleBack = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(editPasswordVisibleReducer());
         return;
     };
 
-    const handleConfirmNewPassword = (password) => {
+    const handleConfirmNewPassword = (password: any) => {
         setNewPassword(password);
 
         return;
     };
 
-    const handleNewPassword = (password) => {
+    const handleNewPassword = (password: any) => {
         setOldPassword(password);
 
         return;
     };
 
     const { userId, authToken } = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.auth;
     });
 
@@ -52,11 +55,13 @@ function EditPassword(props) {
 
             if (response.success) {
                 setIsLoading(false);
+                // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
                 dispatch(editPasswordVisibleReducer());
 
                 return;
             }
 
+            // @ts-expect-error TS(2304): Cannot find name 'code'.
             if (!response.success && code === "incorrect") {
                 setIsLoading(false);
 

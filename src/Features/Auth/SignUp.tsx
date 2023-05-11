@@ -22,30 +22,36 @@ import Loader from "../../Components/Loader";
 import {useSelector} from "react-redux";
 import {Logo} from "./Logo";
 
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 function SignUp(props) {
 	const dispatch = useDispatch();
 	const [isLoading, setIsLoading] = React.useState(false);
 
 	const {model, owner, plateNumber, brand} = useSelector((state) => {
+// @ts-expect-error TS(2571): Object is of type 'unknown'.
 		return state.auth;
 	});
 
+// @ts-expect-error TS(7006): Parameter 'plateNumber' implicitly has an 'any' ty... Remove this comment to see the full error message
 	const handlePlateNumber = (plateNumber) => {
 		dispatch(plateNumberReducer(plateNumber));
 
 		return;
 	};
 
+// @ts-expect-error TS(7006): Parameter 'model' implicitly has an 'any' type.
 	const handleModel = (model) => {
 		dispatch(modelReducer(model));
 	};
 
+// @ts-expect-error TS(7006): Parameter 'owner' implicitly has an 'any' type.
 	const handleOwner = (owner) => {
 		dispatch(ownerReducer(owner));
 
 		return;
 	};
 
+// @ts-expect-error TS(7006): Parameter 'brand' implicitly has an 'any' type.
 	const handleBrand = (brand) => {
 		dispatch(brandReducer(brand));
 
@@ -108,7 +114,9 @@ function SignUp(props) {
 
 				<InputPassword
 					label="Password"
+// @ts-expect-error TS(2304): Cannot find name 'password'.
 					value={password}
+// @ts-expect-error TS(2304): Cannot find name 'handlePassword'.
 					onChangeText={handlePassword}
 				/>
 

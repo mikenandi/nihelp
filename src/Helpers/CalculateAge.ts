@@ -1,6 +1,6 @@
 const moment = require("moment");
 
-function calculateAge(birthday) {
+function calculateAge(birthday: any) {
     const today = moment();
     const birthDate = moment(birthday, "DD-MM-YYYY");
     const age = today.diff(birthDate, "years");

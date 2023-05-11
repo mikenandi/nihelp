@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { ButtonS, OutlineButtonS } from "./Buttons";
 
 /* Modal Nav */
-function ModalNav(props) {
+function ModalNav(props: any) {
     return (
         <>
             <View style={{ ...styles.container, ...props.style }}>
@@ -34,7 +34,7 @@ function ModalNav(props) {
 }
 
 /** Modal nav with transparent background */
-function ModalNavTransparent(props) {
+function ModalNavTransparent(props: any) {
     return (
         <>
             <View style={{ ...styles.containerTransparent, ...props.style }}>
@@ -62,7 +62,7 @@ function ModalNavTransparent(props) {
 }
 
 /** Modal nav done with transparent background for saving */
-function ModalNavDone(props) {
+function ModalNavDone(props: any) {
     return (
         <>
             <View style={{ ...styles.containerTransparent, ...props.style }}>

@@ -8,6 +8,7 @@ function Graph() {
     const dispatch = useDispatch();
 
     const { vacant, paidRent, overdueRent } = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.properties.counts;
     });
 

@@ -8,21 +8,24 @@ import AvatarLibrary from "../../ImageLibrary/AvatarLibrary";
 import { avatarVisibleReducer } from "../../../Redux/Features/Account/AccountModalSlice";
 import { SelectImg } from "./SelectImg";
 
-function EditImg(props) {
+function EditImg(props: any) {
     const dispatch = useDispatch();
 
     const visible = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.accountModal.avatarVisible;
     });
 
     // console.log(visible);
 
     const handleAvatar = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(avatarVisibleReducer());
         return;
     };
 
     const { imgUrl } = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.profileDetail;
     });
 

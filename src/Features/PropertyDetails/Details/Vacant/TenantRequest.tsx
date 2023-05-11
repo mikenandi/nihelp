@@ -4,14 +4,18 @@ import Color from "../../../../Components/Color";
 import { Body, HeadingS } from "../../../../Components/Typography";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
+// @ts-expect-error TS(2307): Cannot find module '../../../../Redux/Features/Pro... Remove this comment to see the full error message
 import { registerTenantVisibleReducer } from "../../../../Redux/Features/PropertyDetails/PropertyDetailsModalSlice";
+// @ts-expect-error TS(2307): Cannot find module '../../../../Redux/Features/Ten... Remove this comment to see the full error message
 import { tenantRequestVisibleReducer } from "../../../../Redux/Features/TenantRequests/TenantRequestsModalSlice";
+// @ts-expect-error TS(2307): Cannot find module '../../../TenantRequests' or it... Remove this comment to see the full error message
 import { TenantRequests } from "../../../TenantRequests";
 
-function TenantRequest(props) {
+function TenantRequest(props: any) {
     const dispatch = useDispatch();
 
     const visible = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.tenantRequestModal.tenantRequestVisible;
     });
 

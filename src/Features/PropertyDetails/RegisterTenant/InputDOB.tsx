@@ -6,7 +6,7 @@ import { ButtonL } from "../../../Components/Buttons";
 import { Fontisto } from "@expo/vector-icons";
 import { InputDate } from "../../../Components/InputDate";
 
-function InputDOB(props) {
+function InputDOB(props: any) {
     return (
         <>
             <View style={styles.container}>

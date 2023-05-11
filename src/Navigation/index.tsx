@@ -38,6 +38,7 @@ function Auth() {
 	});
 
 	const isLogedOut = useSelector((state) => {
+// @ts-expect-error TS(2571): Object is of type 'unknown'.
 		return state.auth.isLogedOut;
 	});
 
@@ -70,6 +71,7 @@ function Auth() {
 						}),
 					);
 
+// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 					dispatch(signinReducer());
 
 					setIsLoading(false);

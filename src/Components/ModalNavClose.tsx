@@ -4,7 +4,7 @@ import Color from "./Color";
 import { HeadingS } from "./Typography";
 import { EvilIcons, MaterialIcons } from "@expo/vector-icons";
 
-function ModalNavClose(props) {
+function ModalNavClose(props: any) {
     return (
         <>
             <View style={styles.container}>

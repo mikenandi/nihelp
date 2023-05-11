@@ -16,7 +16,7 @@ import {
 } from "@expo/vector-icons";
 import { ProgressChart, LineChart } from "react-native-chart-kit";
 
-function PieChart(props) {
+function PieChart(props: any) {
     const data = {
         labels: ["Swim"], // optional
         data: [0.4],

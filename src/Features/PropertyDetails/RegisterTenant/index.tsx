@@ -2,11 +2,12 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import Color from "../../../Components/Color";
 import { useDispatch } from "react-redux";
+// @ts-expect-error TS(2307): Cannot find module '../../../Redux/Features/Proper... Remove this comment to see the full error message
 import { registerTenantVisibleReducer } from "../../../Redux/Features/PropertyDetails/PropertyDetailsModalSlice";
 import { Sheet } from "../../../Components/Sheet";
 import { RegisterTenantForm } from "./RegiesterTenantForm";
 
-function RegisterTenant(props) {
+function RegisterTenant(props: any) {
     const dispatch = useDispatch();
 
     const handleClose = () => {

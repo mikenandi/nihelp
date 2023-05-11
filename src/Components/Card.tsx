@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import Color from "./Color";
 
-function Card(props) {
+function Card(props: any) {
     return (
         <>
             <View style={{ ...styles.card, ...props.style }}>

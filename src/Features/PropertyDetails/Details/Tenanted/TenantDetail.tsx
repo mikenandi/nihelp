@@ -6,7 +6,7 @@ import { Octicons, AntDesign, FontAwesome5 } from "@expo/vector-icons";
 
 const iconSize = 12;
 
-function TenantDetail(props) {
+function TenantDetail(props: any) {
     return (
         <>
             <View style={styles.container}>
@@ -28,7 +28,7 @@ function TenantDetail(props) {
     );
 }
 
-function TenantDetailEnd(props) {
+function TenantDetailEnd(props: any) {
     return (
         <>
             <View style={styles.container}>

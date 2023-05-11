@@ -1,6 +1,6 @@
 import { axios } from "./Axios";
 
-async function getLocationData(data) {
+async function getLocationData(data: any) {
     try {
         let response = await axios({
             method: "GET",
@@ -16,9 +16,12 @@ async function getLocationData(data) {
 
         return response.data;
     } catch (error) {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         if (error.code === "ERR_NETWORK") {
             return {
+                // @ts-expect-error TS(2571): Object is of type 'unknown'.
                 code: error.code,
+                // @ts-expect-error TS(2571): Object is of type 'unknown'.
                 message: error.message,
             };
         }

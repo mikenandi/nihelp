@@ -8,50 +8,48 @@ import { Card } from "../../Components/Card";
 import { Entypo, Octicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-function TermOfService(props) {
+function TermOfService(props: any) {
     const dispatch = useDispatch();
 
     const [contentVisible, setContentVisible] = React.useState(false);
 
-    return (
-        <>
-            <View style={styles.container}>
-                {/* title container */}
+    return <>
+        <View style={styles.container}>
+            {/* title container */}
 
-                {!!props.title && (
-                    <View
-                        style={{
-                            ...styles.topContainer,
-                            paddingBottom: contentVisible ? 0 : 10,
-                        }}
-                    >
-                        <Body style={styles.titleText}>
-                            {props.title.replace(/Rentify/gi, "Lentify")}
-                            {!!props.date && (
-                                <Body style={styles.date}>{props.date}</Body>
-                            )}
-                        </Body>
-                    </View>
-                )}
-
-                {/* content container */}
-
-                <View style={styles.contentContainer}>
-                    <Body style={styles.contentText}>
-                        {props.description.replace(/Rentify/gi, "Lentify")}
+            {!!props.title && (
+                <View
+                    style={{
+                        ...styles.topContainer,
+                        paddingBottom: contentVisible ? 0 : 10,
+                    }}
+                >
+                    <Body style={styles.titleText}>
+                        {props.title.replace(/Rentify/gi, "Lentify")}
+                        {!!props.date && (
+                            <Body style={styles.date}>{props.date}</Body>
+                        )}
                     </Body>
-                    {!!props.note && (
-                        <Body style={{ ...styles.date, fontWeight: "bold" }}>
-                            {props.note.replace(/Rentify/gi, "Lentify")}
-                        </Body>
-                    )}
                 </View>
+            )}
+
+            {/* content container */}
+
+            <View style={styles.contentContainer}>
+                <Body style={styles.contentText}>
+                    {props.description.replace(/Rentify/gi, "Lentify")}
+                </Body>
+                {!!props.note && (
+                    <Body style={{ ...styles.date, fontWeight: "bold" }}>
+                        {props.note.replace(/Rentify/gi, "Lentify")}
+                    </Body>
+                )}
             </View>
-        </>
-    );
+        </View>
+    </>;
 }
 
-function Use(props) {
+function Use(props: any) {
     const dispatch = useDispatch();
 
     const [contentVisible, setContentVisible] = React.useState(false);
@@ -110,6 +108,7 @@ const styles = StyleSheet.create({
         // fontFamily: "poppins",
         // fontSize: 16,
         width: "97%",
+        // @ts-expect-error TS(1117): An object literal cannot have multiple properties ... Remove this comment to see the full error message
         color: "#0d0d0d",
     },
     date: {
@@ -129,6 +128,7 @@ const styles = StyleSheet.create({
         // fontFamily: "poppins",
         // fontSize: 16,
         width: "97%",
+        // @ts-expect-error TS(1117): An object literal cannot have multiple properties ... Remove this comment to see the full error message
         color: "#0d0d0d",
         marginLeft: 10,
     },

@@ -5,35 +5,40 @@ import { ModalNavDone } from "../../../Components/ModalNav";
 import { editPhoneVisibleReducer } from "../../../Redux/Features/Account/EditProfileModalSlice";
 import { InputMobileNumber } from "../../../Components/InputMobileNumber";
 import { editPhoneNumberReducer } from "../../../Redux/Features/Account/ProfileDetailSlice";
+// @ts-expect-error TS(2307): Cannot find module '../../../Api/Services/RentalFe... Remove this comment to see the full error message
 import { updatePhoneNumber } from "../../../Api/Services/RentalFeed/UserProfile";
 import Loader from "../../../Components/Loader";
 import { errorMsg } from "../../../Redux/Components/ErrorMsgSlice";
 import { ErrorMsg } from "../../../Components/ErrorMsg";
 
-function EditPhone(props) {
+function EditPhone(props: any) {
     const dispatch = useDispatch();
 
     const [isLoading, setIsLoading] = React.useState(false);
 
     const handleBack = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(editPhoneVisibleReducer());
         return;
     };
 
     const phone = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.profileDetail.phone;
     });
 
     const countryCode = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.profileDetail.countryCode;
     });
 
-    const handleEdit = (phone) => {
+    const handleEdit = (phone: any) => {
         dispatch(editPhoneNumberReducer(phone));
         return;
     };
 
     const { userId, authToken } = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.auth;
     });
 
@@ -54,6 +59,7 @@ function EditPhone(props) {
             if (response.success) {
                 setIsLoading(false);
 
+                // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
                 dispatch(editPhoneVisibleReducer());
 
                 return;

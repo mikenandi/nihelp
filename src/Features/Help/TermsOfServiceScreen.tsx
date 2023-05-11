@@ -9,10 +9,11 @@ import { Faq } from "./Faq";
 import { TermOfService, Use } from "./TermOfService";
 import { HeadingS, BodyS, Body } from "../../Components/Typography";
 
-function TermsOfServiceScreen(props) {
+function TermsOfServiceScreen(props: any) {
     const dispatch = useDispatch();
 
     const handleBack = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(termsOfServiceVisibleReducer());
 
         return;

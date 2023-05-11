@@ -7,14 +7,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { editEmailVisibleReducer } from "../../../Redux/Features/Account/EditProfileModalSlice";
 import { EditEmail } from "../EditProfile/EditEmail";
 
-function Email(props) {
+function Email(props: any) {
     const dispatch = useDispatch();
 
     const visible = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.editProfileModal.editEmailVisible;
     });
 
     const email = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.profileDetail.email;
     });
 

@@ -8,10 +8,11 @@ import { faqVisibleReducer } from "../../Redux/Features/Help/HelpModalSlice";
 import { Faq } from "./Faq";
 import { Body } from "../../Components/Typography";
 
-function FaqScreen(props) {
+function FaqScreen(props: any) {
     const dispatch = useDispatch();
 
     const handleBack = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(faqVisibleReducer());
 
         return;

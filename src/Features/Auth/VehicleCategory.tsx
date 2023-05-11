@@ -8,7 +8,9 @@ import {ButtonL, TextButton} from "../../Components/Buttons";
 import {useDispatch} from "react-redux";
 import {signUp} from "../../Api/Auth/Auth";
 import {
+// @ts-expect-error TS(2614): Module '"../../Redux/Features/Auth/AuthSlice"' has... Remove this comment to see the full error message
 	carTypeReducer,
+// @ts-expect-error TS(2614): Module '"../../Redux/Features/Auth/AuthSlice"' has... Remove this comment to see the full error message
 	companyReducer,
 	driverReducer,
 	passwordReducer,
@@ -21,38 +23,45 @@ import Loader from "../../Components/Loader";
 import {useSelector} from "react-redux";
 import {Logo} from "./Logo";
 
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 function VehicleCategory(props) {
 	const dispatch = useDispatch();
 	const [isLoading, setIsLoading] = React.useState(false);
 
 	const {carType, company, plateNumber, password, driver} = useSelector(
 		(state) => {
+// @ts-expect-error TS(2571): Object is of type 'unknown'.
 			return state.auth;
 		},
 	);
 
+// @ts-expect-error TS(7006): Parameter 'plateNumber' implicitly has an 'any' ty... Remove this comment to see the full error message
 	const handlePlateNumber = (plateNumber) => {
 		dispatch(plateNumberReducer(plateNumber));
 
 		return;
 	};
 
+// @ts-expect-error TS(7006): Parameter 'carType' implicitly has an 'any' type.
 	const handleCarType = (carType) => {
 		dispatch(carTypeReducer(carType));
 	};
 
+// @ts-expect-error TS(7006): Parameter 'company' implicitly has an 'any' type.
 	const handleCompany = (company) => {
 		dispatch(companyReducer(company));
 
 		return;
 	};
 
+// @ts-expect-error TS(7006): Parameter 'password' implicitly has an 'any' type.
 	const handlePassword = (password) => {
 		dispatch(passwordReducer(password));
 
 		return;
 	};
 
+// @ts-expect-error TS(7006): Parameter 'driver' implicitly has an 'any' type.
 	const handleDriver = (driver) => {
 		dispatch(driverReducer(driver));
 

@@ -4,7 +4,7 @@ import {HeadingS} from "../../Components/Typography";
 import Color from "../../Components/Color";
 import {Feather, Ionicons} from "@expo/vector-icons";
 
-function HelpType(props) {
+function HelpType(props: any) {
 	return (
 		<>
 			<View style={styles.container}>

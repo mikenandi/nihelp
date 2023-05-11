@@ -10,14 +10,16 @@ import { currentCoordinatesReducer } from "../../Redux/Features/Location/locatio
 import { infoMsg } from "../../Redux/Components/ErrorMsgSlice";
 import Confirmation from "./Confirmation";
 
-function Location(props) {
+function Location(props: any) {
     const dispatch = useDispatch();
 
     const coordinates = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.location.coordinates;
     });
 
     const visible = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.locationModal.confirmVisible;
     });
 
@@ -26,7 +28,9 @@ function Location(props) {
             let response = await getGpsLocation();
 
             let coordinates = {
+                // @ts-expect-error TS(2532): Object is possibly 'undefined'.
                 latitude: response.coords.latitude,
+                // @ts-expect-error TS(2532): Object is possibly 'undefined'.
                 longitude: response.coords.longitude,
             };
 
@@ -40,7 +44,7 @@ function Location(props) {
         }
     };
 
-    const handleMovePin = (e) => {
+    const handleMovePin = (e: any) => {
         let coordinates = {
             latitude: e.nativeEvent.coordinate.latitude,
             longitude: e.nativeEvent.coordinate.longitude,

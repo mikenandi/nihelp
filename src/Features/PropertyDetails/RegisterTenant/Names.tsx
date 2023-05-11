@@ -5,7 +5,7 @@ import { HeadingS } from "../../../Components/Typography";
 import { OutlineButtonL, ButtonL } from "../../../Components/Buttons";
 import { InputText } from "../../../Components/Inputs";
 
-function Names(props) {
+function Names(props: any) {
     return (
         <>
             <View>

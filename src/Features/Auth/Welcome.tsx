@@ -4,12 +4,13 @@ import {HeadingL, HeadingM, HeadingS} from "../../Components/Typography";
 import Color from "../../Components/Color";
 import {ButtonL, OutlineButtonL} from "../../Components/Buttons";
 import {useDispatch} from "react-redux";
+// @ts-expect-error TS(2307): Cannot find module '../../../assets/svg/welcome_la... Remove this comment to see the full error message
 import WelcomeSvg from "../../../assets/svg/welcome_landlord.svg";
 import {ModalScreenWhite} from "../../Layouts/ModalScreen";
 import {BottomSheet, PostQn} from "../../Components/PostQn";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 
-function Welcome(props) {
+function Welcome(props: any) {
 	const dispatch = useDispatch();
 
 	const handleSignIn = async () => {

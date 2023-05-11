@@ -6,14 +6,16 @@ import {useDispatch, useSelector} from "react-redux";
 import {notificationVisibleReducer} from "../Redux/Features/Notification/NotificationModalSlice";
 import {Notifications} from "../Features/Notifications";
 
-function Notification(props) {
+function Notification(props: any) {
 	const dispatch = useDispatch();
 
 	const visible = useSelector((state) => {
+// @ts-expect-error TS(2571): Object is of type 'unknown'.
 		return state.notificationModal.notificationVisible;
 	});
 
 	const handleNotification = () => {
+// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 		dispatch(notificationVisibleReducer());
 
 		return;

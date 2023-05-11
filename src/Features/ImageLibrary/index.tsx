@@ -6,10 +6,11 @@ import { saveFromLibrary } from "../../Redux/Features/ImageLibrary/ImageSlice";
 import ImageItem from "./ImageItem";
 import { PostQn } from "../../Components/PostQn";
 
-function ImageLibrary(props) {
+function ImageLibrary(props: any) {
     const dispatch = useDispatch();
 
     const imageData = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.imageLibrary.photos;
     });
 
@@ -26,7 +27,9 @@ function ImageLibrary(props) {
         })();
     }, []);
 
-    const renderItem = ({ item }) => {
+    const renderItem = ({
+        item
+    }: any) => {
         return (
             <>
                 <ImageItem source={item.uri} id={item.id} />

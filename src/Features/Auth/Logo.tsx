@@ -4,7 +4,7 @@ import {HeadingL} from "../../Components/Typography";
 import Color from "../../Components/Color";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 
-function Logo(props) {
+function Logo(props: any) {
 	return (
 		<>
 			{/* <HeadingL style={styles.logoText}>VBAS</HeadingL> */}

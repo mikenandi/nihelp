@@ -6,19 +6,21 @@ import { ModalNavDone } from "../../../Components/ModalNav";
 import { editEmailVisibleReducer } from "../../../Redux/Features/Account/EditProfileModalSlice";
 import { editEmailReducer } from "../../../Redux/Features/Account/ProfileDetailSlice";
 
-function EditEmail(props) {
+function EditEmail(props: any) {
     const dispatch = useDispatch();
 
     const handleBack = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(editEmailVisibleReducer());
         return;
     };
 
     const email = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.profileDetail.email;
     });
 
-    const handleEdit = (email) => {
+    const handleEdit = (email: any) => {
         dispatch(editEmailReducer(email));
     };
 

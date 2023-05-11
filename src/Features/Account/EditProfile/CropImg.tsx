@@ -12,28 +12,34 @@ import {
 } from "../../../Redux/Features/ImageLibrary/ImageSlice";
 import { ModalNavDone } from "../../../Components/ModalNav";
 import { firebase } from "../../../Helpers/FirebaseConfig";
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'rand... Remove this comment to see the full error message
 import randomstring from "randomstring";
+// @ts-expect-error TS(2307): Cannot find module '../../../Api/Services/RentalFe... Remove this comment to see the full error message
 import { updateProfileImg } from "../../../Api/Services/RentalFeed/UserProfile";
 import Loader from "../../../Components/Loader";
 
-function CropImg(props) {
+function CropImg(props: any) {
     const dispatch = useDispatch();
 
     const [isLoading, setisLoading] = React.useState(false);
 
     const image = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.imageLibrary.selectedImages;
     });
 
     const handleBack = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(clearSelectedImages());
 
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(cropVisibleReducer());
 
         return;
     };
 
     const { userId, authToken } = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.auth;
     });
 
@@ -70,8 +76,11 @@ function CropImg(props) {
             if (res.success) {
                 setisLoading(false);
 
+                // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
                 dispatch(cropVisibleReducer());
+                // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
                 dispatch(avatarVisibleReducer());
+                // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
                 dispatch(clearPhotos());
 
                 return;

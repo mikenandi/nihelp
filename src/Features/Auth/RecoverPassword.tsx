@@ -10,36 +10,42 @@ import { ErrorMsg } from "../../Components/ErrorMsg";
 import { recoverPassword } from "../../Api/Auth/Auth";
 import { errorMsg } from "../../Redux/Components/ErrorMsgSlice";
 import {
+    // @ts-expect-error TS(2614): Module '"../../Redux/Features/Auth/AuthSlice"' has... Remove this comment to see the full error message
     saveConfirmPassword,
+    // @ts-expect-error TS(2614): Module '"../../Redux/Features/Auth/AuthSlice"' has... Remove this comment to see the full error message
     saveEmail,
+    // @ts-expect-error TS(2614): Module '"../../Redux/Features/Auth/AuthSlice"' has... Remove this comment to see the full error message
     savePassword,
 } from "../../Redux/Features/Auth/AuthSlice";
 import Loader from "../../Components/Loader";
 
-function RecoverPassword(props) {
+function RecoverPassword(props: any) {
     const dispatch = useDispatch();
 
     const [isLoading, setIsLoading] = React.useState(false);
 
     const password = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.auth.password;
     });
 
     const confirmPassword = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.auth.confirmPassword;
     });
 
     const userEmail = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.auth.email;
     });
 
-    const handlePassword = (password) => {
+    const handlePassword = (password: any) => {
         dispatch(savePassword(password));
 
         return;
     };
 
-    const handleConfirmPassword = (password) => {
+    const handleConfirmPassword = (password: any) => {
         dispatch(saveConfirmPassword(password));
 
         return;

@@ -9,23 +9,27 @@ import { accounntVisibleReducer } from "../../Redux/Features/Account/AccountModa
 import { Ionicons } from "@expo/vector-icons";
 import { EditImg } from "./EditProfile/EditImg";
 import { Profile } from "./Profile";
+// @ts-expect-error TS(2307): Cannot find module '../../Api/Services/RentalFeed/... Remove this comment to see the full error message
 import { userProfile } from "../../Api/Services/RentalFeed/UserProfile";
 import { saveProfileDataReducer } from "../../Redux/Features/Account/ProfileDetailSlice";
 
-function Account(props) {
+function Account(props: any) {
     const dispatch = useDispatch();
 
     const { userId, authToken } = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.auth;
     });
 
     let data = { userId, authToken };
 
     const accountModal = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.accountModal;
     });
 
     const editProfileModal = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.editProfileModal;
     });
 
@@ -41,6 +45,7 @@ function Account(props) {
     }, [accountModal, editProfileModal]);
 
     const handleBack = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(accounntVisibleReducer());
 
         return;

@@ -8,7 +8,7 @@ import { Card } from "../../Components/Card";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-function Faq(props) {
+function Faq(props: any) {
     const dispatch = useDispatch();
 
     const [contentVisible, setContentVisible] = React.useState(false);

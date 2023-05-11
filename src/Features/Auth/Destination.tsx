@@ -21,24 +21,29 @@ import {signinReducer} from "../../Redux/Features/Auth/AuthSlice";
 import {errorMsg} from "../../Redux/Components/ErrorMsgSlice";
 import {ErrorMsg} from "../../Components/ErrorMsg";
 
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 function Destination(props) {
 	const dispatch = useDispatch();
 
 	const [isLoading, setIsLoading] = React.useState(false);
 
 	const {starting, destination} = useSelector((state) => {
+// @ts-expect-error TS(2571): Object is of type 'unknown'.
 		return state.location;
 	});
 
 	const {userId, authToken} = useSelector((state) => {
+// @ts-expect-error TS(2571): Object is of type 'unknown'.
 		return state.auth;
 	});
 
+// @ts-expect-error TS(7006): Parameter 'starting' implicitly has an 'any' type.
 	const handleStarting = (starting) => {
 		dispatch(startingReducer(starting));
 		return;
 	};
 
+// @ts-expect-error TS(7006): Parameter 'destination' implicitly has an 'any' ty... Remove this comment to see the full error message
 	const handleDestination = (destination) => {
 		dispatch(destinationReducer(destination));
 		return;
@@ -71,6 +76,7 @@ function Destination(props) {
 			dispatch(destinationReducer(""));
 			dispatch(startingReducer(starting));
 
+// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 			dispatch(signinReducer());
 
 			setIsLoading(false);

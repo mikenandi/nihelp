@@ -10,13 +10,16 @@ import {ErrorMsg} from "../../Components/ErrorMsg";
 import {errorMsg} from "../../Redux/Components/ErrorMsgSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {
+// @ts-expect-error TS(2614): Module '"../../Redux/Features/Auth/AuthSlice"' has... Remove this comment to see the full error message
 	companyReducer,
 	driverReducer,
 	logInReducer,
 	ownerReducer,
 	passwordReducer,
 	plateNumberReducer,
+// @ts-expect-error TS(2614): Module '"../../Redux/Features/Auth/AuthSlice"' has... Remove this comment to see the full error message
 	saveEmail,
+// @ts-expect-error TS(2614): Module '"../../Redux/Features/Auth/AuthSlice"' has... Remove this comment to see the full error message
 	savePassword,
 } from "../../Redux/Features/Auth/AuthSlice";
 import * as SecureStore from "expo-secure-store";
@@ -25,16 +28,19 @@ import Loader from "../../Components/Loader";
 import {isEmail} from "../../Helpers/EmailCheck";
 import {Logo} from "./Logo";
 
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 function SignIn(props) {
 	const dispatch = useDispatch();
 
 	// Seting states
 	const [isLoading, setIsLoading] = React.useState(false);
 	const {plateNumber, password, driver} = useSelector((state) => {
+// @ts-expect-error TS(2571): Object is of type 'unknown'.
 		return state.auth;
 	});
 
 	// Input function for email entry
+// @ts-expect-error TS(7006): Parameter 'plateNumber' implicitly has an 'any' ty... Remove this comment to see the full error message
 	const handlePlateNumber = (plateNumber) => {
 		dispatch(plateNumberReducer(plateNumber));
 
@@ -42,12 +48,14 @@ function SignIn(props) {
 	};
 
 	// Input function for password entry
+// @ts-expect-error TS(7006): Parameter 'password' implicitly has an 'any' type.
 	const handlePassword = (password) => {
 		dispatch(passwordReducer(password));
 
 		return;
 	};
 
+// @ts-expect-error TS(7006): Parameter 'driver' implicitly has an 'any' type.
 	const handleDriver = (driver) => {
 		dispatch(driverReducer(driver));
 

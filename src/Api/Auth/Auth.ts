@@ -1,7 +1,7 @@
 import { axios } from "./Axios";
 
 const Requests = {
-    signIn: async function (data) {
+    signIn: async function (data: any) {
         try {
             let response = await axios({
                 method: "POST",
@@ -12,10 +12,11 @@ const Requests = {
             return response.data;
         } catch (error) {
             // console.log(error.response);
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
             return error.response.data;
         }
     },
-    signUp: async function (data) {
+    signUp: async function (data: any) {
         try {
             let response = await axios({
                 method: "POST",
@@ -25,10 +26,11 @@ const Requests = {
 
             return response.data;
         } catch (error) {
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
             return error.response.data;
         }
     },
-    confirmEmail: async function (data) {
+    confirmEmail: async function (data: any) {
         try {
             let response = await axios({
                 method: "PUT",
@@ -38,10 +40,11 @@ const Requests = {
 
             return response.data;
         } catch (error) {
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
             return error.response.data;
         }
     },
-    forgotPassword: async function (data) {
+    forgotPassword: async function (data: any) {
         try {
             let response = await axios({
                 method: "POST",
@@ -51,10 +54,11 @@ const Requests = {
 
             return response.data;
         } catch (error) {
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
             return error.response.data;
         }
     },
-    recoverPassword: async function (data) {
+    recoverPassword: async function (data: any) {
         try {
             let response = await axios({
                 method: "PUT",
@@ -64,10 +68,11 @@ const Requests = {
 
             return response.data;
         } catch (error) {
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
             return error.response.data;
         }
     },
-    resendVerificationCode: async function (data) {
+    resendVerificationCode: async function (data: any) {
         try {
             let response = await axios({
                 method: "POST",
@@ -77,6 +82,7 @@ const Requests = {
 
             return response.data;
         } catch (error) {
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
             return error.response.data;
         }
     },

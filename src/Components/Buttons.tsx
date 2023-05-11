@@ -5,6 +5,7 @@ import Color from "./Color";
 
 const buttons = {
 	/* Large Buton */
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 	ButtonL: function (props) {
 		return (
 			<>
@@ -18,6 +19,7 @@ const buttons = {
 		);
 	},
 	/** Outlined Large Button */
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 	OutlineButtonL: function (props) {
 		return (
 			<>
@@ -34,6 +36,7 @@ const buttons = {
 		);
 	},
 	/* Small Button */
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 	ButtonS: function (props) {
 		return (
 			<>
@@ -50,6 +53,7 @@ const buttons = {
 		);
 	},
 	/* Outline Small Button */
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 	OutlineButtonS: function (props) {
 		return (
 			<>
@@ -68,6 +72,7 @@ const buttons = {
 		);
 	},
 	/** Button of Medium size */
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 	ButtonM: function (props) {
 		return (
 			<>
@@ -84,6 +89,7 @@ const buttons = {
 		);
 	},
 	/** Outlined Medium Button */
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 	OutlineButtonM: function (props) {
 		return (
 			<>
@@ -100,6 +106,7 @@ const buttons = {
 		);
 	},
 	/** Text Button */
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 	TextButton: function (props) {
 		return (
 			<>

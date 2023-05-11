@@ -7,18 +7,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { EditGender } from "../EditProfile/EditGender";
 import { editGenderVisibleReducer } from "../../../Redux/Features/Account/EditProfileModalSlice";
 
-function Gender(props) {
+function Gender(props: any) {
     const dispatch = useDispatch();
 
     const visible = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.editProfileModal.editGenderVisible;
     });
 
     const gender = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.profileDetail.gender;
     });
 
     const handleEdit = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(editGenderVisibleReducer());
         return;
     };

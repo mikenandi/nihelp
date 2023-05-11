@@ -23,28 +23,33 @@ import Loader from "../../Components/Loader";
 import {useSelector} from "react-redux";
 import {Logo} from "./Logo";
 
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 function DriverDetails(props) {
 	const dispatch = useDispatch();
 	const [isLoading, setIsLoading] = React.useState(false);
 
 	const {owner, model, brand, plateNumber, password, phoneNumber} = useSelector(
 		(state) => {
+// @ts-expect-error TS(2571): Object is of type 'unknown'.
 			return state.auth;
 		},
 	);
 
+// @ts-expect-error TS(7006): Parameter 'phoneNumber' implicitly has an 'any' ty... Remove this comment to see the full error message
 	const handlePhoneNumber = (phoneNumber) => {
 		dispatch(phoneNumberReducer(phoneNumber));
 
 		return;
 	};
 
+// @ts-expect-error TS(7006): Parameter 'password' implicitly has an 'any' type.
 	const handlePassword = (password) => {
 		dispatch(passwordReducer(password));
 
 		return;
 	};
 
+// @ts-expect-error TS(7006): Parameter 'name' implicitly has an 'any' type.
 	const handleDriverName = (name) => {
 		dispatch(driverReducer(name));
 
@@ -52,6 +57,7 @@ function DriverDetails(props) {
 	};
 	// Navigating to sign in screen
 	const handleSignIn = () => {
+// @ts-expect-error TS(2304): Cannot find name 'companyReducer'.
 		dispatch(companyReducer(""));
 		dispatch(plateNumberReducer(""));
 		dispatch(passwordReducer(""));

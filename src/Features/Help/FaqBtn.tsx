@@ -10,14 +10,16 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { HelpType } from "./HelpType";
 import { FaqScreen } from "./FaqScreen";
 
-function FaqBtn(props) {
+function FaqBtn(props: any) {
     const dispatch = useDispatch();
 
     const visible = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.helpModal.faqVisible;
     });
 
     const handleShowFaq = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(faqVisibleReducer());
         return;
     };

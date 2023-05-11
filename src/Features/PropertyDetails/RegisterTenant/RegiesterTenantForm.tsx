@@ -8,7 +8,7 @@ import { Names } from "./Names";
 import { Gender } from "./Gender";
 import { InputDOB } from "./InputDOB";
 
-function RegisterTenantForm(props) {
+function RegisterTenantForm(props: any) {
     return (
         <>
             <View style={styles.container}>

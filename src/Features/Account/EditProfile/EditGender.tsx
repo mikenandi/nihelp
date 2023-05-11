@@ -11,28 +11,33 @@ import {
     femaleGenderReducer,
     maleGenderReducer,
 } from "../../../Redux/Features/Account/ProfileDetailSlice";
+// @ts-expect-error TS(2307): Cannot find module '../../../Api/Services/RentalFe... Remove this comment to see the full error message
 import { updateGender } from "../../../Api/Services/RentalFeed/UserProfile";
 import Loader from "../../../Components/Loader";
 
-function EditGender(props) {
+function EditGender(props: any) {
     const dispatch = useDispatch();
 
     const [isLoading, setIsLoading] = React.useState(false);
 
     const gender = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.profileDetail.gender;
     });
 
     const { userId, authToken } = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.auth;
     });
 
     const handleBack = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(editGenderVisibleReducer());
         return;
     };
 
     const handleMale = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(maleGenderReducer());
         return;
     };
@@ -52,6 +57,7 @@ function EditGender(props) {
             if (response.success) {
                 setIsLoading(false);
 
+                // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
                 dispatch(editGenderVisibleReducer());
 
                 return;
@@ -69,6 +75,7 @@ function EditGender(props) {
     };
 
     const handleFemale = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(femaleGenderReducer());
         return;
     };

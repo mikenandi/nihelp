@@ -4,7 +4,7 @@ import Color from "./Color";
 import {HeadingS} from "./Typography";
 import {Entypo, Ionicons, MaterialIcons} from "@expo/vector-icons";
 
-function ModalNavBack(props) {
+function ModalNavBack(props: any) {
 	return (
 		<>
 			<View style={styles.container}>
@@ -22,6 +22,7 @@ function ModalNavBack(props) {
 	);
 }
 
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 function ModalNavBackWhite(props) {
 	return (
 		<>

@@ -8,7 +8,7 @@ import { Email } from "./Email";
 import { Phone } from "./Phone";
 import { Password } from "./Password";
 
-function Profile(props) {
+function Profile(props: any) {
     return (
         <>
             <Name />

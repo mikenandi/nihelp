@@ -3,7 +3,7 @@ import { TouchableOpacity, View, StyleSheet } from "react-native";
 import Color from "../../Components/Color";
 import { Body, HeadingL } from "../../Components/Typography";
 
-function Language(props) {
+function Language(props: any) {
     return (
         <>
             <TouchableOpacity activeOpacity={0.85} onPress={props.onPress}>

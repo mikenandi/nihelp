@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Modal } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+// @ts-expect-error TS(2307): Cannot find module '../../../Api/Services/RentalFe... Remove this comment to see the full error message
 import { updateBirthdate } from "../../../Api/Services/RentalFeed/UserProfile";
 import { InputDate } from "../../../Components/InputDate";
 import Loader from "../../../Components/Loader";
@@ -8,10 +9,11 @@ import { ModalNavDone } from "../../../Components/ModalNav";
 import { editBirthdateVisibleReducer } from "../../../Redux/Features/Account/EditProfileModalSlice";
 import { saveBirthdateReducer } from "../../../Redux/Features/Account/ProfileDetailSlice";
 
-function EditBirthdate(props) {
+function EditBirthdate(props: any) {
     const dispatch = useDispatch();
 
     const handleBack = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(editBirthdateVisibleReducer());
         return;
     };
@@ -24,27 +26,28 @@ function EditBirthdate(props) {
         year: "",
     });
 
-    const handleDate = (date) => {
+    const handleDate = (date: any) => {
         if (Number(date) <= 31) {
             setBirthDate({ ...birthdate, date: date });
             return;
         }
     };
 
-    const handleMonth = (month) => {
+    const handleMonth = (month: any) => {
         if (Number(month) <= 12) {
             setBirthDate({ ...birthdate, month: month });
             return;
         }
     };
 
-    const handleYear = (year) => {
+    const handleYear = (year: any) => {
         setBirthDate({ ...birthdate, year: year });
 
         return;
     };
 
     const { userId, authToken } = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.auth;
     });
 
@@ -70,6 +73,7 @@ function EditBirthdate(props) {
 
                 dispatch(saveBirthdateReducer(birthdateData));
 
+                // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
                 dispatch(editBirthdateVisibleReducer());
 
                 return;

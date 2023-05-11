@@ -10,10 +10,11 @@ import {
 } from "@expo/vector-icons";
 import { AmenityTitle } from "./AmenityTitle";
 
-function Amenities(props) {
+function Amenities(props: any) {
     const dispatch = useDispatch();
 
     const { amenities } = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.properties.property;
     });
 

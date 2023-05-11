@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { Body } from "../../Components/Typography";
 
-function HelpType(props) {
+function HelpType(props: any) {
     return (
         <>
             <TouchableOpacity onPress={props.onPress} activeOpacity={0.85}>

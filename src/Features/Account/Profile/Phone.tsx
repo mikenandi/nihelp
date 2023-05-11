@@ -8,22 +8,26 @@ import { editPhoneVisibleReducer } from "../../../Redux/Features/Account/EditPro
 import { EditPhone } from "../EditProfile/EditPhone";
 import { formatPhoneNumber } from "../../../Helpers/StringFormater";
 
-function Phone(props) {
+function Phone(props: any) {
     const dispatch = useDispatch();
 
     const visible = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.editProfileModal.editPhoneVisible;
     });
 
     const phone = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.profileDetail.phone;
     });
 
     const countryCode = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.profileDetail.countryCode;
     });
 
     const handleEdit = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(editPhoneVisibleReducer());
         return;
     };

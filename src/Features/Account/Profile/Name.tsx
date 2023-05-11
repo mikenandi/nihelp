@@ -7,18 +7,21 @@ import { EditName } from "../EditProfile/EditName";
 import { useDispatch, useSelector } from "react-redux";
 import { editNameVisibleReducer } from "../../../Redux/Features/Account/EditProfileModalSlice";
 
-function Name(props) {
+function Name(props: any) {
     const dispatch = useDispatch();
 
     const name = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.profileDetail.name;
     });
 
     const visible = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.editProfileModal.editNameVisible;
     });
 
     const handleEdit = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(editNameVisibleReducer());
         return;
     };

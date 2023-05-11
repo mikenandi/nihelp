@@ -14,13 +14,14 @@ import { infoMsg } from "../../Redux/Components/ErrorMsgSlice";
 import { Body } from "../../Components/Typography";
 import { cropVisibleReducer } from "../../Redux/Features/Account/AccountModalSlice";
 
-function Avatar(props) {
+function Avatar(props: any) {
     // seting states
     const { width } = useWindowDimensions();
 
     const [selected, setSelected] = React.useState(false);
 
     const savedIds = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.imageLibrary.savedIds;
     });
 
@@ -38,6 +39,7 @@ function Avatar(props) {
     const handleSaveId = () => {
         dispatch(saveSelectedIds(props.id));
         // dispatch(getSelectedImages());
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(cropVisibleReducer());
 
         // setSelected(true);

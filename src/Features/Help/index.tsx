@@ -10,10 +10,11 @@ import { ContactUsBtn } from "./ContactUsBtn";
 import { TermsOfServiceBtn } from "./TermsOfServiceBtn";
 import { PrivacyPolicyBtn } from "./PrivacyPolicyBtn";
 
-function Help(props) {
+function Help(props: any) {
     const dispatch = useDispatch();
 
     const handleBack = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(helpVisibleReducer());
 
         return;

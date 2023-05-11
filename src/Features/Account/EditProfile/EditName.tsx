@@ -5,28 +5,32 @@ import { InputText } from "../../../Components/Inputs";
 import { ModalNavDone } from "../../../Components/ModalNav";
 import { editNameVisibleReducer } from "../../../Redux/Features/Account/EditProfileModalSlice";
 import { editNameReducer } from "../../../Redux/Features/Account/ProfileDetailSlice";
+// @ts-expect-error TS(2307): Cannot find module '../../../Api/Services/RentalFe... Remove this comment to see the full error message
 import { updateProfileName } from "../../../Api/Services/RentalFeed/UserProfile";
 import Loader, { Loading } from "../../../Components/Loader";
 
-function EditName(props) {
+function EditName(props: any) {
     const dispatch = useDispatch();
 
     const [isLoading, setIsLoading] = React.useState(false);
 
     const handleBack = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(editNameVisibleReducer());
         return;
     };
 
     const { userId, authToken } = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.auth;
     });
 
     const name = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.profileDetail.name;
     });
 
-    const handleEdit = (name) => {
+    const handleEdit = (name: any) => {
         dispatch(editNameReducer(name));
         return;
     };
@@ -48,6 +52,7 @@ function EditName(props) {
             if (response.success) {
                 setIsLoading(false);
 
+                // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
                 dispatch(editNameVisibleReducer());
 
                 return;
@@ -55,6 +60,7 @@ function EditName(props) {
 
             return;
         } catch (error) {
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
             console.log(error.response);
             return;
         }

@@ -4,14 +4,17 @@ import Color from "../../Components/Color";
 import { BodyS } from "../../Components/Typography";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
+// @ts-expect-error TS(2307): Cannot find module '../../Redux/Features/PropertyD... Remove this comment to see the full error message
 import { propertyFeaturesVisibleReducer } from "../../Redux/Features/PropertyDetails/PropertyDetailsModalSlice";
+// @ts-expect-error TS(2305): Module '"./Specifications"' has no exported member... Remove this comment to see the full error message
 import { Features } from "./Specifications";
 
-function FeaturesButton(props) {
+function FeaturesButton(props: any) {
     // use dispatch
     const dispatch = useDispatch();
 
     const visible = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.propertyDetailsModal.propertyFeaturesVisible;
     });
 

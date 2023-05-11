@@ -4,14 +4,16 @@ import Color from "../../Components/Color";
 import { HeadingS } from "../../Components/Typography";
 import { FontAwesome } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
+// @ts-expect-error TS(2307): Cannot find module '../../Redux/Features/PropertyD... Remove this comment to see the full error message
 import { registerTenantVisibleReducer } from "../../Redux/Features/PropertyDetails/PropertyDetailsModalSlice";
 import { RegisterTenant } from "./RegisterTenant";
 
-function RegisterTenantButton(props) {
+function RegisterTenantButton(props: any) {
     // use dispatch
     const dispatch = useDispatch();
 
     const visible = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.propertyDetailsModal.registerTenantVisible;
     });
 

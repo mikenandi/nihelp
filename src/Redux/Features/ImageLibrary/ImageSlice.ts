@@ -15,12 +15,15 @@ export const imageSlice = createSlice({
         },
         saveSelectedIds: (state, actions) => {
             let selectedId = actions.payload;
+            // @ts-expect-error TS(2345): Argument of type 'any' is not assignable to parame... Remove this comment to see the full error message
             state.savedIds.push(selectedId);
 
             let selectedImg = state.photos.filter(
+                // @ts-expect-error TS(2339): Property 'id' does not exist on type 'never'.
                 (photo) => photo.id === selectedId
             );
 
+            // @ts-expect-error TS(2345): Argument of type 'undefined' is not assignable to ... Remove this comment to see the full error message
             state.selectedImages.push(selectedImg[0]);
         },
         removeSelectedId: (state, actions) => {
@@ -31,6 +34,7 @@ export const imageSlice = createSlice({
             );
 
             state.selectedImages.filter(
+                // @ts-expect-error TS(2339): Property 'id' does not exist on type 'never'.
                 (selectedImg) => selectedImg.id !== selectedId
             );
         },

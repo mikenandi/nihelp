@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 
 import { Feather } from "@expo/vector-icons";
 
-function LocationPin(props) {
+function LocationPin(props: any) {
     const dispatch = useDispatch();
 
     return (

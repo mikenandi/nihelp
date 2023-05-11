@@ -8,7 +8,7 @@ import MapView, {Marker, Polyline} from "react-native-maps";
 import {Notification} from "../../Components/Notification";
 import {FAB} from "../../Components/FAB";
 
-function Home(props) {
+function Home(props: any) {
 	const dispatch = useDispatch();
 
 	return (

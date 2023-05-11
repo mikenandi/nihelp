@@ -16,9 +16,10 @@ import {
     AntDesign,
     MaterialCommunityIcons,
 } from "@expo/vector-icons";
+// @ts-expect-error TS(2307): Cannot find module '../../Redux/Features/PropertyD... Remove this comment to see the full error message
 import { showPropertyDetailsReducer } from "../../Redux/Features/PropertyDetails/PropertyDetailsModalSlice";
 
-function PropertyImg(props) {
+function PropertyImg(props: any) {
     const dispatch = useDispatch();
 
     const [imgActive, setImgActive] = React.useState(0);
@@ -33,10 +34,11 @@ function PropertyImg(props) {
     };
 
     const { status, propertyImages, propertyType } = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.properties.property;
     });
 
-    const handleOnScroll = (e) => {
+    const handleOnScroll = (e: any) => {
         if (e.nativeEvent) {
             const slide = Math.ceil(
                 e.nativeEvent.contentOffset.x /
@@ -49,113 +51,114 @@ function PropertyImg(props) {
         }
     };
 
-    return (
-        <>
-            <ScrollView
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                onScroll={handleOnScroll}
-                style={{ width: WIDTH, height: HEIGHT * 0.4 }}
-            >
-                {propertyImages.map((item) => {
-                    return (
-                        <View
-                            style={{ ...styles.container, width: WIDTH }}
-                            key={item.id}
-                        >
-                            <Image
-                                source={{ uri: item.img_url }}
-                                style={{ ...styles.propertyImg, width: WIDTH }}
-                                resizeMode="cover"
-                            />
-                            {true && (
-                                <View style={styles.backIcon}>
-                                    <TouchableOpacity
-                                        activeOpacity={0.8}
-                                        onPress={handleBack}
-                                    >
-                                        <Ionicons
-                                            name="arrow-back"
-                                            size={22}
-                                            color={Color.black}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            )}
-
-                            {imgActive === 0 && (
-                                <View style={styles.propertyTypeContainer}>
-                                    <TouchableOpacity
-                                        activeOpacity={0.8}
-                                        onPress={handleBack}
-                                    >
-                                        <BodyS style={styles.propertyTypeText}>
-                                            {propertyType}
-                                        </BodyS>
-                                    </TouchableOpacity>
-                                </View>
-                            )}
-
-                            {status === "vacant" && imgActive === 0 && (
-                                <View
-                                    style={{
-                                        ...styles.statusContainer,
-                                        // backgroundColor: Color.warning,
-                                    }}
+    return <>
+        <ScrollView
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onScroll={handleOnScroll}
+            style={{ width: WIDTH, height: HEIGHT * 0.4 }}
+        >
+            {propertyImages.map((item: any) => {
+                return (
+                    <View
+                        style={{ ...styles.container, width: WIDTH }}
+                        key={item.id}
+                    >
+                        <Image
+                            source={{ uri: item.img_url }}
+                            style={{ ...styles.propertyImg, width: WIDTH }}
+                            resizeMode="cover"
+                        />
+                        {true && (
+                            <View style={styles.backIcon}>
+                                <TouchableOpacity
+                                    activeOpacity={0.8}
+                                    onPress={handleBack}
                                 >
-                                    <AntDesign
-                                        name="infocirlceo"
-                                        size={20}
-                                        color={Color.warning}
-                                        style={styles.icon}
+                                    <Ionicons
+                                        name="arrow-back"
+                                        size={22}
+                                        color={Color.black}
                                     />
-                                </View>
-                            )}
-
-                            {status === "paid-rent" && imgActive === 0 && (
-                                <View
-                                    style={{
-                                        ...styles.statusContainer,
-                                        // backgroundColor: Color.primary,
-                                    }}
-                                >
-                                    <FontAwesome5
-                                        name="check-circle"
-                                        size={20}
-                                        color={Color.primary}
-                                        style={styles.icon}
-                                    />
-                                </View>
-                            )}
-
-                            {status === "overdue-rent" && imgActive === 0 && (
-                                <View
-                                    style={{
-                                        ...styles.statusContainer,
-                                        // backgroundColor: Color.error,
-                                    }}
-                                >
-                                    <MaterialCommunityIcons
-                                        name="cancel"
-                                        size={20}
-                                        color={Color.error}
-                                        style={styles.icon}
-                                    />
-                                </View>
-                            )}
-
-                            <View style={styles.imgCountContainer}>
-                                <BodyS style={styles.imgCountText}>
-                                    {imgActive + 1} / {propertyImages.length}
-                                </BodyS>
+                                </TouchableOpacity>
                             </View>
+                        )}
+
+                        {imgActive === 0 && (
+                            <View style={styles.propertyTypeContainer}>
+                                <TouchableOpacity
+                                    activeOpacity={0.8}
+                                    onPress={handleBack}
+                                >
+                                    <BodyS style={styles.propertyTypeText}>
+                                        {propertyType}
+                                    </BodyS>
+                                </TouchableOpacity>
+                            </View>
+                        )}
+
+                        {status === "vacant" && imgActive === 0 && (
+                            <View
+                                style={{
+                                    ...styles.statusContainer,
+                                    // backgroundColor: Color.warning,
+                                }}
+                            >
+                                <AntDesign
+                                    name="infocirlceo"
+                                    size={20}
+                                    color={Color.warning}
+                                    // @ts-expect-error TS(2339): Property 'icon' does not exist on type '{ containe... Remove this comment to see the full error message
+                                    style={styles.icon}
+                                />
+                            </View>
+                        )}
+
+                        {status === "paid-rent" && imgActive === 0 && (
+                            <View
+                                style={{
+                                    ...styles.statusContainer,
+                                    // backgroundColor: Color.primary,
+                                }}
+                            >
+                                <FontAwesome5
+                                    name="check-circle"
+                                    size={20}
+                                    color={Color.primary}
+                                    // @ts-expect-error TS(2339): Property 'icon' does not exist on type '{ containe... Remove this comment to see the full error message
+                                    style={styles.icon}
+                                />
+                            </View>
+                        )}
+
+                        {status === "overdue-rent" && imgActive === 0 && (
+                            <View
+                                style={{
+                                    ...styles.statusContainer,
+                                    // backgroundColor: Color.error,
+                                }}
+                            >
+                                <MaterialCommunityIcons
+                                    name="cancel"
+                                    size={20}
+                                    color={Color.error}
+                                    // @ts-expect-error TS(2339): Property 'icon' does not exist on type '{ containe... Remove this comment to see the full error message
+                                    style={styles.icon}
+                                />
+                            </View>
+                        )}
+
+                        <View style={styles.imgCountContainer}>
+                            <BodyS style={styles.imgCountText}>
+                                {imgActive + 1} / {propertyImages.length}
+                            </BodyS>
                         </View>
-                    );
-                })}
-            </ScrollView>
-        </>
-    );
+                    </View>
+                );
+            })}
+        </ScrollView>
+    </>;
 }
 
 const styles = StyleSheet.create({
@@ -195,6 +198,7 @@ const styles = StyleSheet.create({
         aspectRatio: 1 / 1,
         borderRadius: 50,
         flexDirection: "row",
+        // @ts-expect-error TS(1117): An object literal cannot have multiple properties ... Remove this comment to see the full error message
         alignItems: "center",
         shadowColor: Color.black,
         shadowOffset: { width: 0.5, height: 0.5 },
@@ -226,6 +230,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: 50,
         flexDirection: "row",
+        // @ts-expect-error TS(1117): An object literal cannot have multiple properties ... Remove this comment to see the full error message
         alignItems: "center",
         shadowColor: Color.black,
         shadowOffset: { width: 0.5, height: 0.5 },

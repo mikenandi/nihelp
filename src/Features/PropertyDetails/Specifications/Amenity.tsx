@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import Color from "../../../Components/Color";
 import { Caption } from "../../../Components/Typography";
 
-function Amenity(props) {
+function Amenity(props: any) {
     const dispatch = useDispatch();
 
     return (

@@ -1,5 +1,5 @@
 // Function to add space after every three charractes
-function addSpace(input) {
+function addSpace(input: any) {
     let numberWithComma = input
         .toString()
         .replace(/\B(?=(\d{3})+(?!\d))/gi, " ");
@@ -7,7 +7,7 @@ function addSpace(input) {
     return numberWithComma;
 }
 
-function removeSpace(input) {
+function removeSpace(input: any) {
     let numberWithoutComma = input.toString().replace(/[\ \,]/gi, "");
 
     return numberWithoutComma;

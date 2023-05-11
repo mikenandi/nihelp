@@ -14,10 +14,11 @@ import { contactUsVisibleReducer } from "../../Redux/Features/Help/HelpModalSlic
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Body, BodyS } from "../../Components/Typography";
 
-function ContactUsScreen(props) {
+function ContactUsScreen(props: any) {
     const dispatch = useDispatch();
 
     const handleBack = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(contactUsVisibleReducer());
 
         return;
@@ -58,6 +59,7 @@ function ContactUsScreen(props) {
                                     <Body style={styles.titleText}>
                                         Chat with us
                                     </Body>
+                                    // @ts-expect-error TS(2339): Property 'labelText' does not exist on type '{ faq... Remove this comment to see the full error message
                                     <BodyS style={styles.labelText}>
                                         Send us WhatsApp message
                                     </BodyS>
@@ -83,6 +85,7 @@ function ContactUsScreen(props) {
                                     <Body style={styles.titleText}>
                                         Call us
                                     </Body>
+                                    // @ts-expect-error TS(2339): Property 'labelText' does not exist on type '{ faq... Remove this comment to see the full error message
                                     <BodyS style={styles.labelText}>
                                         Talk to our customer support
                                     </BodyS>

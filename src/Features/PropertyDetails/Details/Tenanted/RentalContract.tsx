@@ -9,7 +9,7 @@ import {
 } from "../../../../Components/Typography";
 import { TenantDetail, TenantDetailEnd } from "./TenantDetail";
 
-function RentalContract(props) {
+function RentalContract(props: any) {
     return (
         <>
             <View style={styles.line} />

@@ -9,6 +9,7 @@ import {
 import Color from "../Components/Color";
 import Topbar from "./Topbar";
 
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 function Screen(props) {
 	// console.log(Platform.OS);
 	if (Platform.OS === "android") {

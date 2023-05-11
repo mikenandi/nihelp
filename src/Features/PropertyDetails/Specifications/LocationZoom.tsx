@@ -6,14 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     mapZoomVisibleReducer,
     propertyFeaturesVisibleReducer,
+// @ts-expect-error TS(2307): Cannot find module '../../../Redux/Features/Proper... Remove this comment to see the full error message
 } from "../../../Redux/Features/PropertyDetails/PropertyDetailsModalSlice";
 import { Feather } from "@expo/vector-icons";
 import { LocationPin } from "./LocationPin";
 
-function LocationZoom(props) {
+function LocationZoom(props: any) {
     const dispatch = useDispatch();
 
     const { propertyLocation } = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.properties.property;
     });
 

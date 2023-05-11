@@ -5,7 +5,7 @@ import {Body, HeadingS} from "../../Components/Typography";
 import {Octicons} from "@expo/vector-icons";
 import Color from "../../Components/Color";
 
-function ProfileDetail(props) {
+function ProfileDetail(props: any) {
 	const dispatch = useDispatch();
 
 	return (

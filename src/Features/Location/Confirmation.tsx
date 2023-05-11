@@ -20,10 +20,12 @@ function LocationConfirmation() {
     const [isLoading, setIsLoading] = React.useState(true);
 
     const coordinates = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.location.coordinates;
     });
 
     const address = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.location.address;
     });
 
@@ -50,7 +52,9 @@ function LocationConfirmation() {
     }, []);
 
     const handleConfirm = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(confirmLocationReducer());
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(confirmStatusReducer());
 
         return;
@@ -58,6 +62,7 @@ function LocationConfirmation() {
 
     // canceling it
     const handleCancel = () => {
+        // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
         dispatch(confirmLocationReducer());
 
         return;

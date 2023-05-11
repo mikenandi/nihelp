@@ -9,7 +9,7 @@ import {
 import Color from "../Components/Color";
 import { Msg } from "../Components/Msg";
 
-function ModalScreen(props) {
+function ModalScreen(props: any) {
     if (Platform.OS === "android") {
         return (
             <>
@@ -37,7 +37,7 @@ function ModalScreen(props) {
     );
 }
 
-function ModalScreenWhite(props) {
+function ModalScreenWhite(props: any) {
     if (Platform.OS === "android") {
         return (
             <>

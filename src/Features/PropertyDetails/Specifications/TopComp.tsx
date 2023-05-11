@@ -12,15 +12,17 @@ import {
 import { Ionicons, Entypo } from "@expo/vector-icons";
 import { addComma } from "../../../Helpers/StringFormater";
 
-function TopComp(props) {
+function TopComp(props: any) {
     const dispatch = useDispatch();
 
     const { rentPerMonth, propertyType, floorType, roomCount, roomType } =
         useSelector((state) => {
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
             return state.properties.property;
         });
 
     const prop = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.properties.property;
     });
 

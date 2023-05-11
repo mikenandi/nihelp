@@ -5,7 +5,7 @@ import {Body, HeadingS} from "./Typography";
 import {useSelector, useDispatch} from "react-redux";
 import {Feather} from "@expo/vector-icons";
 
-function FAB(props) {
+function FAB(props: any) {
 	return (
 		<>
 			<TouchableOpacity

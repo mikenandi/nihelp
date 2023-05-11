@@ -3,7 +3,7 @@ import { Text, StyleSheet } from "react-native";
 
 const typography = {
     /* Large Heading Text */
-    HeadingL: function (props) {
+    HeadingL: function (props: any) {
         return (
             <>
                 <Text
@@ -16,7 +16,7 @@ const typography = {
         );
     },
     /* Medium Heading Text */
-    HeadingM: function (props) {
+    HeadingM: function (props: any) {
         return (
             <>
                 <Text
@@ -29,7 +29,7 @@ const typography = {
         );
     },
     /* Small Heading Text */
-    HeadingS: function (props) {
+    HeadingS: function (props: any) {
         return (
             <>
                 <Text
@@ -42,7 +42,7 @@ const typography = {
         );
     },
     /* Body Text */
-    Body: function (props) {
+    Body: function (props: any) {
         return (
             <>
                 <Text
@@ -55,7 +55,7 @@ const typography = {
         );
     },
     /* Small Body Text */
-    BodyS: function (props) {
+    BodyS: function (props: any) {
         return (
             <>
                 <Text
@@ -68,7 +68,7 @@ const typography = {
         );
     },
     /* Small Caption Text */
-    Caption: function (props) {
+    Caption: function (props: any) {
         return (
             <>
                 <Text
@@ -81,7 +81,7 @@ const typography = {
         );
     },
     /* Button Text */
-    ButtonText: function (props) {
+    ButtonText: function (props: any) {
         return (
             <>
                 <Text

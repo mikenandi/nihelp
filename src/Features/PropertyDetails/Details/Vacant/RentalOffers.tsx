@@ -4,10 +4,11 @@ import Color from "../../../../Components/Color";
 import { useDispatch, useSelector } from "react-redux";
 import { TenantRequest } from "./TenantRequest";
 
-function RentalOffers(props) {
+function RentalOffers(props: any) {
     const dispatch = useDispatch();
 
     const visible = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.propertyDetailsModal.registerTenantVisible;
     });
 

@@ -6,10 +6,11 @@ import { ModalScreenWhite } from "../../Layouts/ModalScreen";
 import { PropertyImg } from "./PropertyImg";
 import { Details } from "./Details";
 
-function PropertyDetails(props) {
+function PropertyDetails(props: any) {
     const dispatch = useDispatch();
 
     const propertyDetails = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.properties.property;
     });
 

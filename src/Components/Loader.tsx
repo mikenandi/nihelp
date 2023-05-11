@@ -4,7 +4,7 @@ import {StatusBar, View, StyleSheet, ActivityIndicator} from "react-native";
 import {HeadingL} from "./Typography";
 import Color from "./Color";
 
-function Loader(props) {
+function Loader(props: any) {
 	return (
 		<>
 			<View style={styles.screen}>
@@ -19,6 +19,7 @@ function Loader(props) {
 	);
 }
 
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 function Loading(props) {
 	return (
 		<>

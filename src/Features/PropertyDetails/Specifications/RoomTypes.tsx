@@ -6,10 +6,11 @@ import { Body } from "../../../Components/Typography";
 import { Amenity } from "./Amenity";
 import { AmenityTitle } from "./AmenityTitle";
 
-function RoomTypes(props) {
+function RoomTypes(props: any) {
     const dispatch = useDispatch();
 
     const { roomsAvailable } = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.properties.property;
     });
 

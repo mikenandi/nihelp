@@ -5,7 +5,7 @@ import { HeadingS, Body } from "../../../Components/Typography";
 import { ButtonL } from "../../../Components/Buttons";
 import { Fontisto } from "@expo/vector-icons";
 
-function Gender(props) {
+function Gender(props: any) {
     return (
         <>
             <View style={styles.container}>

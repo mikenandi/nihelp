@@ -7,7 +7,7 @@ import { RentalContract } from "./Tenanted/RentalContract";
 import { RegisterTenantButton } from "../RegisterTenantButton";
 import { RentalOffers } from "./Vacant/RentalOffers";
 
-function Details(props) {
+function Details(props: any) {
     return (
         <>
             <View style={styles.container}>

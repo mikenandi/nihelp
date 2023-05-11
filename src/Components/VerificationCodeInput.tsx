@@ -5,10 +5,11 @@ import Color from "./Color";
 import { useDispatch, useSelector } from "react-redux";
 
 /* Input Verifcation Code */
-function VerificationCodeInput(props) {
+function VerificationCodeInput(props: any) {
     const dispatch = useDispatch();
 
     const value = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.codeInput.verificationCode;
     });
 
@@ -28,7 +29,7 @@ function VerificationCodeInput(props) {
 }
 
 // code number
-function CodeNumber(props) {
+function CodeNumber(props: any) {
     return (
         <>
             <View style={styles.codeNumberContainer}>

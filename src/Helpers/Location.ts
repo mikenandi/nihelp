@@ -5,6 +5,7 @@ import Constants from "expo-constants";
 // Reading location from native device gps.
 async function getGpsLocation() {
     if (Platform.OS === "android" && !Constants.isDevice) {
+        // @ts-expect-error TS(2304): Cannot find name 'setErrorMsg'.
         setErrorMsg(
             "Oops, this will not work on Snack in an Android emulator. Try it on your device!"
         );
@@ -15,6 +16,7 @@ async function getGpsLocation() {
     let { status } = await Location.requestForegroundPermissionsAsync();
 
     if (status !== "granted") {
+        // @ts-expect-error TS(2304): Cannot find name 'setErrorMsg'.
         setErrorMsg("Permission to access location was denied");
 
         return;

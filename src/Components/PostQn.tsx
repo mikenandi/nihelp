@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import Color from "./Color";
 import { HeadingS } from "./Typography";
 
-function PostQn(props) {
+function PostQn(props: any) {
     return (
         <>
             <View style={styles.container}>
@@ -16,7 +16,7 @@ function PostQn(props) {
     );
 }
 
-function BottomSheet(props) {
+function BottomSheet(props: any) {
     return (
         <>
             <View style={styles.containerSheet}>

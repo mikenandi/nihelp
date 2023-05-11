@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, TextInput } from "react-native";
 import Color from "./Color";
 
-function InputDate(props) {
+function InputDate(props: any) {
     const [dateFocus, setDateFocus] = React.useState(false);
     const [monthFocus, setMonthFocus] = React.useState(false);
     const [yearFocus, setYearFocus] = React.useState(false);

@@ -7,6 +7,7 @@ import {HeadingS} from "./Typography";
 
 const inputs = {
 	/* Input text */
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 	InputText: function (props) {
 		// setting states
 		const [isFocused, setIsFocused] = React.useState(false);
@@ -44,6 +45,7 @@ const inputs = {
 		);
 	},
 	/* Input number */
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 	InputNumber: function (props) {
 		// setting states
 		const [isFocused, setIsFocused] = React.useState(false);
@@ -81,6 +83,7 @@ const inputs = {
 		);
 	},
 	/* Input password */
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 	InputPassword: function (props) {
 		// setting states
 		const [hide, setHide] = React.useState(true);
@@ -139,6 +142,7 @@ const inputs = {
 		);
 	},
 	/* Input money */
+// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
 	InputMoney: function (props) {
 		const [isMoneyFocused, setIsMoneyFocused] = React.useState(false);
 		return (

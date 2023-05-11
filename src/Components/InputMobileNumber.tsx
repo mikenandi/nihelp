@@ -4,7 +4,7 @@ import Color from "./Color";
 import { Body } from "./Typography";
 import { useDispatch } from "react-redux";
 
-function InputMobileNumber(props) {
+function InputMobileNumber(props: any) {
     const [isFocused, setIsFocused] = React.useState(false);
 
     return (

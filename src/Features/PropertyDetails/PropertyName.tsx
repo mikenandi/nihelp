@@ -5,34 +5,33 @@ import { Body } from "../../Components/Typography";
 import { Octicons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 
-function PropertyName(props) {
+function PropertyName(props: any) {
     const { propetyName, propertyLocation } = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.properties.property;
     });
 
-    return (
-        <>
-            <View style={styles.detailContainer}>
-                <View style={styles.propertyNameContainer}>
-                    <Body>{propetyName}</Body>
-                </View>
-
-                <View style={styles.locationContainer}>
-                    <Octicons
-                        name="location"
-                        size={18}
-                        color={Color.dimblack}
-                        style={styles.locationIcon}
-                    />
-
-                    <Body style={styles.locationText}>
-                        {propertyLocation.ward},{" "}
-                        {propertyLocation.district.replace(/Municipal/gi, "")}
-                    </Body>
-                </View>
+    return <>
+        <View style={styles.detailContainer}>
+            <View style={styles.propertyNameContainer}>
+                <Body>{propetyName}</Body>
             </View>
-        </>
-    );
+
+            <View style={styles.locationContainer}>
+                <Octicons
+                    name="location"
+                    size={18}
+                    color={Color.dimblack}
+                    style={styles.locationIcon}
+                />
+
+                <Body style={styles.locationText}>
+                    {propertyLocation.ward},{" "}
+                    {propertyLocation.district.replace(/Municipal/gi, "")}
+                </Body>
+            </View>
+        </View>
+    </>;
 }
 
 const styles = StyleSheet.create({

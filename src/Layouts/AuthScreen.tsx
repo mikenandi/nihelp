@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Color from "../Components/Color";
 
-function AuthScreen(props) {
+function AuthScreen(props: any) {
     if (Platform.OS === "android") {
         return (
             <>

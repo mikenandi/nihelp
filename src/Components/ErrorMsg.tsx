@@ -5,15 +5,17 @@ import Color from "./Color";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteErrorMsg } from "../Redux/Components/ErrorMsgSlice";
 
-function ErrorMsg(props) {
+function ErrorMsg(props: any) {
     const dispatch = useDispatch();
 
     const errorMsg = useSelector((state) => {
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         return state.errorMsg.error;
     });
 
     React.useEffect(() => {
         setTimeout(() => {
+            // @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
             dispatch(deleteErrorMsg());
 
             return;

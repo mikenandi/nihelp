@@ -12,7 +12,7 @@ import { HeadingS } from "./Typography";
 import { EvilIcons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 
-function Sheet(props) {
+function Sheet(props: any) {
     const dispatch = useDispatch();
     // ref
     const bottomSheetRef = useRef(null);
@@ -21,7 +21,7 @@ function Sheet(props) {
     const snapPoints = useMemo(() => ["25%", props.maxSnap], []);
 
     // callbacks
-    const handleSheetChanges = useCallback((index) => {
+    const handleSheetChanges = useCallback((index: any) => {
         // console.log("handleSheetChanges", index);
     }, []);
 
