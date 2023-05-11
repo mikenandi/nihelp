@@ -102,28 +102,21 @@ function SignUp(props) {
 
 				<ErrorMsg />
 
-				<InputText label='Owner' value={owner} onChangeText={handleOwner} />
+				<InputText label="name" value={owner} onChangeText={handleOwner} />
 
-				<InputText label='Brand' value={brand} onChangeText={handleBrand} />
+				<InputText label="email" value={brand} onChangeText={handleBrand} />
 
-				<InputText label='Model' value={model} onChangeText={handleModel} />
-				<InputText
-					label='Plate number'
-					value={plateNumber}
-					onChangeText={handlePlateNumber}
-				/>
-
-				{/* <InputPassword
-					label='Password'
+				<InputPassword
+					label="Password"
 					value={password}
 					onChangeText={handlePassword}
-				/> */}
+				/>
 
-				<ButtonL action='next' onPress={handleNext} />
+				<ButtonL action="next" onPress={handleNext} />
 
 				<View style={styles.bottomQuestionContainer}>
 					<Body style={styles.questionText}>Have acount?</Body>
-					<TextButton action='sign in' onPress={handleSignIn} />
+					<TextButton action="sign in" onPress={handleSignIn} />
 				</View>
 			</AuthScreen>
 		</>

@@ -31,24 +31,24 @@ function Welcome(props) {
 			<View style={styles.container}>
 				<View style={styles.WelcomeContainer}>
 					<MaterialCommunityIcons
-						name='tow-truck'
+						name="tow-truck"
 						size={64}
 						color={Color.warning}
 					/>
 					<HeadingS style={styles.descText}>
-						Vehicle breakdown assistance system
+						Vehicle breakdown reporting system
 					</HeadingS>
 				</View>
 				<BottomSheet />
 
 				<ButtonL
-					action='Register'
+					action="Register"
 					onPress={handleSignUp}
 					style={styles.buttonAbsolute}
 				/>
 
 				<OutlineButtonL
-					action='Sign in'
+					action="Sign in"
 					onPress={handleSignIn}
 					style={styles.buttonAbsolute1}
 				/>
