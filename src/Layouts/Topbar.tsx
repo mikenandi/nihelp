@@ -1,70 +1,42 @@
 import React from "react";
 import Color from "../Components/Color";
-import {HeadingL, HeadingM, HeadingS} from "../Components/Typography";
-import {Ionicons} from "@expo/vector-icons";
-import {StyleSheet, View, TouchableOpacity, Modal, Text} from "react-native";
-import {useDispatch, useSelector} from "react-redux";
-import {notificationVisibleReducer} from "../Redux/Features/Notification/NotificationModalSlice";
-import {Notifications} from "../Features/Notifications";
+import {HeadingS} from "../Components/Typography";
+import {StyleSheet, View} from "react-native";
+import {useDispatch} from "react-redux";
+import {RootState} from "../Redux";
 
-function Topbar(props: any) {
+interface TopbarProps {
+	title: string;
+}
+
+const Topbar: React.FC<TopbarProps> = (props) => {
 	const dispatch = useDispatch();
-
-	const visible = useSelector((state) => {
-// @ts-expect-error TS(2571): Object is of type 'unknown'.
-		return state.notificationModal.notificationVisible;
-	});
-
-	const handleNotification = () => {
-// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
-		dispatch(notificationVisibleReducer());
-
-		return;
-	};
 
 	return (
 		<>
 			<View style={styles.container}>
-				<HeadingM style={styles.logoText}>Profile</HeadingM>
-
-				{/* Hightlighting component */}
-				{/* <TouchableOpacity
-					// underlayColor={Color.dimblack}
-					activeOpacity={0.8}
-					onPress={handleNotification}>
-					<View>
-						<Ionicons
-							name='md-notifications-outline'
-							size={28}
-							color={Color.black}
-							style={styles.icon}
-						/>
-						<View style={styles.dot} />
-					</View>
-				</TouchableOpacity> */}
+				<HeadingS style={styles.logoText}>{props.title}</HeadingS>
 			</View>
-
-			<Modal transparent={false} animationType='fade' visible={visible}>
-				<Notifications />
-			</Modal>
 		</>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
-		paddingHorizontal: 10,
-		paddingBottom: 10,
-		paddingTop: 5,
-		backgroundColor: Color.white,
+		paddingHorizontal: 20,
+		paddingBottom: 15,
+		paddingTop: 10,
+		backgroundColor: Color.primary,
+		borderBottomWidth: 4,
+		borderBottomColor: Color.lightgray,
 	},
 	logoText: {
-		color: Color.dimblack,
-		// fontWeight: "bold",
-		// fontFamily: "poppins",
+		color: Color.white,
+		fontWeight: "bold",
+		fontFamily: "poppins",
 		// fontSize: ,
 	},
 	icon: {},

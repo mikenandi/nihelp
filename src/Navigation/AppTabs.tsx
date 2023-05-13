@@ -1,9 +1,15 @@
 import * as React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import {Entypo, FontAwesome5, MaterialIcons} from "@expo/vector-icons";
+import {
+	Entypo,
+	FontAwesome5,
+	Ionicons,
+	MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import Home from "../Screens/Home";
 import Profile from "../Screens/Profile";
 import Color from "../Components/Color";
+import Maps from "../Screens/Maps";
 
 const Tab = createBottomTabNavigator();
 
@@ -11,7 +17,7 @@ function AppTabs() {
 	return (
 		<>
 			<Tab.Navigator
-				initialRouteName='Home'
+				initialRouteName="Home"
 				screenOptions={{
 					tabBarInactiveTintColor: Color.grey,
 					tabBarActiveTintColor: Color.primary,
@@ -28,25 +34,36 @@ function AppTabs() {
 					},
 				}}>
 				<Tab.Screen
-					name='Home'
+					name="Home"
 					component={Home}
 					options={{
-						tabBarLabel: "",
+						tabBarLabel: "Home",
 						title: "",
 						tabBarIcon: ({color, size}) => (
-							<FontAwesome5 name='map-marked-alt' size={size} color={color} />
+							<MaterialCommunityIcons name="home" size={size} color={color} />
 						),
 					}}
 				/>
 
 				<Tab.Screen
-					name='Profile'
+					name="Maps"
+					component={Maps}
+					options={{
+						tabBarLabel: "Maps",
+						title: "",
+						tabBarIcon: ({color, size}) => (
+							<FontAwesome5 name="map-marked-alt" size={size} color={color} />
+						),
+					}}
+				/>
+				<Tab.Screen
+					name="Profile"
 					component={Profile}
 					options={{
 						title: "",
-						tabBarLabel: "",
+						tabBarLabel: "Profile",
 						tabBarIcon: ({color, size}) => (
-							<FontAwesome5 name='car' size={size} color={color} />
+							<Ionicons name="person" size={size} color={color} />
 						),
 					}}
 				/>

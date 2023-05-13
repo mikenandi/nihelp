@@ -1,36 +1,61 @@
 import React from "react";
-import {TextInput, StyleSheet, View, TouchableOpacity} from "react-native";
+import {
+	TextInput,
+	StyleSheet,
+	View,
+	TouchableOpacity,
+	ViewStyle,
+} from "react-native";
 import {Entypo} from "@expo/vector-icons";
 import {Body, BodyS} from "./Typography";
 import Color from "./Color";
 import {HeadingS} from "./Typography";
 
+interface Props {
+	style?: ViewStyle;
+	label?: string;
+	value?: string;
+	onChangeText?: (text: string) => void;
+	maxLength?: number;
+	placeholder?: string;
+	multiline?: boolean;
+	currency?: string;
+}
+
 const inputs = {
 	/* Input text */
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-	InputText: function (props) {
+	InputText: function ({
+		label,
+		onChangeText,
+		style,
+		maxLength,
+		multiline,
+		placeholder,
+		value,
+	}: Props) {
 		// setting states
-		const [isFocused, setIsFocused] = React.useState(false);
+		const [isFocused, setIsFocused] = React.useState<boolean>(false);
+
 		return (
 			<>
 				<View style={styles.container}>
 					<View>
-						<Body style={styles.inputTextLabel}>{props.label}</Body>
+						<Body style={styles.inputTextLabel}>{label}</Body>
 						<View
 							style={{
 								...styles.inputContainer,
-								borderWidth: 1.8,
+								borderWidth: 2.5,
 								borderColor: isFocused ? Color.primary : Color.lightgray,
 								backgroundColor: isFocused ? Color.white : Color.lightgray,
-								...props.style,
+								...style,
 							}}>
 							<TextInput
-								placeholder={props.placeholder}
+								placeholder={placeholder}
 								style={styles.inputText}
-								maxLength={props.maxLength ? props.maxLength : 100}
-								value={props.value}
-								onChangeText={props.onChangeText}
-								multiline={props.multiline}
+								maxLength={maxLength ? maxLength : 100}
+								value={value}
+								onChangeText={onChangeText}
+								multiline={multiline}
 								onFocus={(e) => {
 									setIsFocused(!isFocused);
 								}}
@@ -45,30 +70,37 @@ const inputs = {
 		);
 	},
 	/* Input number */
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-	InputNumber: function (props) {
+	InputNumber: function ({
+		label,
+		onChangeText,
+		style,
+		maxLength,
+		multiline,
+		placeholder,
+		value,
+	}: Props) {
 		// setting states
 		const [isFocused, setIsFocused] = React.useState(false);
 		return (
 			<>
 				<View style={styles.container}>
 					<View>
-						<Body style={styles.inputTextLabel}>{props.label}</Body>
+						<Body style={styles.inputTextLabel}>{label}</Body>
 						<View
 							style={{
 								...styles.inputContainer,
-								...props.style,
+								...style,
 								borderWidth: 1.8,
 								borderColor: isFocused ? Color.primary : Color.lightgray,
 								backgroundColor: isFocused ? Color.white : Color.lightgray,
 							}}>
 							<TextInput
-								placeholder={props.placeholder}
+								placeholder={placeholder}
 								style={styles.inputNumber}
-								maxLength={props.maxLength ? props.maxLength : 100}
-								value={props.value}
-								onChangeText={props.onChangeText}
-								keyboardType='number-pad'
+								maxLength={maxLength ? maxLength : 100}
+								value={value}
+								onChangeText={onChangeText}
+								keyboardType="number-pad"
 								onFocus={(e) => {
 									setIsFocused(!isFocused);
 								}}
@@ -83,8 +115,15 @@ const inputs = {
 		);
 	},
 	/* Input password */
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-	InputPassword: function (props) {
+	InputPassword: function ({
+		label,
+		onChangeText,
+		style,
+		maxLength,
+		multiline,
+		placeholder,
+		value,
+	}: Props) {
 		// setting states
 		const [hide, setHide] = React.useState(true);
 		const [isPasswordFocused, setIsPasswordfocused] = React.useState(false);
@@ -98,12 +137,12 @@ const inputs = {
 			<>
 				<View style={styles.container}>
 					<View>
-						<Body style={styles.inputTextLabel}>{props.label}</Body>
+						<Body style={styles.inputTextLabel}>{label}</Body>
 						<View
 							style={{
 								...styles.inputPasswordContainer,
-								...props.style,
-								borderWidth: 1.8,
+								...style,
+								borderWidth: 2.5,
 								borderColor: isPasswordFocused
 									? Color.primary
 									: Color.lightgray,
@@ -112,12 +151,12 @@ const inputs = {
 									: Color.lightgray,
 							}}>
 							<TextInput
-								placeholder={props.placeholder}
+								placeholder={placeholder}
 								style={styles.inputPasswordText}
-								maxLength={props.maxLength ? props.maxLength : 100}
-								value={props.value}
+								maxLength={maxLength ? maxLength : 100}
+								value={value}
 								secureTextEntry={hide}
-								onChangeText={props.onChangeText}
+								onChangeText={onChangeText}
 								onFocus={(e) => {
 									setIsPasswordfocused(!isPasswordFocused);
 								}}
@@ -142,29 +181,36 @@ const inputs = {
 		);
 	},
 	/* Input money */
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-	InputMoney: function (props) {
+	InputMoney: function ({
+		label,
+		onChangeText,
+		style,
+		maxLength,
+		currency,
+		placeholder,
+		value,
+	}: Props) {
 		const [isMoneyFocused, setIsMoneyFocused] = React.useState(false);
 		return (
 			<>
 				<View style={styles.container}>
-					<Body style={styles.inputTextLabel}>{props.label}</Body>
+					<Body style={styles.inputTextLabel}>{label}</Body>
 					<View
 						style={{
 							...styles.inputMoneyContainer,
-							...props.style,
+							...style,
 							borderWidth: 1.8,
 							borderColor: isMoneyFocused ? Color.primary : Color.lightgray,
 							backgroundColor: isMoneyFocused ? Color.white : Color.lightgray,
 						}}>
-						<HeadingS style={styles.currencyText}>{props.currency}</HeadingS>
+						<HeadingS style={styles.currencyText}>{currency}</HeadingS>
 						<TextInput
-							placeholder={props.placeholder}
+							placeholder={placeholder}
 							style={styles.inputMoney}
-							maxLength={props.maxLength ? props.maxLength : 10}
-							value={props.value}
-							onChangeText={props.onChangeText}
-							keyboardType='number-pad'
+							maxLength={maxLength ? maxLength : 10}
+							value={value}
+							onChangeText={onChangeText}
+							keyboardType="number-pad"
 							onFocus={(e) => {
 								setIsMoneyFocused(!isMoneyFocused);
 							}}

@@ -1,59 +1,85 @@
-import React from "react";
+import React, {useState} from "react";
 import {StyleSheet, Modal, FlatList, View, Image} from "react-native";
 import Screen from "../../Layouts/Screen";
 import Color from "../../Components/Color";
 import {useDispatch, useSelector} from "react-redux";
-import {Body} from "../../Components/Typography";
-import MapView, {Marker, Polyline} from "react-native-maps";
-import {Notification} from "../../Components/Notification";
+import {AntDesign, Feather, FontAwesome5} from "@expo/vector-icons";
 import {FAB} from "../../Components/FAB";
+import Topbar from "../../Layouts/Topbar";
+import {Vehicle} from "./Vehicle";
+import {RegisterVehicle} from "./RegisterVehicle";
+import {RootState} from "../../Redux";
+import {
+	breakdownReportVisibleReducer,
+	registerVehicleVisibleReducer,
+} from "../../Redux/Features/Vehicle/VehicleModalSlice";
+import {AlertTitle} from "./AlertTitle";
+import {Alert} from "./Alert";
+import {ReportBreakdown} from "../../Features/ReportBreakdown";
 
-function Home(props: any) {
+const Home: React.FC = () => {
 	const dispatch = useDispatch();
+
+	const visible: boolean = useSelector((state: RootState) => {
+		return state.vehicleModal.registerVehicleVisible;
+	});
+
+	const breakdownVisible: boolean = useSelector((state: RootState) => {
+		return state.vehicleModal.breakdownReportVisible;
+	});
+
+	const handleRegisterVehicle = (): void => {
+		dispatch(registerVehicleVisibleReducer());
+	};
+
+	const handleBreakdownReport = (): void => {
+		dispatch(breakdownReportVisibleReducer());
+	};
 
 	return (
 		<>
 			<Screen>
-				<MapView
-					style={{flex: 1}}
-					initialRegion={{
-						latitude: -6.823,
-						longitude: 39.26,
-						latitudeDelta: 2,
-						longitudeDelta: 2,
-					}}>
-					<Marker
-						coordinate={{latitude: -6.823, longitude: 39.26}}
-						title='T 123 ABZ needs car jack'
-					/>
-					<Marker
-						coordinate={{latitude: -8.9, longitude: 33.45}}
-						title='Mbeya'
-					/>
+				<Topbar title="Hi , Neema" />
 
-					{/* <Polyline
-						coordinates={[
-							{latitude: -6.823, longitude: 39.26},
-							{latitude: -6.823, longitude: 39.26},
-							{latitude: -8.9, longitude: 33.45},
-						]}
-						strokeWidth={3}
-						strokeColor={Color.warning}
-					/> */}
-				</MapView>
-				<FAB style={styles.notifyContainer}>
-					<Notification />
+				<View style={styles.container}>
+					<Vehicle />
+					<AlertTitle />
+
+					<Alert />
+					<Alert />
+				</View>
+
+				{false && (
+					<FAB onPress={handleRegisterVehicle}>
+						<AntDesign name="plus" size={24} color="black" />
+					</FAB>
+				)}
+
+				<FAB onPress={handleBreakdownReport}>
+					<FontAwesome5
+						name="exclamation-triangle"
+						size={24}
+						color={Color.warning}
+					/>
 				</FAB>
 			</Screen>
+
+			<Modal visible={visible} animationType="fade">
+				<RegisterVehicle />
+			</Modal>
+
+			<Modal visible={breakdownVisible} animationType="fade">
+				<ReportBreakdown />
+			</Modal>
 		</>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	container: {
-		flexDirection: "row",
-		justifyContent: "space-around",
+		flexDirection: "column",
 		marginTop: 20,
+		marginHorizontal: 15,
 	},
 	scrollContainer: {
 		paddingBottom: 70,

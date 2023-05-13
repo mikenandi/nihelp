@@ -13,16 +13,18 @@ import {MaterialCommunityIcons} from "@expo/vector-icons";
 function Welcome(props: any) {
 	const dispatch = useDispatch();
 
-	const handleSignIn = async () => {
+	// Navigate to sign in screen
+	const handleSignIn = (): void => {
 		props.navigation.navigate("SignIn");
-		return;
 	};
 
 	// Navigate to sign up screen
-	const handleSignUp = () => {
+	const handleSignUp = (): void => {
 		props.navigation.navigate("SignUp");
+	};
 
-		return;
+	const handleSignInDriver = (): void => {
+		props.navigation.navigate("SignInDriver");
 	};
 
 	return (
@@ -49,9 +51,15 @@ function Welcome(props: any) {
 				/>
 
 				<OutlineButtonL
-					action="Sign in"
+					action="Sign in as owner"
 					onPress={handleSignIn}
 					style={styles.buttonAbsolute1}
+				/>
+
+				<OutlineButtonL
+					action="Sign in as Driver"
+					onPress={handleSignInDriver}
+					style={styles.buttonAbsolute2}
 				/>
 			</View>
 		</>
@@ -92,11 +100,15 @@ const styles = StyleSheet.create({
 	},
 	buttonAbsolute: {
 		position: "absolute",
-		bottom: 120,
+		bottom: 240,
 	},
 	buttonAbsolute1: {
 		position: "absolute",
-		bottom: 50,
+		bottom: 160,
+	},
+	buttonAbsolute2: {
+		position: "absolute",
+		bottom: 80,
 	},
 	WelcomeContainer: {
 		width: "100%",

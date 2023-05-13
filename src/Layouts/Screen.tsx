@@ -9,14 +9,13 @@ import {
 import Color from "../Components/Color";
 import Topbar from "./Topbar";
 
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-function Screen(props) {
+function Screen(props: any) {
 	// console.log(Platform.OS);
 	if (Platform.OS === "android") {
 		return (
 			<>
 				<View style={styles.container}>
-					<StatusBar backgroundColor={Color.white} />
+					<StatusBar backgroundColor={Color.primary} />
 					{/* <Topbar /> */}
 					{props.children}
 				</View>

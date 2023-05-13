@@ -3,19 +3,19 @@ import Color from "../Components/Color";
 import {Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
 import {StyleSheet, View, TouchableOpacity, Modal, Text} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
-import {notificationVisibleReducer} from "../Redux/Features/Notification/NotificationModalSlice";
-import {Notifications} from "../Features/Notifications";
+import {notificationVisibleReducer} from "../Redux/Features/ReportBreakdown/NotificationModalSlice";
+import {Notifications} from "../Features/ReportBreakdown";
 
 function Notification(props: any) {
 	const dispatch = useDispatch();
 
 	const visible = useSelector((state) => {
-// @ts-expect-error TS(2571): Object is of type 'unknown'.
+		// @ts-expect-error TS(2571): Object is of type 'unknown'.
 		return state.notificationModal.notificationVisible;
 	});
 
 	const handleNotification = () => {
-// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
+		// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 		dispatch(notificationVisibleReducer());
 
 		return;
@@ -30,14 +30,14 @@ function Notification(props: any) {
 				onPress={handleNotification}>
 				<View style={styles.container}>
 					<MaterialCommunityIcons
-						name='bell-ring'
+						name="bell-ring"
 						size={28}
 						color={Color.warning}
 					/>
 				</View>
 			</TouchableOpacity>
 
-			<Modal transparent={false} animationType='fade' visible={visible}>
+			<Modal transparent={false} animationType="fade" visible={visible}>
 				<Notifications />
 			</Modal>
 		</>

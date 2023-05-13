@@ -1,12 +1,24 @@
 import React from "react";
-import {View, StyleSheet, TouchableOpacity} from "react-native";
+import {
+	View,
+	StyleSheet,
+	TouchableOpacity,
+	ViewStyle,
+	TextStyle,
+} from "react-native";
 import {ButtonText, Body} from "./Typography";
 import Color from "./Color";
 
+interface Props {
+	onPress?: () => void;
+	style?: ViewStyle | TextStyle;
+	action?: string;
+	textStyle?: TextStyle;
+}
+
 const buttons = {
 	/* Large Buton */
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-	ButtonL: function (props) {
+	ButtonL: function (props: Props) {
 		return (
 			<>
 				<TouchableOpacity
@@ -19,8 +31,7 @@ const buttons = {
 		);
 	},
 	/** Outlined Large Button */
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-	OutlineButtonL: function (props) {
+	OutlineButtonL: function (props: Props) {
 		return (
 			<>
 				<TouchableOpacity
@@ -36,8 +47,7 @@ const buttons = {
 		);
 	},
 	/* Small Button */
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-	ButtonS: function (props) {
+	ButtonS: function (props: Props) {
 		return (
 			<>
 				<TouchableOpacity
@@ -53,8 +63,7 @@ const buttons = {
 		);
 	},
 	/* Outline Small Button */
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-	OutlineButtonS: function (props) {
+	OutlineButtonS: function (props: Props) {
 		return (
 			<>
 				<TouchableOpacity
@@ -72,8 +81,7 @@ const buttons = {
 		);
 	},
 	/** Button of Medium size */
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-	ButtonM: function (props) {
+	ButtonM: function (props: Props) {
 		return (
 			<>
 				<TouchableOpacity
@@ -89,8 +97,7 @@ const buttons = {
 		);
 	},
 	/** Outlined Medium Button */
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-	OutlineButtonM: function (props) {
+	OutlineButtonM: function (props: Props) {
 		return (
 			<>
 				<TouchableOpacity
@@ -106,8 +113,7 @@ const buttons = {
 		);
 	},
 	/** Text Button */
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-	TextButton: function (props) {
+	TextButton: function (props: Props) {
 		return (
 			<>
 				<TouchableOpacity
@@ -117,7 +123,7 @@ const buttons = {
 					<Body
 						style={{
 							...styles.textButtonText,
-							...props.textStyle,
+							...props.style,
 						}}>
 						{props.action}
 					</Body>
@@ -182,6 +188,7 @@ const styles = StyleSheet.create({
 	textButtonText: {
 		color: Color.primary,
 		fontWeight: "bold",
+		fontSize: 20,
 	},
 	buttonMContainer: {
 		paddingVertical: 10,

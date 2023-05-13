@@ -1,135 +1,97 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
-import {HeadingM, Body, HeadingS} from "../../Components/Typography";
-import Color from "../../Components/Color";
+import {Body, HeadingS} from "../../Components/Typography";
 import AuthScreen from "../../Layouts/AuthScreen";
 import {InputText, InputPassword} from "../../Components/Inputs";
 import {ButtonL, TextButton} from "../../Components/Buttons";
 import {useDispatch} from "react-redux";
-import {signUp} from "../../Api/Auth/Auth";
 import {
-	brandReducer,
-	driverReducer,
-	modelReducer,
-	ownerReducer,
+	emailReducer,
+	licenseNoReducer,
+	nameReducer,
 	passwordReducer,
-	plateNumberReducer,
-	saveDataFromSignUp,
 } from "../../Redux/Features/Auth/AuthSlice";
 import {ErrorMsg} from "../../Components/ErrorMsg";
-import {errorMsg} from "../../Redux/Components/ErrorMsgSlice";
-import Loader from "../../Components/Loader";
 import {useSelector} from "react-redux";
-import {Logo} from "./Logo";
+import {NavigationProp} from "@react-navigation/native";
+import {DropdownInput} from "../../Components/DropdownInput";
+import {RootState} from "../../Redux";
 
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-function SignUp(props) {
+type SignUpProps = {
+	navigation: NavigationProp<any>;
+};
+
+const SignUp: React.FC<SignUpProps> = (props) => {
 	const dispatch = useDispatch();
-	const [isLoading, setIsLoading] = React.useState(false);
+	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-	const {model, owner, plateNumber, brand} = useSelector((state) => {
-// @ts-expect-error TS(2571): Object is of type 'unknown'.
-		return state.auth;
-	});
+	const {name, email, password, userType, licenseNo} = useSelector(
+		(state: RootState) => {
+			return state.auth;
+		}
+	);
 
-// @ts-expect-error TS(7006): Parameter 'plateNumber' implicitly has an 'any' ty... Remove this comment to see the full error message
-	const handlePlateNumber = (plateNumber) => {
-		dispatch(plateNumberReducer(plateNumber));
-
-		return;
-	};
-
-// @ts-expect-error TS(7006): Parameter 'model' implicitly has an 'any' type.
-	const handleModel = (model) => {
-		dispatch(modelReducer(model));
-	};
-
-// @ts-expect-error TS(7006): Parameter 'owner' implicitly has an 'any' type.
-	const handleOwner = (owner) => {
-		dispatch(ownerReducer(owner));
-
-		return;
-	};
-
-// @ts-expect-error TS(7006): Parameter 'brand' implicitly has an 'any' type.
-	const handleBrand = (brand) => {
-		dispatch(brandReducer(brand));
-
-		return;
-	};
-	// Navigating to sign in screen
-	const handleSignIn = () => {
-		dispatch(ownerReducer(""));
-		dispatch(plateNumberReducer(""));
-		dispatch(modelReducer(""));
-		dispatch(brandReducer(""));
+	const handleSignIn = (): void => {
 		props.navigation.navigate("SignIn");
-
-		return;
 	};
 
-	// Navigating to confirm email screen
-	const handleNext = () => {
-		if (!owner) {
-			dispatch(errorMsg("Enter owner's name"));
-
-			return;
-		}
-
-		if (!brand) {
-			dispatch(errorMsg("Enter car brand"));
-
-			return;
-		}
-
-		if (!model) {
-			dispatch(errorMsg("Enter car model"));
-
-			return;
-		}
-
-		if (!plateNumber) {
-			dispatch(errorMsg("Enter car plate number"));
-
-			return;
-		}
-
-		props.navigation.navigate("DriverDetails");
-
-		return;
+	const handlePassword = (password: string): void => {
+		dispatch(passwordReducer(password));
 	};
+
+	const handleName = (name: string): void => {
+		dispatch(nameReducer(name));
+	};
+
+	const handleEmail = (email: string): void => {
+		dispatch(emailReducer(email));
+	};
+
+	const handleLicenseNo = (licenseNo: string): void => {
+		dispatch(licenseNoReducer(licenseNo));
+	};
+
+	const handleSignup = (): void => {};
 
 	return (
 		<>
 			<AuthScreen>
-				<Logo />
+				{/* <Logo /> */}
 
-				<HeadingS>Vehicle Details</HeadingS>
+				<HeadingS>Create account</HeadingS>
 
 				<ErrorMsg />
 
-				<InputText label="name" value={owner} onChangeText={handleOwner} />
+				<InputText label="name" value={name} onChangeText={handleName} />
 
-				<InputText label="email" value={brand} onChangeText={handleBrand} />
+				<DropdownInput />
+
+				{userType === "driver" && (
+					<InputText
+						label="licence no"
+						value={licenseNo}
+						onChangeText={handleLicenseNo}
+					/>
+				)}
+
+				<InputText label="email" value={email} onChangeText={handleEmail} />
 
 				<InputPassword
 					label="Password"
-// @ts-expect-error TS(2304): Cannot find name 'password'.
 					value={password}
-// @ts-expect-error TS(2304): Cannot find name 'handlePassword'.
 					onChangeText={handlePassword}
 				/>
 
-				<ButtonL action="next" onPress={handleNext} />
+				<ButtonL action="sign up" onPress={handleSignup} />
 
 				<View style={styles.bottomQuestionContainer}>
-					<Body style={styles.questionText}>Have acount?</Body>
+					<Body style={styles.questionText}>Have account?</Body>
 					<TextButton action="sign in" onPress={handleSignIn} />
 				</View>
 			</AuthScreen>
 		</>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	forgotPasswordContainer: {

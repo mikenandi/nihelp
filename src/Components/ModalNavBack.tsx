@@ -4,37 +4,41 @@ import Color from "./Color";
 import {HeadingS} from "./Typography";
 import {Entypo, Ionicons, MaterialIcons} from "@expo/vector-icons";
 
-function ModalNavBack(props: any) {
+interface Props {
+	title: string;
+	handleBack: () => void;
+}
+
+function ModalNavBack({title, handleBack}: Props) {
 	return (
 		<>
 			<View style={styles.container}>
 				<TouchableOpacity
 					activeOpacity={0.8}
-					style={styles.iconBtn}
-					onPress={props.handleBack}>
-					<Ionicons name='arrow-back-sharp' size={28} color={Color.white} />
+					style={styles.iconBtnPrimary}
+					onPress={handleBack}>
+					<Ionicons name="arrow-back-sharp" size={28} color={Color.white} />
 				</TouchableOpacity>
-				<HeadingS numberOfLines={1} style={styles.titleTxt}>
-					{props.title}
+				<HeadingS numberOfLines={1} style={styles.titleTxtPrimary}>
+					{title}
 				</HeadingS>
 			</View>
 		</>
 	);
 }
 
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-function ModalNavBackWhite(props) {
+function ModalNavBackWhite({title, handleBack}: Props) {
 	return (
 		<>
 			<View style={styles.containerWhite}>
 				<TouchableOpacity
 					activeOpacity={0.8}
 					style={styles.iconBtn}
-					onPress={props.handleBack}>
-					<MaterialIcons name='close' size={28} color={Color.dimblack} />
+					onPress={handleBack}>
+					<MaterialIcons name="close" size={28} color={Color.dimblack} />
 				</TouchableOpacity>
 				<HeadingS numberOfLines={1} style={styles.titleTxt}>
-					{props.title}
+					{title}
 				</HeadingS>
 			</View>
 		</>
@@ -50,8 +54,8 @@ const styles = StyleSheet.create({
 		backgroundColor: Color.primary,
 	},
 	containerWhite: {
-		paddingHorizontal: 10,
-		paddingVertical: 5,
+		paddingHorizontal: 25,
+		paddingVertical: 15,
 		flexDirection: "row",
 		alignItems: "center",
 		backgroundColor: Color.white,
@@ -66,8 +70,22 @@ const styles = StyleSheet.create({
 		backgroundColor: Color.lightgray,
 		marginRight: 10,
 	},
+	iconBtnPrimary: {
+		width: 50,
+		height: 50,
+		borderRadius: 25,
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: Color.primary,
+		marginRight: 10,
+	},
+
 	titleTxt: {
-		color: Color.dimblack,
+		color: Color.white,
+		width: "70%",
+	},
+	titleTxtPrimary: {
+		color: Color.white,
 		width: "70%",
 	},
 });

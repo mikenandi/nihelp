@@ -1,79 +1,91 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {PayloadAction, createSlice} from "@reduxjs/toolkit";
 
-const initialState = {
+export interface AuthState {
+	isLogedOut: boolean;
+	fromForgotPassword: boolean;
+	authToken: string;
+	userId: string;
+	name: string;
+	email: string;
+	password: string;
+	platenumber: string;
+	userType: string;
+	licenseNo: string;
+}
+
+const initialState: AuthState = {
 	isLogedOut: true,
 	fromForgotPassword: false,
 	authToken: "",
 	userId: "",
-	owner: "",
-	brand: "",
-	model: "",
-	driverName: "",
-	phoneNumber: "",
-	plateNumber: "",
+	name: "",
+	email: "",
 	password: "",
-	profileData: {},
+	platenumber: "",
+	userType: "",
+	licenseNo: "",
 };
 
 const authSlice = createSlice({
 	name: "AUTH",
 	initialState,
 	reducers: {
-		logInReducer: (state, actions) => {
+		logInReducer: (
+			state,
+			actions: PayloadAction<{authToken: string; userId: string}>
+		) => {
 			// state.isLogedOut = false;
 			state.authToken = actions.payload.authToken;
 			state.userId = actions.payload.userId;
 		},
-		signUpReducer: (state, actions) => {
+		signUpReducer: (
+			state,
+			actions: PayloadAction<{authToken: string; userId: string}>
+		) => {
 			// state.isLogedOut = false;
 			state.authToken = actions.payload.authToken;
 			state.userId = actions.payload.userId;
 		},
-		signinReducer: (state, actions) => {
+		signinReducer: (state) => {
 			state.isLogedOut = false;
 		},
-		logOutReducer: (state, actions) => {
+		logOutReducer: (state) => {
 			state.authToken = "";
 			state.userId = "";
 			state.isLogedOut = true;
 		},
-		setConfirmEmailFromForgotePassword: (state, actions) => {
+		setConfirmEmailFromForgotePassword: (state) => {
 			state.fromForgotPassword = true;
 		},
-		resetConfirmEmailFrom: (state, actions) => {
+		resetConfirmEmailFrom: (state) => {
 			state.fromForgotPassword = false;
 		},
-		ownerReducer: (state, actions) => {
-			state.owner = actions.payload;
-		},
-		brandReducer: (state, actions) => {
-			state.brand = actions.payload;
-		},
-		passwordReducer: (state, actions) => {
-			state.password = actions.payload;
-		},
-		plateNumberReducer: (state, actions) => {
-			state.plateNumber = actions.payload;
-		},
-		driverReducer: (state, actions) => {
-			state.driverName = actions.payload;
-		},
-		phoneNumberReducer: (state, actions) => {
-			state.phoneNumber = actions.payload;
-		},
-		modelReducer: (state, actions) => {
-			state.model = actions.payload;
-		},
-		saveDataFromSignUp: (state, actions) => {
+
+		saveDataFromSignUp: (
+			state,
+			actions: PayloadAction<{auth_token: string; user_id: string}>
+		) => {
 			state.authToken = actions.payload.auth_token;
 			state.userId = actions.payload.user_id;
 		},
-		profileDataReducer: (state, actions) => {
-			state.owner = actions.payload.owner;
-			state.model = actions.payload.vehicle_model;
-			state.brand = actions.payload.vehicle_brand;
-			state.phoneNumber = actions.payload.driver_phone;
-			state.plateNumber = actions.payload.plate_number;
+
+		nameReducer: (state, actions: PayloadAction<string>) => {
+			state.name = actions.payload;
+		},
+		emailReducer: (state, actions: PayloadAction<string>) => {
+			state.email = actions.payload;
+		},
+		passwordReducer: (state, actions: PayloadAction<string>) => {
+			state.password = actions.payload;
+		},
+		platenumberReducer: (state, actions: PayloadAction<string>) => {
+			state.platenumber = actions.payload;
+		},
+		userTypeReducer: (state, actions: PayloadAction<string>) => {
+			state.userType = actions.payload;
+		},
+		licenseNoReducer: (state, actions: PayloadAction<string>) => {
+			state.licenseNo = actions.payload;
 		},
 	},
 });
@@ -85,15 +97,13 @@ export const {
 	resetConfirmEmailFrom,
 	saveDataFromSignUp,
 	signUpReducer,
-	ownerReducer,
-	brandReducer,
-	modelReducer,
+	nameReducer,
+	emailReducer,
 	passwordReducer,
-	plateNumberReducer,
-	driverReducer,
 	signinReducer,
-	phoneNumberReducer,
-	profileDataReducer,
+	platenumberReducer,
+	userTypeReducer,
+	licenseNoReducer,
 } = authSlice.actions;
 
 export default authSlice.reducer;

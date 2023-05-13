@@ -6,17 +6,14 @@ import Screen from "../Layouts/Screen";
 import AppTabs from "./AppTabs";
 import SignIn from "../Features/Auth/SignIn";
 import SignUp from "../Features/Auth/SignUp";
-import VehicleCategory from "../Features/Auth/VehicleCategory";
-import DriverDetails from "../Features/Auth/DriverDetails";
 import RecoverPassword from "../Features/Auth/RecoverPassword";
 import Welcome from "../Features/Auth/Welcome";
 import {useDispatch, useSelector} from "react-redux";
 import Loader from "../Components/Loader";
 import {logInReducer, signinReducer} from "../Redux/Features/Auth/AuthSlice";
 import {useFonts} from "expo-font";
-import {useTranslation} from "react-i18next";
 import * as Notifications from "expo-notifications";
-import Destination from "../Features/Auth/Destination";
+import SignInDriver from "../Features/Auth/SignInDriver";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,17 +25,16 @@ Notifications.setNotificationHandler({
 	}),
 });
 
-function Auth() {
+const Auth: React.FC = () => {
 	const dispatch = useDispatch();
 
-	const [isLoading, setIsLoading] = React.useState(true);
+	const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
 	const [fontsLoaded] = useFonts({
 		poppins: require("../../assets/fonts/barlow-condensed/BarlowCondensed-Medium.ttf"),
 	});
 
-	const isLogedOut = useSelector((state) => {
-// @ts-expect-error TS(2571): Object is of type 'unknown'.
+	const isLogedOut = useSelector((state: any): boolean => {
 		return state.auth.isLogedOut;
 	});
 
@@ -61,17 +57,16 @@ function Auth() {
 			try {
 				let savedToken = await SecureStore.getItemAsync("authToken");
 
-				let savedUserId = await AsyncStorage.getItem("userId");
+				let savedUserId: any = await AsyncStorage.getItem("userId");
 
 				if (!!savedToken) {
 					dispatch(
 						logInReducer({
 							authToken: savedToken,
 							userId: savedUserId,
-						}),
+						})
 					);
 
-// @ts-expect-error TS(2554): Expected 1 arguments, but got 0.
 					dispatch(signinReducer());
 
 					setIsLoading(false);
@@ -101,58 +96,45 @@ function Auth() {
 	}
 
 	return (
-		<Stack.Navigator initialRouteName='Welcome'>
-			{isLogedOut ? (
+		<Stack.Navigator initialRouteName="Welcome">
+			{true ? (
 				<>
 					<Stack.Screen
-						name='Welcome'
+						name="Welcome"
 						component={Welcome}
 						options={{
 							headerShown: false,
 						}}
 					/>
 					<Stack.Screen
-						name='SignIn'
+						name="SignIn"
 						component={SignIn}
 						options={{
 							headerShown: false,
 						}}
 					/>
 					<Stack.Screen
-						name='Destination'
-						component={Destination}
+						name="SignInDriver"
+						component={SignInDriver}
 						options={{
 							headerShown: false,
 						}}
 					/>
 					<Stack.Screen
-						name='VehicleCategory'
-						component={VehicleCategory}
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name='SignUp'
+						name="SignUp"
 						component={SignUp}
 						options={{headerShown: false}}
 					/>
+
 					<Stack.Screen
-						name='DriverDetails'
-						component={DriverDetails}
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen
-						name='VeficationCode'
+						name="VeficationCode"
 						component={Screen}
 						options={{
 							headerShown: false,
 						}}
 					/>
 					<Stack.Screen
-						name='RecoverPassword'
+						name="RecoverPassword"
 						component={RecoverPassword}
 						options={{
 							headerShown: false,
@@ -162,7 +144,7 @@ function Auth() {
 			) : (
 				<>
 					<Stack.Screen
-						name='AppTabs'
+						name="AppTabs"
 						component={AppTabs}
 						options={{
 							headerShown: false,
@@ -172,6 +154,6 @@ function Auth() {
 			)}
 		</Stack.Navigator>
 	);
-}
+};
 
 export default Auth;

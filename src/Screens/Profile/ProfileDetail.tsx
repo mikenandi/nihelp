@@ -1,11 +1,17 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {StyleSheet, View} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 import {Body, HeadingS} from "../../Components/Typography";
 import {Octicons} from "@expo/vector-icons";
 import Color from "../../Components/Color";
 
-function ProfileDetail(props: any) {
+interface Props {
+	children: ReactNode;
+	value: string;
+	label: string;
+}
+
+function ProfileDetail(props: Props) {
 	const dispatch = useDispatch();
 
 	return (
@@ -14,7 +20,7 @@ function ProfileDetail(props: any) {
 				<View style={styles.iconContainer}>{props.children}</View>
 				<View>
 					<Body style={styles.labelText}>{props.label}</Body>
-					<HeadingS>{props.value}</HeadingS>
+					<Body style={styles.valueText}>{props.value}</Body>
 				</View>
 			</View>
 		</>
@@ -40,6 +46,9 @@ const styles = StyleSheet.create({
 	},
 	labelText: {
 		color: Color.dimblack,
+	},
+	valueText: {
+		fontWeight: "bold",
 	},
 });
 

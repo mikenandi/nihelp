@@ -12,23 +12,25 @@ import {
 	logInReducer,
 	passwordReducer,
 	emailReducer,
+	platenumberReducer,
 } from "../../Redux/Features/Auth/AuthSlice";
 import * as SecureStore from "expo-secure-store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loader from "../../Components/Loader";
 import {NavigationProp} from "@react-navigation/native";
+import {RootState} from "../../Redux";
 
-interface SignInProps {
+interface SignInDriverProps {
 	navigation: NavigationProp<any>;
 }
 
-const SignIn: React.FC<SignInProps> = (props) => {
+const SignInDriver: React.FC<SignInDriverProps> = (props) => {
 	const dispatch = useDispatch();
 
 	// Seting states
 	const [isLoading, setIsLoading] = React.useState(false);
 
-	const {email, password} = useSelector((state: any) => {
+	const {email, password, platenumber} = useSelector((state: RootState) => {
 		return state.auth;
 	});
 
@@ -60,7 +62,7 @@ const SignIn: React.FC<SignInProps> = (props) => {
 
 		setIsLoading(true);
 
-		let data = {email, password};
+		let data = {email, password, platenumber};
 
 		let response = await signIn(data);
 
@@ -113,13 +115,15 @@ const SignIn: React.FC<SignInProps> = (props) => {
 		return;
 	};
 
-	const handleForgotPassword = () => {
+	const handlePlateNumber = (platenumber: string): void => {
+		dispatch(platenumberReducer(platenumber));
+	};
+
+	const handleForgotPassword = (): void => {
 		dispatch(emailReducer(""));
 		dispatch(passwordReducer(""));
 
 		props.navigation.navigate("ForgotPassword");
-
-		return;
 	};
 
 	return (
@@ -130,6 +134,12 @@ const SignIn: React.FC<SignInProps> = (props) => {
 				<HeadingS>Sign in to your account</HeadingS>
 
 				<ErrorMsg />
+
+				<InputText
+					label="Plate number"
+					value={platenumber}
+					onChangeText={handlePlateNumber}
+				/>
 
 				<InputText label="email" value={email} onChangeText={handleEmail} />
 
@@ -182,4 +192,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default React.memo(SignIn);
+export default React.memo(SignInDriver);
