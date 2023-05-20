@@ -8,17 +8,36 @@ import {useDispatch, useSelector} from "react-redux";
 import {vehicleDetailsVisibleReducer} from "../../Redux/Features/Vehicle/VehicleModalSlice";
 import {RootState} from "../../Redux";
 import {VehicleDetails} from "./VehicleDetails";
+import {getVehicle} from "../../Api/Services/Backend/Vehicle";
+import {
+	VehicleState,
+	saveVehicleReducer,
+} from "../../Redux/Features/Vehicle/VehicleSlice";
 
-const Vehicle: React.FC = () => {
+interface VehicleProps {
+	plateNumber: string;
+	model: string;
+	make: string;
+	route?: string;
+	id: number;
+}
+
+const Vehicle: React.FC<VehicleProps> = (props) => {
 	const dispatch = useDispatch();
 
 	const visible: boolean = useSelector((state: RootState) => {
 		return state.vehicleModal.vehicleDetailsVisible;
 	});
 
-	const {} = useSelector;
+	const {authToken}: {authToken: string} = useSelector((state: RootState) => {
+		return state.auth;
+	});
 
-	const handleVehicleDetails = (): void => {
+	const handleVehicleDetails = async (): Promise<void> => {
+		let response: VehicleState = await getVehicle(authToken, props.id);
+
+		dispatch(saveVehicleReducer({...response}));
+
 		dispatch(vehicleDetailsVisibleReducer());
 	};
 
@@ -32,12 +51,14 @@ const Vehicle: React.FC = () => {
 						</View>
 
 						<View style={styles.detailsContainer}>
-							<HeadingS style={styles.title}>T 128 AZD</HeadingS>
-							<Body style={styles.text}>Scania X360p</Body>
+							<HeadingS style={styles.title}>{props.plateNumber}</HeadingS>
+							<Body style={styles.text}>
+								{props.make} {props.model}
+							</Body>
 
 							<View style={styles.routeContainer}>
 								<FontAwesome5 name="route" size={20} color={Color.primary} />
-								<Body style={styles.routeText}>From Dar To iringa</Body>
+								<Body style={styles.routeText}>Not on route</Body>
 							</View>
 						</View>
 					</View>

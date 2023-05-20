@@ -1,10 +1,13 @@
 import React from "react";
-import {ScrollView, StyleSheet, Modal} from "react-native";
+import {ScrollView, StyleSheet} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
-import {registerVehicleVisibleReducer} from "../../Redux/Features/Vehicle/VehicleModalSlice";
+import {
+	editVehicleVisibleReducer,
+	registerVehicleVisibleReducer,
+} from "../../Redux/Features/Vehicle/VehicleModalSlice";
 import {InputText} from "../../Components/Inputs";
 import {ButtonL} from "../../Components/Buttons";
-import {ModalNavBack, ModalNavBackWhite} from "../../Components/ModalNavBack";
+import {ModalNavBack} from "../../Components/ModalNavBack";
 import {RootState} from "../../Redux";
 import {
 	VehicleState,
@@ -19,21 +22,20 @@ import {
 	plateNumberReducer,
 } from "../../Redux/Features/Vehicle/VehicleSlice";
 import {errorMsg} from "../../Redux/Components/ErrorMsgSlice";
-import {postVehicle} from "../../Api/Services/Backend/Vehicle";
+import {updateVehicle} from "../../Api/Services/Backend/Vehicle";
 import Loader from "../../Components/Loader";
-import {EditVehicle} from "./EditVehicle";
 
-const RegisterVehicle: React.FC = () => {
+const EditVehicle: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
 	const handleBack = (): void => {
-		dispatch(clearVehicleReducer());
-		dispatch(registerVehicleVisibleReducer());
+		dispatch(editVehicleVisibleReducer());
 	};
 
 	const {
+		id,
 		make,
 		model,
 		modelYear,
@@ -82,7 +84,7 @@ const RegisterVehicle: React.FC = () => {
 		dispatch(engineTypeReducer(engineType));
 	};
 
-	const handleRegisterVehicle = async () => {
+	const handleEdit = async () => {
 		if (
 			!make ||
 			!model ||
@@ -100,26 +102,16 @@ const RegisterVehicle: React.FC = () => {
 
 		setIsLoading(true);
 
-		let response = await postVehicle(
-			{
-				make,
-				model,
-				modelYear,
-				bodyType,
-				fuelType,
-				chassisNumber,
-				plateNumber,
-				engineType,
-			},
-			authToken
-		);
-
-		if (response.statusCode === 409) {
-			dispatch(errorMsg(response.message));
-
-			setIsLoading(false);
-			return;
-		}
+		let response = await updateVehicle(authToken, id, {
+			make,
+			model,
+			modelYear,
+			bodyType,
+			fuelType,
+			chassisNumber,
+			plateNumber,
+			engineType,
+		});
 
 		setIsLoading(false);
 
@@ -137,7 +129,7 @@ const RegisterVehicle: React.FC = () => {
 
 	return (
 		<>
-			<ModalNavBack title="Register vehicle" handleBack={handleBack} />
+			<ModalNavBack title="Edit vehicle" handleBack={handleBack} />
 
 			<ScrollView contentContainerStyle={styles.container}>
 				<InputText
@@ -179,7 +171,7 @@ const RegisterVehicle: React.FC = () => {
 					onChangeText={handlePlateNumber}
 				/>
 
-				<ButtonL action="Register" onPress={handleRegisterVehicle} />
+				<ButtonL action="Update" onPress={handleEdit} />
 			</ScrollView>
 		</>
 	);
@@ -200,4 +192,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export {RegisterVehicle};
+export {EditVehicle};

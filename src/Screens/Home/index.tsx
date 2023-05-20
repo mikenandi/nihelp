@@ -1,5 +1,5 @@
 import React from "react";
-import {StyleSheet, Modal, View} from "react-native";
+import {StyleSheet, Modal, View, FlatList} from "react-native";
 import Screen from "../../Layouts/Screen";
 import Color from "../../Components/Color";
 import {useDispatch, useSelector} from "react-redux";
@@ -24,6 +24,21 @@ import {
 	ownerProfileReducer,
 } from "../../Redux/Features/Auth/AuthSlice";
 import Loader from "../../Components/Loader";
+import {getVehicles} from "../../Api/Services/Backend/Vehicle";
+
+interface IVehicle {
+	id: number;
+	make: string;
+	bodyType: string;
+	model: string;
+	chassisNumber: string;
+	modelYear: string;
+	createdAt: string;
+	updatedAt: string;
+	fuelType: string;
+	plateNumber: string;
+	userId: number;
+}
 
 const Home: React.FC = () => {
 	const dispatch = useDispatch();
@@ -34,13 +49,23 @@ const Home: React.FC = () => {
 		return state.auth;
 	});
 
+	const [vehicles, setVehicles] = React.useState<IVehicle[]>([]);
+
+	const visible: boolean = useSelector((state: RootState) => {
+		return state.vehicleModal.registerVehicleVisible;
+	});
+
 	React.useEffect(() => {
 		(async () => {
 			try {
 				setIsLoading(true);
 				let response = await getUserProfile({authToken});
 
-				if (response.statusCode === "401") {
+				let vehicles = await getVehicles(authToken);
+
+				setVehicles(vehicles);
+
+				if (response.statusCode === 401) {
 					await SecureStorage.deleteItemAsync("authToken");
 
 					dispatch(logOutReducer());
@@ -86,11 +111,7 @@ const Home: React.FC = () => {
 				return;
 			}
 		})();
-	}, []);
-
-	const visible: boolean = useSelector((state: RootState) => {
-		return state.vehicleModal.registerVehicleVisible;
-	});
+	}, [visible]);
 
 	const breakdownVisible: boolean = useSelector((state: RootState) => {
 		return state.vehicleModal.breakdownReportVisible;
@@ -104,12 +125,24 @@ const Home: React.FC = () => {
 		dispatch(breakdownReportVisibleReducer());
 	};
 
-	if (isLoading)
+	const renderItem = ({item}: {item: IVehicle}) => {
+		return (
+			<Vehicle
+				id={item.id}
+				plateNumber={item.plateNumber}
+				make={item.make}
+				model={item.model}
+			/>
+		);
+	};
+
+	if (isLoading) {
 		return (
 			<>
 				<Loader />
 			</>
 		);
+	}
 
 	return (
 		<>
@@ -117,11 +150,17 @@ const Home: React.FC = () => {
 				<Topbar title="Hi , Neema" />
 
 				<View style={styles.container}>
-					<Vehicle />
-					<AlertTitle />
+					{isOwner && (
+						<FlatList
+							data={vehicles}
+							keyExtractor={(item) => item.id.toString()}
+							renderItem={renderItem}
+						/>
+					)}
 
-					<Alert />
-					<Alert />
+					{!isOwner && <AlertTitle />}
+
+					{!isOwner && <Alert />}
 				</View>
 
 				{isOwner && (

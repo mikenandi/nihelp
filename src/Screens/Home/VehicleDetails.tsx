@@ -5,18 +5,74 @@ import {
 	MaterialIcons,
 } from "@expo/vector-icons";
 import React from "react";
-import {View, StyleSheet, ScrollView} from "react-native";
+import {
+	View,
+	StyleSheet,
+	ScrollView,
+	TouchableOpacity,
+	Modal,
+} from "react-native";
 import Color from "../../Components/Color";
 import {HeadingS} from "../../Components/Typography";
-import {ModalNavBack, ModalNavBackWhite} from "../../Components/ModalNavBack";
-import {useDispatch} from "react-redux";
-import {vehicleDetailsVisibleReducer} from "../../Redux/Features/Vehicle/VehicleModalSlice";
+import {ModalNavBack} from "../../Components/ModalNavBack";
+import {useDispatch, useSelector} from "react-redux";
+import {
+	editVehicleVisibleReducer,
+	vehicleDetailsVisibleReducer,
+} from "../../Redux/Features/Vehicle/VehicleModalSlice";
+import {
+	VehicleState,
+	clearVehicleReducer,
+} from "../../Redux/Features/Vehicle/VehicleSlice";
+import {RootState} from "../../Redux";
+import {deleteVehicle} from "../../Api/Services/Backend/Vehicle";
+import {infoMsg} from "../../Redux/Components/ErrorMsgSlice";
+import {EditVehicle} from "./EditVehicle";
+import {editBirthdateVisibleReducer} from "../../Redux/Features/Account/EditProfileModalSlice";
 
 const VehicleDetails: React.FC = () => {
 	const dispatch = useDispatch();
 
+	const visible: boolean = useSelector((state: RootState) => {
+		return state.vehicleModal.editVehicleVisible;
+	});
+
+	const {
+		id,
+		make,
+		model,
+		modelYear,
+		bodyType,
+		fuelType,
+		chassisNumber,
+		plateNumber,
+		engineType,
+		createdAt,
+		updatedAt,
+	}: VehicleState = useSelector((state: RootState) => {
+		return state.vehicle;
+	});
+
+	const authToken: string = useSelector((state: RootState) => {
+		return state.auth.authToken;
+	});
+
+	const handleEdit = (): void => {
+		dispatch(editVehicleVisibleReducer());
+	};
+
 	const handleBack = (): void => {
+		dispatch(clearVehicleReducer());
+
 		dispatch(vehicleDetailsVisibleReducer());
+	};
+
+	const handleDelete = async (): Promise<void> => {
+		let response = await deleteVehicle(authToken, id);
+
+		handleBack();
+
+		dispatch(infoMsg("successfully deleted"));
 	};
 
 	return (
@@ -29,7 +85,7 @@ const VehicleDetails: React.FC = () => {
 						<View style={styles.iconContainer}>
 							<Fontisto name="truck" size={30} color={Color.primary} />
 						</View>
-						<HeadingS style={styles.title}>Plate no: T 128 AZD</HeadingS>
+						<HeadingS style={styles.title}>Plate no: {plateNumber}</HeadingS>
 					</View>
 
 					<View style={styles.detailContainer}>
@@ -40,7 +96,7 @@ const VehicleDetails: React.FC = () => {
 								color={Color.primary}
 							/>
 						</View>
-						<HeadingS style={styles.title}>Make: Toyoya</HeadingS>
+						<HeadingS style={styles.title}>Make: {make}</HeadingS>
 					</View>
 
 					<View style={styles.detailContainer}>
@@ -52,7 +108,7 @@ const VehicleDetails: React.FC = () => {
 							/>
 						</View>
 
-						<HeadingS style={styles.title}>Model: Corola</HeadingS>
+						<HeadingS style={styles.title}>Model: {model}</HeadingS>
 					</View>
 
 					<View style={styles.detailContainer}>
@@ -63,7 +119,7 @@ const VehicleDetails: React.FC = () => {
 								color={Color.primary}
 							/>
 						</View>
-						<HeadingS style={styles.title}>Model Year: 2023</HeadingS>
+						<HeadingS style={styles.title}>Model Year: {modelYear}</HeadingS>
 					</View>
 
 					<View style={styles.detailContainer}>
@@ -74,7 +130,7 @@ const VehicleDetails: React.FC = () => {
 								color={Color.primary}
 							/>
 						</View>
-						<HeadingS style={styles.title}>Chasis: uv/123..ldo/12</HeadingS>
+						<HeadingS style={styles.title}>Chasis: {chassisNumber}</HeadingS>
 					</View>
 
 					<View style={styles.detailContainer}>
@@ -85,7 +141,7 @@ const VehicleDetails: React.FC = () => {
 								color={Color.primary}
 							/>
 						</View>
-						<HeadingS style={styles.title}>Fuel: Petrol</HeadingS>
+						<HeadingS style={styles.title}>Fuel: {fuelType}</HeadingS>
 					</View>
 
 					<View style={styles.detailContainer}>
@@ -96,7 +152,18 @@ const VehicleDetails: React.FC = () => {
 								color={Color.primary}
 							/>
 						</View>
-						<HeadingS style={styles.title}>Engine Type: 2023</HeadingS>
+						<HeadingS style={styles.title}>Engine Type: {engineType}</HeadingS>
+					</View>
+
+					<View style={styles.detailContainer}>
+						<View style={styles.iconContainer}>
+							<MaterialCommunityIcons
+								name="truck"
+								size={30}
+								color={Color.primary}
+							/>
+						</View>
+						<HeadingS style={styles.title}>Body Type: {bodyType}</HeadingS>
 					</View>
 
 					<View style={styles.routeContainer}>
@@ -105,6 +172,32 @@ const VehicleDetails: React.FC = () => {
 					</View>
 				</View>
 			</ScrollView>
+
+			<View style={styles.bottomContainer}>
+				<TouchableOpacity onPress={handleEdit} activeOpacity={0.8}>
+					<View style={styles.editContainer}>
+						<MaterialCommunityIcons
+							name="content-save-edit"
+							size={24}
+							color={Color.dimblack}
+						/>
+					</View>
+				</TouchableOpacity>
+
+				<TouchableOpacity onPress={handleDelete} activeOpacity={0.8}>
+					<View style={styles.deleteContainer}>
+						<MaterialCommunityIcons
+							name="delete"
+							size={24}
+							color={Color.dimblack}
+						/>
+					</View>
+				</TouchableOpacity>
+			</View>
+
+			<Modal visible={visible} animationType="fade">
+				<EditVehicle />
+			</Modal>
 		</>
 	);
 };
@@ -165,6 +258,22 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		marginTop: 10,
+	},
+	bottomContainer: {
+		flexDirection: "row",
+		marginLeft: 25,
+		marginBottom: 15,
+	},
+	editContainer: {
+		backgroundColor: Color.lightblue,
+		padding: 10,
+		borderRadius: 10,
+		marginRight: 25,
+	},
+	deleteContainer: {
+		backgroundColor: Color.lightred,
+		padding: 10,
+		borderRadius: 10,
 	},
 });
 
