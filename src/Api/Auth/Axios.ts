@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 const axios = Axios.create({
-	baseURL: "https://vbas-app-backend.onrender.com",
+	baseURL: "https://breakdown-alert.onrender.com",
 	timeout: 5000,
 });
 

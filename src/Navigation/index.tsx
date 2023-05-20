@@ -10,7 +10,7 @@ import RecoverPassword from "../Features/Auth/RecoverPassword";
 import Welcome from "../Features/Auth/Welcome";
 import {useDispatch, useSelector} from "react-redux";
 import Loader from "../Components/Loader";
-import {logInReducer, signinReducer} from "../Redux/Features/Auth/AuthSlice";
+import {logInReducer} from "../Redux/Features/Auth/AuthSlice";
 import {useFonts} from "expo-font";
 import * as Notifications from "expo-notifications";
 import SignInDriver from "../Features/Auth/SignInDriver";
@@ -63,11 +63,8 @@ const Auth: React.FC = () => {
 					dispatch(
 						logInReducer({
 							authToken: savedToken,
-							userId: savedUserId,
 						})
 					);
-
-					dispatch(signinReducer());
 
 					setIsLoading(false);
 
@@ -97,7 +94,7 @@ const Auth: React.FC = () => {
 
 	return (
 		<Stack.Navigator initialRouteName="Welcome">
-			{true ? (
+			{isLogedOut ? (
 				<>
 					<Stack.Screen
 						name="Welcome"

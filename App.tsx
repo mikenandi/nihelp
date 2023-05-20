@@ -7,7 +7,7 @@ import Navigation from "./src/Navigation";
 
 LogBox.ignoreAllLogs();
 
-function App() {
+const App: React.FC = () => {
 	return (
 		<Provider store={store}>
 			<NavigationContainer>
@@ -15,6 +15,6 @@ function App() {
 			</NavigationContainer>
 		</Provider>
 	);
-}
+};
 
 export default App;

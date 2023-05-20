@@ -1,9 +1,9 @@
-import React, {useState} from "react";
-import {StyleSheet, Modal, FlatList, View, Image} from "react-native";
+import React from "react";
+import {StyleSheet, Modal, View} from "react-native";
 import Screen from "../../Layouts/Screen";
 import Color from "../../Components/Color";
 import {useDispatch, useSelector} from "react-redux";
-import {AntDesign, Feather, FontAwesome5} from "@expo/vector-icons";
+import {AntDesign, FontAwesome5} from "@expo/vector-icons";
 import {FAB} from "../../Components/FAB";
 import Topbar from "../../Layouts/Topbar";
 import {Vehicle} from "./Vehicle";
@@ -16,9 +16,77 @@ import {
 import {AlertTitle} from "./AlertTitle";
 import {Alert} from "./Alert";
 import {ReportBreakdown} from "../../Features/ReportBreakdown";
+import {getUserProfile} from "../../Api/Services/Backend/Profile";
+import * as SecureStorage from "expo-secure-store";
+import {
+	driverProfileReducer,
+	logOutReducer,
+	ownerProfileReducer,
+} from "../../Redux/Features/Auth/AuthSlice";
+import Loader from "../../Components/Loader";
 
 const Home: React.FC = () => {
 	const dispatch = useDispatch();
+
+	const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+	const {authToken, isOwner} = useSelector((state: RootState) => {
+		return state.auth;
+	});
+
+	React.useEffect(() => {
+		(async () => {
+			try {
+				setIsLoading(true);
+				let response = await getUserProfile({authToken});
+
+				if (response.statusCode === "401") {
+					await SecureStorage.deleteItemAsync("authToken");
+
+					dispatch(logOutReducer());
+
+					return;
+				}
+
+				if (response.isOwner) {
+					dispatch(
+						ownerProfileReducer({
+							name: response.name,
+							email: response.email,
+							phoneNumber: response.phoneNumber,
+							vehicles: 12,
+							activeRoutes: 3,
+							reportedBreakdowns: 2,
+							isOwner: response.isOwner,
+						})
+					);
+
+					setIsLoading(false);
+
+					return;
+				}
+
+				dispatch(
+					driverProfileReducer({
+						name: response.name,
+						email: response.email,
+						plateNumber: response.plateNumber,
+						licenseNo: response.licenseNo,
+						phoneNumber: response.phoneNumber,
+						isOwner: response.isOwner,
+					})
+				);
+
+				setIsLoading(false);
+
+				return;
+			} catch (error) {
+				console.log(error);
+
+				return;
+			}
+		})();
+	}, []);
 
 	const visible: boolean = useSelector((state: RootState) => {
 		return state.vehicleModal.registerVehicleVisible;
@@ -36,6 +104,13 @@ const Home: React.FC = () => {
 		dispatch(breakdownReportVisibleReducer());
 	};
 
+	if (isLoading)
+		return (
+			<>
+				<Loader />
+			</>
+		);
+
 	return (
 		<>
 			<Screen>
@@ -49,19 +124,21 @@ const Home: React.FC = () => {
 					<Alert />
 				</View>
 
-				{false && (
+				{isOwner && (
 					<FAB onPress={handleRegisterVehicle}>
 						<AntDesign name="plus" size={24} color="black" />
 					</FAB>
 				)}
 
-				<FAB onPress={handleBreakdownReport}>
-					<FontAwesome5
-						name="exclamation-triangle"
-						size={24}
-						color={Color.warning}
-					/>
-				</FAB>
+				{!isOwner && (
+					<FAB onPress={handleBreakdownReport}>
+						<FontAwesome5
+							name="exclamation-triangle"
+							size={24}
+							color={Color.warning}
+						/>
+					</FAB>
+				)}
 			</Screen>
 
 			<Modal visible={visible} animationType="fade">

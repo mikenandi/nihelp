@@ -16,6 +16,8 @@ const Vehicle: React.FC = () => {
 		return state.vehicleModal.vehicleDetailsVisible;
 	});
 
+	const {} = useSelector;
+
 	const handleVehicleDetails = (): void => {
 		dispatch(vehicleDetailsVisibleReducer());
 	};

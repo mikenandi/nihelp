@@ -1,6 +1,6 @@
 import React from "react";
 import {StyleSheet, View, Modal} from "react-native";
-import {HeadingM, Body, HeadingS} from "../../Components/Typography";
+import {Body, HeadingS} from "../../Components/Typography";
 import AuthScreen from "../../Layouts/AuthScreen";
 import {InputText, InputPassword} from "../../Components/Inputs";
 import {ButtonL, TextButton} from "../../Components/Buttons";
@@ -12,9 +12,9 @@ import {
 	logInReducer,
 	passwordReducer,
 	emailReducer,
+	cleanSigninDataReducer,
 } from "../../Redux/Features/Auth/AuthSlice";
 import * as SecureStore from "expo-secure-store";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loader from "../../Components/Loader";
 import {NavigationProp} from "@react-navigation/native";
 
@@ -53,7 +53,7 @@ const SignIn: React.FC<SignInProps> = (props) => {
 		}
 
 		if (password.length < 6) {
-			dispatch(errorMsg("password should have altleast 6 characters"));
+			dispatch(errorMsg("password must have 6 charracters or more"));
 
 			return;
 		}
@@ -62,23 +62,17 @@ const SignIn: React.FC<SignInProps> = (props) => {
 
 		let data = {email, password};
 
-		let response = await signIn(data);
+		let response = await signIn({...data});
 
-		if (response.success) {
-			await SecureStore.setItemAsync("authToken", response.data.auth_token);
-
-			await AsyncStorage.setItem("userId", response.data.user_id);
+		if (response.access_token) {
+			await SecureStore.setItemAsync("authToken", response.access_token);
 
 			dispatch(
 				logInReducer({
-					userId: response.data.user_id,
-					authToken: response.data.auth_token,
+					authToken: response.access_token,
 				})
 			);
 
-			// dispatch(ownerReducer(""));
-
-			props.navigation.navigate("Destination");
 			setIsLoading(false);
 
 			return;
@@ -86,38 +80,16 @@ const SignIn: React.FC<SignInProps> = (props) => {
 
 		setIsLoading(false);
 
-		// console.log(response);
-		if (response.code === "not_found") {
-			dispatch(errorMsg(response.message));
-
-			return;
-		}
-
-		if (response.code === "incorrect") {
-			dispatch(errorMsg(response.message));
-
-			return;
-		}
-
-		dispatch(errorMsg("Failed to sign in"));
+		dispatch(errorMsg(response.message));
 
 		return;
 	};
 
 	// Navigate to sign up screen
-	const handleSignUp = () => {
-		dispatch(passwordReducer(""));
+	const handleSignUp = (): void => {
+		dispatch(cleanSigninDataReducer());
 
 		props.navigation.navigate("SignUp");
-
-		return;
-	};
-
-	const handleForgotPassword = () => {
-		dispatch(emailReducer(""));
-		dispatch(passwordReducer(""));
-
-		props.navigation.navigate("ForgotPassword");
 
 		return;
 	};

@@ -1,10 +1,12 @@
 import * as React from "react";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {
+	AntDesign,
 	Entypo,
 	FontAwesome5,
 	Ionicons,
 	MaterialCommunityIcons,
+	MaterialIcons,
 } from "@expo/vector-icons";
 import Home from "../Screens/Home";
 import Profile from "../Screens/Profile";
@@ -40,7 +42,9 @@ function AppTabs() {
 						tabBarLabel: "Home",
 						title: "",
 						tabBarIcon: ({color, size}) => (
-							<MaterialCommunityIcons name="home" size={size} color={color} />
+							// <MaterialIcons name="dashboard" size={size} color={color} />
+
+							<AntDesign name="appstore1" size={size} color={color} />
 						),
 					}}
 				/>

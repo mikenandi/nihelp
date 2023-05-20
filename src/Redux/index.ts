@@ -16,6 +16,7 @@ import LogoutModalSlice from "./Features/Logout/LogoutModalSlice";
 import HelpTypeSlice from "./Features/ReportBreakdown/ReportBreakdownSlice";
 import VehicleModalSlice from "./Features/Vehicle/VehicleModalSlice";
 import ReportBreakdownSlice from "./Features/ReportBreakdown/ReportBreakdownSlice";
+import VehicleSlice from "./Features/Vehicle/VehicleSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -36,6 +37,7 @@ export const store = configureStore({
 		logout: LogoutModalSlice,
 		helpType: HelpTypeSlice,
 		vehicleModal: VehicleModalSlice,
+		vehicle: VehicleSlice,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({

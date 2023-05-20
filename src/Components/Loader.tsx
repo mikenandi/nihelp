@@ -4,11 +4,11 @@ import {StatusBar, View, StyleSheet, ActivityIndicator} from "react-native";
 import {HeadingL} from "./Typography";
 import Color from "./Color";
 
-function Loader(props: any) {
+const Loader: React.FC = (props) => {
 	return (
 		<>
 			<View style={styles.screen}>
-				<StatusBar backgroundColor='white' />
+				<StatusBar backgroundColor="white" />
 				<LottieView
 					source={require("../../assets/lotties/99274-loading.json")}
 					autoPlay
@@ -17,24 +17,23 @@ function Loader(props: any) {
 			</View>
 		</>
 	);
-}
+};
 
-// @ts-expect-error TS(7006): Parameter 'props' implicitly has an 'any' type.
-function Loading(props) {
+const Loading: React.FC = (props) => {
 	return (
 		<>
 			<View style={styles.transparentContainer} />
 			<View style={styles.container}>
 				<ActivityIndicator
 					animating={true}
-					size='large'
+					size="large"
 					color={Color.primary}
 					style={styles.activityIndicator}
 				/>
 			</View>
 		</>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	screen: {

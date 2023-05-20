@@ -1,11 +1,16 @@
 import React from "react";
-import {StyleSheet, ScrollView, View, TouchableOpacity} from "react-native";
+import {
+	StyleSheet,
+	ScrollView,
+	View,
+	TouchableOpacity,
+	Modal,
+} from "react-native";
 import Screen from "../../Layouts/Screen";
 import {useDispatch, useSelector} from "react-redux";
 import {Body, HeadingS} from "../../Components/Typography";
 import {
 	MaterialCommunityIcons,
-	Fontisto,
 	Octicons,
 	Entypo,
 	FontAwesome,
@@ -15,50 +20,45 @@ import {
 import Color from "../../Components/Color";
 import {ProfileDetail} from "./ProfileDetail";
 import Topbar from "../../Layouts/Topbar";
-import {logOutReducer} from "../../Redux/Features/Auth/AuthSlice";
-import * as SecureStore from "expo-secure-store";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {getUserProfile} from "../../Api/Services/Backend/Profile";
 import {RootState} from "../../Redux";
+import {LogoutModal} from "../../Features/Logout";
+import {logoutVisibleReducer} from "../../Redux/Features/Logout/LogoutModalSlice";
+import * as SecureStorage from "expo-secure-store";
+import {
+	driverProfileReducer,
+	logOutReducer,
+	ownerProfileReducer,
+} from "../../Redux/Features/Auth/AuthSlice";
 
 interface ProfileProps {}
 
 const Profile: React.FC<ProfileProps> = (props) => {
 	const dispatch = useDispatch();
 
-	const {userId, authToken} = useSelector((state: any) => {
+	const {
+		name,
+		email,
+		plateNumber,
+		phoneNumber,
+		isOwner,
+		licenseNo,
+		vehicles,
+		activeRoutes,
+		reportedBreakdowns,
+	} = useSelector((state: RootState) => {
 		return state.auth;
 	});
 
-	const {} = useSelector((state: RootState) => {
-		return state.auth;
+	const visible: boolean = useSelector((state: RootState) => {
+		return state.logout.logoutVisible;
 	});
 
 	const handleLogout = async () => {
-		/* Delete token and userId */
-		await SecureStore.deleteItemAsync("authToken");
-		await AsyncStorage.removeItem("userId");
-
-		dispatch(logOutReducer());
+		dispatch(logoutVisibleReducer());
 
 		return;
 	};
-
-	React.useEffect(() => {
-		(async () => {
-			try {
-				let data = {userId, authToken};
-
-				let response = await getUserProfile(data);
-
-				return;
-			} catch (error) {
-				console.log(error);
-
-				return;
-			}
-		})();
-	}, []);
 
 	return (
 		<>
@@ -73,7 +73,9 @@ const Profile: React.FC<ProfileProps> = (props) => {
 								<Ionicons name="person" size={60} color={Color.primary} />
 							</View>
 							<View style={styles.plate}>
-								<HeadingS>Person / Company</HeadingS>
+								<HeadingS>
+									{isOwner ? "Owner Account" : "Driver Account"}
+								</HeadingS>
 							</View>
 
 							<View style={styles.abInfo}>
@@ -85,11 +87,11 @@ const Profile: React.FC<ProfileProps> = (props) => {
 							</View>
 						</View>
 
-						<ProfileDetail label="Owner" value="NIT Transporters">
+						<ProfileDetail label="Owner" value={name}>
 							<Octicons name="organization" size={24} color={Color.primary} />
 						</ProfileDetail>
 
-						<ProfileDetail label="Email" value={`michaelnandi05@gmail.com`}>
+						<ProfileDetail label="Email" value={email}>
 							<MaterialCommunityIcons
 								name="email-outline"
 								size={30}
@@ -97,7 +99,15 @@ const Profile: React.FC<ProfileProps> = (props) => {
 							/>
 						</ProfileDetail>
 
-						<ProfileDetail label="Vehicles" value="1234">
+						<ProfileDetail label="Mobile" value={phoneNumber}>
+							<MaterialCommunityIcons
+								name="phone-outline"
+								size={30}
+								color={Color.primary}
+							/>
+						</ProfileDetail>
+
+						<ProfileDetail label="Vehicles" value={vehicles.toString()}>
 							<FontAwesome
 								name="drivers-license-o"
 								size={24}
@@ -105,11 +115,15 @@ const Profile: React.FC<ProfileProps> = (props) => {
 							/>
 						</ProfileDetail>
 
-						<ProfileDetail label="Active Routes" value="24">
+						<ProfileDetail
+							label="Active Routes"
+							value={activeRoutes.toString()}>
 							<FontAwesome5 name="route" size={26} color={Color.primary} />
 						</ProfileDetail>
 
-						<ProfileDetail label="Reported Beakdowns" value="12">
+						<ProfileDetail
+							label="Reported Beakdowns"
+							value={reportedBreakdowns.toString()}>
 							<MaterialCommunityIcons
 								name="tow-truck"
 								size={28}
@@ -126,6 +140,10 @@ const Profile: React.FC<ProfileProps> = (props) => {
 					</View>
 				</ScrollView>
 			</Screen>
+
+			<Modal visible={visible} animationType="fade" transparent>
+				<LogoutModal />
+			</Modal>
 		</>
 	);
 };
@@ -173,7 +191,7 @@ const styles = StyleSheet.create({
 		bottom: -20,
 	},
 	logoutContainer: {
-		paddingHorizontal: 20,
+		paddingHorizontal: 30,
 		borderTopWidth: 6,
 		borderTopColor: Color.lightgray,
 		marginTop: 15,
