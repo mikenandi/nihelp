@@ -16,6 +16,7 @@ import {
 	FontAwesome,
 	FontAwesome5,
 	Ionicons,
+	Feather,
 } from "@expo/vector-icons";
 import Color from "../../Components/Color";
 import {ProfileDetail} from "./ProfileDetail";
@@ -24,17 +25,26 @@ import {getUserProfile} from "../../Api/Services/Backend/Profile";
 import {RootState} from "../../Redux";
 import {LogoutModal} from "../../Features/Logout";
 import {logoutVisibleReducer} from "../../Redux/Features/Logout/LogoutModalSlice";
-import * as SecureStorage from "expo-secure-store";
+import {EditProfile} from "./EditProfile";
 import {
-	driverProfileReducer,
-	logOutReducer,
-	ownerProfileReducer,
-} from "../../Redux/Features/Auth/AuthSlice";
+	privacyProfileVisibleReducer,
+	updateProfileVisibleReducer,
+} from "../../Redux/Features/Profile/ProfileModal";
+import {Privacy} from "./Privacy";
+import {privacyPolicyVisibleReducer} from "../../Redux/Features/Help/HelpModalSlice";
 
 interface ProfileProps {}
 
 const Profile: React.FC<ProfileProps> = (props) => {
 	const dispatch = useDispatch();
+
+	const updateVisible: boolean = useSelector((state: RootState) => {
+		return state.profileModal.updateProfileVisible;
+	});
+
+	const privacyVisible: boolean = useSelector((state: RootState) => {
+		return state.profileModal.privacyProfileVisible;
+	});
 
 	const {
 		name,
@@ -49,6 +59,14 @@ const Profile: React.FC<ProfileProps> = (props) => {
 	} = useSelector((state: RootState) => {
 		return state.auth;
 	});
+
+	const handleEdit = (): void => {
+		dispatch(updateProfileVisibleReducer());
+	};
+
+	const handlePrivacy = (): void => {
+		dispatch(privacyProfileVisibleReducer());
+	};
 
 	const visible: boolean = useSelector((state: RootState) => {
 		return state.logout.logoutVisible;
@@ -70,12 +88,16 @@ const Profile: React.FC<ProfileProps> = (props) => {
 					<View style={styles.container}>
 						<View style={styles.plateNumberContainer}>
 							<View style={styles.carAvatar}>
-								<Ionicons name="person" size={60} color={Color.primary} />
+								<Ionicons name="person" size={60} color={Color.grey} />
 							</View>
 							<View style={styles.plate}>
 								<HeadingS>
 									{isOwner ? "Owner Account" : "Driver Account"}
 								</HeadingS>
+
+								<TouchableOpacity activeOpacity={0.9} onPress={handleEdit}>
+									<Body style={styles.editText}>Edit Profile</Body>
+								</TouchableOpacity>
 							</View>
 
 							<View style={styles.abInfo}>
@@ -115,21 +137,11 @@ const Profile: React.FC<ProfileProps> = (props) => {
 							/>
 						</ProfileDetail>
 
-						<ProfileDetail
-							label="Active Routes"
-							value={activeRoutes.toString()}>
-							<FontAwesome5 name="route" size={26} color={Color.primary} />
-						</ProfileDetail>
-
-						<ProfileDetail
-							label="Reported Beakdowns"
-							value={reportedBreakdowns.toString()}>
-							<MaterialCommunityIcons
-								name="tow-truck"
-								size={28}
-								color={Color.primary}
-							/>
-						</ProfileDetail>
+						<TouchableOpacity activeOpacity={0.85} onPress={handlePrivacy}>
+							<ProfileDetail label="Privacy" value="Password & account">
+								<Feather name="settings" size={24} color={Color.primary} />
+							</ProfileDetail>
+						</TouchableOpacity>
 
 						<TouchableOpacity onPress={handleLogout} activeOpacity={0.9}>
 							<View style={styles.logoutContainer}>
@@ -143,6 +155,14 @@ const Profile: React.FC<ProfileProps> = (props) => {
 
 			<Modal visible={visible} animationType="fade" transparent>
 				<LogoutModal />
+			</Modal>
+
+			<Modal visible={updateVisible} animationType="fade">
+				<EditProfile />
+			</Modal>
+
+			<Modal visible={privacyVisible} animationType="fade">
+				<Privacy />
 			</Modal>
 		</>
 	);
@@ -202,6 +222,10 @@ const styles = StyleSheet.create({
 	logoutText: {
 		fontWeight: "bold",
 		marginLeft: 10,
+	},
+	editText: {
+		color: Color.primary,
+		fontWeight: "bold",
 	},
 });
 
