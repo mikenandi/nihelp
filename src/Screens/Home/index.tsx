@@ -3,7 +3,12 @@ import {StyleSheet, Modal, View, FlatList} from "react-native";
 import Screen from "../../Layouts/Screen";
 import Color from "../../Components/Color";
 import {useDispatch, useSelector} from "react-redux";
-import {AntDesign, FontAwesome5} from "@expo/vector-icons";
+import {
+	AntDesign,
+	FontAwesome5,
+	Foundation,
+	MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import {FAB} from "../../Components/FAB";
 import Topbar from "../../Layouts/Topbar";
 import {Vehicle} from "./Vehicle";
@@ -24,7 +29,10 @@ import {
 	ownerProfileReducer,
 } from "../../Redux/Features/Auth/AuthSlice";
 import Loader from "../../Components/Loader";
-import {getVehicles} from "../../Api/Services/Backend/Vehicle";
+import {getVehicle, getVehicles} from "../../Api/Services/Backend/Vehicle";
+import {Body, HeadingS} from "../../Components/Typography";
+import {getRoutes} from "../../Api/Services/Backend/Route";
+import {RegisterRoute} from "./RegisterRoute";
 
 interface IVehicle {
 	id: number;
@@ -45,7 +53,7 @@ const Home: React.FC = () => {
 
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-	const {authToken, isOwner} = useSelector((state: RootState) => {
+	const {authToken, isOwner, name} = useSelector((state: RootState) => {
 		return state.auth;
 	});
 
@@ -55,49 +63,48 @@ const Home: React.FC = () => {
 		return state.vehicleModal.registerVehicleVisible;
 	});
 
-	React.useEffect(() => {
-		(async () => {
-			try {
-				setIsLoading(true);
-				let response = await getUserProfile({authToken});
+	const createRouteVisible: boolean = useSelector((state: RootState) => {
+		return state.routeModal.createRouteVisible;
+	});
 
+	const getFirstname = (name: string): string | undefined => {
+		return name.trim().split(" ")[0];
+	};
+
+	const handleLogout = async (): Promise<void> => {
+		await SecureStorage.deleteItemAsync("authToken");
+
+		dispatch(logOutReducer());
+	};
+
+	const routeFetch = async () => {
+		let response = await getRoutes(authToken);
+
+		return response;
+	};
+
+	const userProfileFetch = async (): Promise<void> => {
+		try {
+			setIsLoading(true);
+			let response = await getUserProfile({authToken});
+
+			if (response.statusCode === 401) {
+				handleLogout();
+
+				return;
+			}
+
+			if (response.isOwner) {
 				let vehicles = await getVehicles(authToken);
 
 				setVehicles(vehicles);
 
-				if (response.statusCode === 401) {
-					await SecureStorage.deleteItemAsync("authToken");
-
-					dispatch(logOutReducer());
-
-					return;
-				}
-
-				if (response.isOwner) {
-					dispatch(
-						ownerProfileReducer({
-							name: response.name,
-							email: response.email,
-							phoneNumber: response.phoneNumber,
-							vehicles: 12,
-							activeRoutes: 3,
-							reportedBreakdowns: 2,
-							isOwner: response.isOwner,
-						})
-					);
-
-					setIsLoading(false);
-
-					return;
-				}
-
 				dispatch(
-					driverProfileReducer({
+					ownerProfileReducer({
 						name: response.name,
 						email: response.email,
-						plateNumber: response.plateNumber,
-						licenseNo: response.licenseNo,
 						phoneNumber: response.phoneNumber,
+						vehicles: vehicles.length,
 						isOwner: response.isOwner,
 					})
 				);
@@ -105,12 +112,43 @@ const Home: React.FC = () => {
 				setIsLoading(false);
 
 				return;
-			} catch (error) {
-				console.log(error);
+			}
+
+			let routes = await routeFetch();
+
+			if (routes.length === 0) {
+				await handleLogout();
 
 				return;
 			}
-		})();
+
+			let vehicle = await getVehicle(authToken, routes[0].vehicleId);
+
+			setVehicles([vehicle]);
+
+			dispatch(
+				driverProfileReducer({
+					name: response.name,
+					email: response.email,
+					plateNumber: response.plateNumber,
+					licenseNo: response.licenseNo,
+					phoneNumber: response.phoneNumber,
+					isOwner: response.isOwner,
+				})
+			);
+
+			setIsLoading(false);
+
+			return;
+		} catch (error) {
+			console.log(error);
+
+			return;
+		}
+	};
+
+	React.useEffect(() => {
+		userProfileFetch();
 	}, [visible]);
 
 	const breakdownVisible: boolean = useSelector((state: RootState) => {
@@ -147,15 +185,25 @@ const Home: React.FC = () => {
 	return (
 		<>
 			<Screen>
-				<Topbar title="Hi , Neema" />
+				<Topbar title={`Hi , ${getFirstname(name)}`} />
 
 				<View style={styles.container}>
-					{isOwner && (
-						<FlatList
-							data={vehicles}
-							keyExtractor={(item) => item.id.toString()}
-							renderItem={renderItem}
-						/>
+					<FlatList
+						data={vehicles}
+						keyExtractor={(item) => item.id.toString()}
+						renderItem={renderItem}
+						contentContainerStyle={styles.contentContainer}
+					/>
+
+					{vehicles.length === 0 && isOwner && (
+						<View style={styles.emptyContainer}>
+							<MaterialCommunityIcons
+								name="truck-plus-outline"
+								size={240}
+								color={Color.lightgray}
+							/>
+							<HeadingS style={styles.msgText}>Register vehicle</HeadingS>
+						</View>
 					)}
 
 					{!isOwner && <AlertTitle />}
@@ -165,7 +213,7 @@ const Home: React.FC = () => {
 
 				{isOwner && (
 					<FAB onPress={handleRegisterVehicle}>
-						<AntDesign name="plus" size={24} color="black" />
+						<Foundation name="plus" size={30} color={Color.dimblack} />
 					</FAB>
 				)}
 
@@ -186,6 +234,10 @@ const Home: React.FC = () => {
 
 			<Modal visible={breakdownVisible} animationType="fade">
 				<ReportBreakdown />
+			</Modal>
+
+			<Modal visible={createRouteVisible} animationType="fade">
+				<RegisterRoute />
 			</Modal>
 		</>
 	);
@@ -217,6 +269,18 @@ const styles = StyleSheet.create({
 		backgroundColor: Color.white,
 		top: 20,
 		borderRadius: 100,
+	},
+	emptyContainer: {
+		alignItems: "center",
+		justifyContent: "center",
+		marginTop: 20,
+	},
+	msgText: {
+		color: Color.dimblack,
+		fontWeight: "bold",
+	},
+	contentContainer: {
+		width: "100%",
 	},
 });
 

@@ -28,7 +28,6 @@ import {RootState} from "../../Redux";
 import {deleteVehicle} from "../../Api/Services/Backend/Vehicle";
 import {infoMsg} from "../../Redux/Components/ErrorMsgSlice";
 import {EditVehicle} from "./EditVehicle";
-import {editBirthdateVisibleReducer} from "../../Redux/Features/Account/EditProfileModalSlice";
 
 const VehicleDetails: React.FC = () => {
 	const dispatch = useDispatch();
@@ -55,6 +54,10 @@ const VehicleDetails: React.FC = () => {
 
 	const authToken: string = useSelector((state: RootState) => {
 		return state.auth.authToken;
+	});
+
+	const isOwner: boolean = useSelector((state: RootState) => {
+		return state.auth.isOwner;
 	});
 
 	const handleEdit = (): void => {
@@ -173,27 +176,29 @@ const VehicleDetails: React.FC = () => {
 				</View>
 			</ScrollView>
 
-			<View style={styles.bottomContainer}>
-				<TouchableOpacity onPress={handleEdit} activeOpacity={0.8}>
-					<View style={styles.editContainer}>
-						<MaterialCommunityIcons
-							name="content-save-edit"
-							size={24}
-							color={Color.dimblack}
-						/>
-					</View>
-				</TouchableOpacity>
+			{isOwner && (
+				<View style={styles.bottomContainer}>
+					<TouchableOpacity onPress={handleEdit} activeOpacity={0.8}>
+						<View style={styles.editContainer}>
+							<MaterialCommunityIcons
+								name="content-save-edit"
+								size={24}
+								color={Color.dimblack}
+							/>
+						</View>
+					</TouchableOpacity>
 
-				<TouchableOpacity onPress={handleDelete} activeOpacity={0.8}>
-					<View style={styles.deleteContainer}>
-						<MaterialCommunityIcons
-							name="delete"
-							size={24}
-							color={Color.dimblack}
-						/>
-					</View>
-				</TouchableOpacity>
-			</View>
+					<TouchableOpacity onPress={handleDelete} activeOpacity={0.8}>
+						<View style={styles.deleteContainer}>
+							<MaterialCommunityIcons
+								name="delete"
+								size={24}
+								color={Color.dimblack}
+							/>
+						</View>
+					</TouchableOpacity>
+				</View>
+			)}
 
 			<Modal visible={visible} animationType="fade">
 				<EditVehicle />

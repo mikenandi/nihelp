@@ -14,14 +14,12 @@ import {
 	Octicons,
 	Entypo,
 	FontAwesome,
-	FontAwesome5,
 	Ionicons,
 	Feather,
 } from "@expo/vector-icons";
 import Color from "../../Components/Color";
 import {ProfileDetail} from "./ProfileDetail";
 import Topbar from "../../Layouts/Topbar";
-import {getUserProfile} from "../../Api/Services/Backend/Profile";
 import {RootState} from "../../Redux";
 import {LogoutModal} from "../../Features/Logout";
 import {logoutVisibleReducer} from "../../Redux/Features/Logout/LogoutModalSlice";
@@ -46,19 +44,10 @@ const Profile: React.FC<ProfileProps> = (props) => {
 		return state.profileModal.privacyProfileVisible;
 	});
 
-	const {
-		name,
-		email,
-		plateNumber,
-		phoneNumber,
-		isOwner,
-		licenseNo,
-		vehicles,
-		activeRoutes,
-		reportedBreakdowns,
-	} = useSelector((state: RootState) => {
-		return state.auth;
-	});
+	const {name, email, plateNumber, phoneNumber, isOwner, licenseNo, vehicles} =
+		useSelector((state: RootState) => {
+			return state.auth;
+		});
 
 	const handleEdit = (): void => {
 		dispatch(updateProfileVisibleReducer());
@@ -129,13 +118,27 @@ const Profile: React.FC<ProfileProps> = (props) => {
 							/>
 						</ProfileDetail>
 
-						<ProfileDetail label="Vehicles" value={vehicles.toString()}>
-							<FontAwesome
-								name="drivers-license-o"
-								size={24}
-								color={Color.primary}
-							/>
-						</ProfileDetail>
+						{isOwner && (
+							<ProfileDetail
+								label="Vehicles"
+								value={`total of ${vehicles.toString()}`}>
+								<MaterialCommunityIcons
+									name="truck-fast-outline"
+									size={28}
+									color={Color.primary}
+								/>
+							</ProfileDetail>
+						)}
+
+						{!isOwner && (
+							<ProfileDetail label="License" value={licenseNo}>
+								<FontAwesome
+									name="drivers-license-o"
+									size={24}
+									color={Color.primary}
+								/>
+							</ProfileDetail>
+						)}
 
 						<TouchableOpacity activeOpacity={0.85} onPress={handlePrivacy}>
 							<ProfileDetail label="Privacy" value="Password & account">

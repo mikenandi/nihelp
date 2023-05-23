@@ -5,6 +5,7 @@ interface ModalState {
 	vehicleDetailsVisible: boolean;
 	breakdownVisible: boolean;
 	breakdownReportVisible: boolean;
+	editVehicleVisible: boolean;
 }
 
 const initialState: ModalState = {
@@ -12,6 +13,7 @@ const initialState: ModalState = {
 	vehicleDetailsVisible: false,
 	breakdownVisible: false,
 	breakdownReportVisible: false,
+	editVehicleVisible: false,
 };
 
 const modalSlice = createSlice({
@@ -30,6 +32,9 @@ const modalSlice = createSlice({
 		breakdownReportVisibleReducer: (state) => {
 			state.breakdownReportVisible = !state.breakdownReportVisible;
 		},
+		editVehicleVisibleReducer: (state) => {
+			state.editVehicleVisible = !state.editVehicleVisible;
+		},
 	},
 });
 
@@ -38,6 +43,7 @@ export const {
 	vehicleDetailsVisibleReducer,
 	breakdownVisibleReducer,
 	breakdownReportVisibleReducer,
+	editVehicleVisibleReducer,
 } = modalSlice.actions;
 
 export default modalSlice.reducer;

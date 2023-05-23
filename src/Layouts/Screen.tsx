@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Color from "../Components/Color";
 import Topbar from "./Topbar";
+import {Msg} from "../Components/Msg";
 
 function Screen(props: any) {
 	// console.log(Platform.OS);
@@ -19,6 +20,8 @@ function Screen(props: any) {
 					{/* <Topbar /> */}
 					{props.children}
 				</View>
+
+				<Msg />
 			</>
 		);
 	}

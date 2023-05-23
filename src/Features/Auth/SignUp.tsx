@@ -45,6 +45,12 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 		props.navigation.navigate("SignIn");
 	};
 
+	const handleDriverSignup = (): void => {
+		dispatch(cleanSignupDataReducer());
+
+		props.navigation.navigate("SignInDriver");
+	};
+
 	const handlePassword = (password: string): void => {
 		dispatch(passwordReducer(password));
 	};
@@ -103,6 +109,12 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 			});
 
 			if (response.access_token) {
+				if (userType !== "owner") {
+					handleDriverSignup();
+
+					return;
+				}
+
 				await SecureStore.setItemAsync("authToken", response.access_token);
 
 				dispatch(logInReducer({authToken: response.access_token}));

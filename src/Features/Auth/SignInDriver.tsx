@@ -1,6 +1,6 @@
 import React from "react";
 import {StyleSheet, View, Modal} from "react-native";
-import {HeadingM, Body, HeadingS} from "../../Components/Typography";
+import {Body, HeadingS} from "../../Components/Typography";
 import AuthScreen from "../../Layouts/AuthScreen";
 import {InputText, InputPassword} from "../../Components/Inputs";
 import {ButtonL, TextButton} from "../../Components/Buttons";
@@ -19,6 +19,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loader from "../../Components/Loader";
 import {NavigationProp} from "@react-navigation/native";
 import {RootState} from "../../Redux";
+import {getVehicles} from "../../Api/Services/Backend/Vehicle";
+import {postRoute} from "../../Api/Services/Backend/Route";
 
 interface SignInDriverProps {
 	navigation: NavigationProp<any>;
@@ -30,7 +32,7 @@ const SignInDriver: React.FC<SignInDriverProps> = (props) => {
 	// Seting states
 	const [isLoading, setIsLoading] = React.useState(false);
 
-	const {email, password, platenumber} = useSelector((state: RootState) => {
+	const {email, password, plateNumber} = useSelector((state: RootState) => {
 		return state.auth;
 	});
 
@@ -48,7 +50,7 @@ const SignInDriver: React.FC<SignInDriverProps> = (props) => {
 
 	// Handling SingIn
 	const handleSignIn = async () => {
-		if (!email || !password) {
+		if (!plateNumber || !email || !password) {
 			dispatch(errorMsg("fill all fields"));
 
 			return;
@@ -62,44 +64,36 @@ const SignInDriver: React.FC<SignInDriverProps> = (props) => {
 
 		setIsLoading(true);
 
-		let data = {email, password, platenumber};
+		let response = await signIn({email, password});
 
-		let response = await signIn(data);
+		let vehicle = await getVehicles(response.access_token, plateNumber);
 
-		if (response.success) {
-			await SecureStore.setItemAsync("authToken", response.data.auth_token);
+		if (vehicle.length === 0) {
+			dispatch(errorMsg("No vehicle with such registration"));
+			setIsLoading(false);
 
-			await AsyncStorage.setItem("userId", response.data.user_id);
+			return;
+		}
+
+		if (response.access_token && vehicle.length > 0) {
+			await postRoute(vehicle[0].id, response.access_token);
+
+			await SecureStore.setItemAsync("authToken", response.access_token);
 
 			dispatch(
 				logInReducer({
-					userId: response.data.user_id,
-					authToken: response.data.auth_token,
+					authToken: response.access_token,
 				})
 			);
 
 			// dispatch(ownerReducer(""));
 
-			props.navigation.navigate("Destination");
 			setIsLoading(false);
 
 			return;
 		}
 
 		setIsLoading(false);
-
-		// console.log(response);
-		if (response.code === "not_found") {
-			dispatch(errorMsg(response.message));
-
-			return;
-		}
-
-		if (response.code === "incorrect") {
-			dispatch(errorMsg(response.message));
-
-			return;
-		}
 
 		dispatch(errorMsg("Failed to sign in"));
 
@@ -119,25 +113,16 @@ const SignInDriver: React.FC<SignInDriverProps> = (props) => {
 		dispatch(platenumberReducer(platenumber));
 	};
 
-	const handleForgotPassword = (): void => {
-		dispatch(emailReducer(""));
-		dispatch(passwordReducer(""));
-
-		props.navigation.navigate("ForgotPassword");
-	};
-
 	return (
 		<>
 			<AuthScreen>
-				{/* <Logo /> */}
-
 				<HeadingS>Sign in to your account</HeadingS>
 
 				<ErrorMsg />
 
 				<InputText
 					label="Plate number"
-					value={platenumber}
+					value={plateNumber}
 					onChangeText={handlePlateNumber}
 				/>
 

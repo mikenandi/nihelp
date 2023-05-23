@@ -1,6 +1,7 @@
 import {PayloadAction, createSlice} from "@reduxjs/toolkit";
 
 export interface VehicleState {
+	id?: number;
 	make: string;
 	model: string;
 	modelYear: string;
@@ -8,9 +9,13 @@ export interface VehicleState {
 	fuelType: string;
 	chassisNumber: string;
 	plateNumber: string;
+	createdAt: string;
+	updatedAt: string;
+	engineType: string;
 }
 
 const initialState: VehicleState = {
+	id: 0,
 	make: "",
 	model: "",
 	modelYear: "",
@@ -18,6 +23,9 @@ const initialState: VehicleState = {
 	fuelType: "",
 	chassisNumber: "",
 	plateNumber: "",
+	createdAt: "",
+	updatedAt: "",
+	engineType: "",
 };
 
 const VehicleSlice = createSlice({
@@ -45,6 +53,12 @@ const VehicleSlice = createSlice({
 		plateNumberReducer: (state, actions: PayloadAction<string>) => {
 			state.plateNumber = actions.payload;
 		},
+		engineTypeReducer: (state, actions: PayloadAction<string>) => {
+			state.engineType = actions.payload;
+		},
+		saveVehicleReducer: (state, actions: PayloadAction<VehicleState>) => {
+			Object.assign(state, actions.payload);
+		},
 		clearVehicleReducer: (state) => {
 			Object.assign(state, initialState);
 		},
@@ -60,6 +74,8 @@ export const {
 	chassisNumberReducer,
 	plateNumberReducer,
 	clearVehicleReducer,
+	saveVehicleReducer,
+	engineTypeReducer,
 } = VehicleSlice.actions;
 
 export default VehicleSlice.reducer;

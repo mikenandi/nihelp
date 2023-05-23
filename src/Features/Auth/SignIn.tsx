@@ -60,9 +60,7 @@ const SignIn: React.FC<SignInProps> = (props) => {
 
 		setIsLoading(true);
 
-		let data = {email, password};
-
-		let response = await signIn({...data});
+		let response = await signIn({email, password});
 
 		if (response.access_token) {
 			await SecureStore.setItemAsync("authToken", response.access_token);

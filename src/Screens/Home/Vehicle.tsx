@@ -5,7 +5,10 @@ import Color from "../../Components/Color";
 import {Card} from "../../Components/Card";
 import {Body, HeadingS} from "../../Components/Typography";
 import {useDispatch, useSelector} from "react-redux";
-import {vehicleDetailsVisibleReducer} from "../../Redux/Features/Vehicle/VehicleModalSlice";
+import {
+	registerVehicleVisibleReducer,
+	vehicleDetailsVisibleReducer,
+} from "../../Redux/Features/Vehicle/VehicleModalSlice";
 import {RootState} from "../../Redux";
 import {VehicleDetails} from "./VehicleDetails";
 import {getVehicle} from "../../Api/Services/Backend/Vehicle";
@@ -13,6 +16,7 @@ import {
 	VehicleState,
 	saveVehicleReducer,
 } from "../../Redux/Features/Vehicle/VehicleSlice";
+import {createRouteVisibleReducer} from "../../Redux/Features/Route/RouteModal";
 
 interface VehicleProps {
 	plateNumber: string;
@@ -22,6 +26,11 @@ interface VehicleProps {
 	id: number;
 }
 
+interface IAuth {
+	authToken: string;
+	isOwner: boolean;
+}
+
 const Vehicle: React.FC<VehicleProps> = (props) => {
 	const dispatch = useDispatch();
 
@@ -29,9 +38,13 @@ const Vehicle: React.FC<VehicleProps> = (props) => {
 		return state.vehicleModal.vehicleDetailsVisible;
 	});
 
-	const {authToken}: {authToken: string} = useSelector((state: RootState) => {
+	const {authToken, isOwner}: IAuth = useSelector((state: RootState) => {
 		return state.auth;
 	});
+
+	const handleRegisterRoute = (): void => {
+		dispatch(createRouteVisibleReducer());
+	};
 
 	const handleVehicleDetails = async (): Promise<void> => {
 		let response: VehicleState = await getVehicle(authToken, props.id);
@@ -56,10 +69,19 @@ const Vehicle: React.FC<VehicleProps> = (props) => {
 								{props.make} {props.model}
 							</Body>
 
-							<View style={styles.routeContainer}>
-								<FontAwesome5 name="route" size={20} color={Color.primary} />
-								<Body style={styles.routeText}>Not on route</Body>
-							</View>
+							{false && (
+								<View style={styles.routeContainer}>
+									<FontAwesome5 name="route" size={20} color={Color.primary} />
+									<Body style={styles.routeText}>Route name</Body>
+								</View>
+							)}
+
+							<TouchableOpacity
+								onPress={handleRegisterRoute}
+								activeOpacity={0.95}
+								style={styles.createRouteBtn}>
+								<Body style={styles.routeTextBtn}>start route</Body>
+							</TouchableOpacity>
 						</View>
 					</View>
 
@@ -116,6 +138,19 @@ const styles = StyleSheet.create({
 	},
 	detailsWrapper: {
 		flexDirection: "row",
+	},
+	createRouteBtn: {
+		backgroundColor: Color.lightgray,
+		paddingHorizontal: 30,
+		alignItems: "center",
+		justifyContent: "center",
+		borderRadius: 30,
+		paddingVertical: 8,
+	},
+	routeTextBtn: {
+		marginLeft: 10,
+		color: Color.primary,
+		fontWeight: "bold",
 	},
 });
 

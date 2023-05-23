@@ -16,9 +16,8 @@ const ErrorMsg: React.FC = () => {
 	React.useEffect(() => {
 		setTimeout(() => {
 			dispatch(errorMsg(""));
-			return;
-		}, 6000);
-	}, [errorMsg]);
+		}, 5000);
+	}, [msg]);
 
 	return <>{!!msg && <Body style={styles.errorMsg}>{msg}</Body>}</>;
 };

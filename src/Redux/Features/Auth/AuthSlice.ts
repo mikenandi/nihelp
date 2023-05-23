@@ -14,8 +14,6 @@ export interface IOwner {
 	email: string;
 	phoneNumber: string;
 	vehicles: number;
-	activeRoutes: number;
-	reportedBreakdowns: number;
 	isOwner: boolean;
 }
 
@@ -30,8 +28,6 @@ interface AuthState {
 	licenseNo: string;
 	phoneNumber: string;
 	vehicles: number;
-	activeRoutes: number;
-	reportedBreakdowns: number;
 	isOwner: boolean;
 }
 
@@ -46,8 +42,6 @@ const initialState: AuthState = {
 	licenseNo: "",
 	phoneNumber: "",
 	vehicles: 0,
-	activeRoutes: 0,
-	reportedBreakdowns: 0,
 	isOwner: false,
 };
 
@@ -113,8 +107,6 @@ const authSlice = createSlice({
 			state.phoneNumber = actions.payload.phoneNumber;
 			state.isOwner = actions.payload.isOwner;
 			state.vehicles = actions.payload.vehicles;
-			state.activeRoutes = actions.payload.activeRoutes;
-			state.reportedBreakdowns = actions.payload.reportedBreakdowns;
 		},
 	},
 });

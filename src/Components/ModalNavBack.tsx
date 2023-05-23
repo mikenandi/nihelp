@@ -3,6 +3,7 @@ import {StyleSheet, View, TouchableOpacity, Text} from "react-native";
 import Color from "./Color";
 import {HeadingS} from "./Typography";
 import {Entypo, Ionicons, MaterialIcons} from "@expo/vector-icons";
+import {ErrorMsg} from "./ErrorMsg";
 
 interface Props {
 	title: string;
@@ -22,6 +23,10 @@ function ModalNavBack({title, handleBack}: Props) {
 				<HeadingS numberOfLines={1} style={styles.titleTxtPrimary}>
 					{title}
 				</HeadingS>
+			</View>
+
+			<View style={styles.errorMsgContainer}>
+				<ErrorMsg />
 			</View>
 		</>
 	);
@@ -87,6 +92,10 @@ const styles = StyleSheet.create({
 	titleTxtPrimary: {
 		color: Color.white,
 		width: "70%",
+	},
+	errorMsgContainer: {
+		marginTop: 10,
+		alignItems: "center",
 	},
 });
 

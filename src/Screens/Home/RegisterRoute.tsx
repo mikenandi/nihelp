@@ -1,13 +1,10 @@
 import React from "react";
-import {ScrollView, StyleSheet} from "react-native";
+import {ScrollView, StyleSheet, View} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
-import {
-	editVehicleVisibleReducer,
-	registerVehicleVisibleReducer,
-} from "../../Redux/Features/Vehicle/VehicleModalSlice";
+import {registerVehicleVisibleReducer} from "../../Redux/Features/Vehicle/VehicleModalSlice";
 import {InputText} from "../../Components/Inputs";
 import {ButtonL} from "../../Components/Buttons";
-import {ModalNavBack} from "../../Components/ModalNavBack";
+import {ModalNavBack, ModalNavBackWhite} from "../../Components/ModalNavBack";
 import {RootState} from "../../Redux";
 import {
 	VehicleState,
@@ -22,20 +19,23 @@ import {
 	plateNumberReducer,
 } from "../../Redux/Features/Vehicle/VehicleSlice";
 import {errorMsg} from "../../Redux/Components/ErrorMsgSlice";
-import {updateVehicle} from "../../Api/Services/Backend/Vehicle";
+import {postVehicle} from "../../Api/Services/Backend/Vehicle";
 import Loader from "../../Components/Loader";
+import {Body, HeadingS} from "../../Components/Typography";
+import {FontAwesome5} from "@expo/vector-icons";
+import Color from "../../Components/Color";
+import {createRouteVisibleReducer} from "../../Redux/Features/Route/RouteModal";
 
-const EditVehicle: React.FC = () => {
+const RegisterRoute: React.FC = () => {
 	const dispatch = useDispatch();
 
 	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
 	const handleBack = (): void => {
-		dispatch(editVehicleVisibleReducer());
+		dispatch(createRouteVisibleReducer());
 	};
 
 	const {
-		id,
 		make,
 		model,
 		modelYear,
@@ -84,7 +84,7 @@ const EditVehicle: React.FC = () => {
 		dispatch(engineTypeReducer(engineType));
 	};
 
-	const handleEdit = async () => {
+	const handleRegisterVehicle = async () => {
 		if (
 			!make ||
 			!model ||
@@ -102,16 +102,26 @@ const EditVehicle: React.FC = () => {
 
 		setIsLoading(true);
 
-		let response = await updateVehicle(authToken, id, {
-			make,
-			model,
-			modelYear,
-			bodyType,
-			fuelType,
-			chassisNumber,
-			plateNumber,
-			engineType,
-		});
+		let response = await postVehicle(
+			{
+				make,
+				model,
+				modelYear,
+				bodyType,
+				fuelType,
+				chassisNumber,
+				plateNumber,
+				engineType,
+			},
+			authToken
+		);
+
+		if (response.statusCode === 409) {
+			dispatch(errorMsg(response.message));
+
+			setIsLoading(false);
+			return;
+		}
 
 		setIsLoading(false);
 
@@ -129,49 +139,24 @@ const EditVehicle: React.FC = () => {
 
 	return (
 		<>
-			<ModalNavBack title="Edit vehicle details" handleBack={handleBack} />
+			<ModalNavBack title="Where are you going?" handleBack={handleBack} />
 
 			<ScrollView contentContainerStyle={styles.container}>
+				<InputText label="Start" value={make} onChangeText={handleMake} />
 				<InputText
-					label="Manufacturer"
-					value={make}
-					onChangeText={handleMake}
-				/>
-				<InputText label="Model" value={model} onChangeText={handleModel} />
-				<InputText
-					label="Model year"
-					value={modelYear}
-					onChangeText={handleModelYear}
-				/>
-				<InputText
-					label="Body type"
-					value={bodyType}
-					onChangeText={handleBodyType}
-				/>
-				<InputText
-					label="Fuel type"
-					value={fuelType}
-					onChangeText={handleFuelType}
+					label="Destination"
+					value={model}
+					onChangeText={handleModel}
 				/>
 
-				<InputText
-					label="Engine type"
-					value={engineType}
-					onChangeText={handleEngineType}
-				/>
-				<InputText
-					label="Chassis number"
-					value={chassisNumber}
-					onChangeText={handleChassiNumber}
-				/>
+				<View style={styles.routeContainer}>
+					<FontAwesome5 name="road" size={24} color="black" />
+					<HeadingS style={styles.titleText}>via road</HeadingS>
+				</View>
 
-				<InputText
-					label="License plate"
-					value={plateNumber}
-					onChangeText={handlePlateNumber}
-				/>
+				<Body style={styles.routeDesc}>Dar Moro Iringa Mby</Body>
 
-				<ButtonL action="Update" onPress={handleEdit} />
+				<ButtonL action="Register" onPress={handleRegisterVehicle} />
 			</ScrollView>
 		</>
 	);
@@ -190,6 +175,19 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		paddingBottom: 40,
 	},
+	routeContainer: {
+		flexDirection: "row",
+		marginTop: 10,
+		backgroundColor: Color.lightgray,
+		width: "80%",
+		padding: 10,
+	},
+	routeDesc: {
+		fontWeight: "bold",
+	},
+	titleText: {
+		marginLeft: 10,
+	},
 });
 
-export {EditVehicle};
+export {RegisterRoute};

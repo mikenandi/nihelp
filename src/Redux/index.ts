@@ -17,6 +17,9 @@ import HelpTypeSlice from "./Features/ReportBreakdown/ReportBreakdownSlice";
 import VehicleModalSlice from "./Features/Vehicle/VehicleModalSlice";
 import ReportBreakdownSlice from "./Features/ReportBreakdown/ReportBreakdownSlice";
 import VehicleSlice from "./Features/Vehicle/VehicleSlice";
+import ProfileModal from "./Features/Profile/ProfileModal";
+import RouteModal from "./Features/Route/RouteModal";
+import RouteSlice from "./Features/Route/RouteSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -38,6 +41,9 @@ export const store = configureStore({
 		helpType: HelpTypeSlice,
 		vehicleModal: VehicleModalSlice,
 		vehicle: VehicleSlice,
+		profileModal: ProfileModal,
+		routeModal: RouteModal,
+		route: RouteSlice,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
