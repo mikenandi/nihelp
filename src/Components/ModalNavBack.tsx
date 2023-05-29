@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
 		backgroundColor: Color.primary,
 		marginRight: 10,
 	},
-
 	titleTxt: {
 		color: Color.white,
 		width: "70%",
