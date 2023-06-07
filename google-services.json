@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "152073074046",
+    "project_id": "breakdown-alert",
+    "storage_bucket": "breakdown-alert.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152073074046:android:b12d8676a9afcf6d206f2f",
+        "android_client_info": {
+          "package_name": "com.google.breakdown_alert"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfk_gMN6R1lp1jdve7UchvGf-oKcP3BJc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

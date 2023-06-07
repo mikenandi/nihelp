@@ -1,287 +1,392 @@
 import React from "react";
-import {StyleSheet, Modal, View, FlatList} from "react-native";
+import { StyleSheet, Modal, View, FlatList } from "react-native";
 import Screen from "../../Layouts/Screen";
 import Color from "../../Components/Color";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
-	AntDesign,
-	FontAwesome5,
-	Foundation,
-	MaterialCommunityIcons,
+  FontAwesome5,
+  Foundation,
+  MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import {FAB} from "../../Components/FAB";
+import { FAB } from "../../Components/FAB";
 import Topbar from "../../Layouts/Topbar";
-import {Vehicle} from "./Vehicle";
-import {RegisterVehicle} from "./RegisterVehicle";
-import {RootState} from "../../Redux";
+import { Vehicle } from "./Vehicle";
+import { RegisterVehicle } from "./RegisterVehicle";
+import { RootState } from "../../Redux";
 import {
-	breakdownReportVisibleReducer,
-	registerVehicleVisibleReducer,
+  breakdownReportVisibleReducer,
+  registerVehicleVisibleReducer,
 } from "../../Redux/Features/Vehicle/VehicleModalSlice";
-import {AlertTitle} from "./AlertTitle";
-import {Alert} from "./Alert";
-import {ReportBreakdown} from "../../Features/ReportBreakdown";
-import {getUserProfile} from "../../Api/Services/Backend/Profile";
+import { AlertTitle } from "./AlertTitle";
+import { Alert, AlertProps } from "./Alert";
+import { ReportBreakdown } from "../../Features/ReportBreakdown";
+import {
+  getUserProfile,
+  updateProfile,
+} from "../../Api/Services/Backend/Profile";
 import * as SecureStorage from "expo-secure-store";
 import {
-	driverProfileReducer,
-	logOutReducer,
-	ownerProfileReducer,
+  driverProfileReducer,
+  logOutReducer,
+  ownerProfileReducer,
 } from "../../Redux/Features/Auth/AuthSlice";
 import Loader from "../../Components/Loader";
-import {getVehicle, getVehicles} from "../../Api/Services/Backend/Vehicle";
-import {Body, HeadingS} from "../../Components/Typography";
-import {getRoutes} from "../../Api/Services/Backend/Route";
-import {RegisterRoute} from "./RegisterRoute";
+import {
+  getVehicle,
+  getVehicles,
+} from "../../Api/Services/Backend/Vehicle";
+import { HeadingS } from "../../Components/Typography";
+import { getRoutes } from "../../Api/Services/Backend/Route";
+import { RegisterRoute } from "./RegisterRoute";
+import {
+  getBreakdowns,
+  getRouteBreakdowns,
+} from "../../Api/Services/Backend/Breakdown";
+import * as Notifications from "expo-notifications";
+
+export interface IBreakdown {
+  brakingSystemMalfunction?: boolean;
+  createAt?: string;
+  deadBattery?: boolean;
+  electricalSystemFailure?: boolean;
+  engineFailure?: boolean;
+  flatTyre?: boolean;
+  fuelSystemIssue?: boolean;
+  id?: number;
+  isRepaired?: boolean;
+  latitude?: string;
+  longitude?: string;
+  overHeating?: boolean;
+  routeId?: number;
+  updatedAt?: string;
+}
 
 interface IVehicle {
-	id: number;
-	make: string;
-	bodyType: string;
-	model: string;
-	chassisNumber: string;
-	modelYear: string;
-	createdAt: string;
-	updatedAt: string;
-	fuelType: string;
-	plateNumber: string;
-	userId: number;
+  id: number;
+  make: string;
+  bodyType: string;
+  model: string;
+  chassisNumber: string;
+  modelYear: string;
+  createdAt: string;
+  updatedAt: string;
+  fuelType: string;
+  plateNumber: string;
+  userId: number;
+  currentRoute: string;
+  breakdown?: IBreakdown[];
 }
 
 const Home: React.FC = () => {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-	const {authToken, isOwner, name} = useSelector((state: RootState) => {
-		return state.auth;
-	});
+  const { authToken, isOwner, name } = useSelector((state: RootState) => {
+    return state.auth;
+  });
 
-	const [vehicles, setVehicles] = React.useState<IVehicle[]>([]);
+  const [vehicles, setVehicles] = React.useState<IVehicle[]>([]);
 
-	const visible: boolean = useSelector((state: RootState) => {
-		return state.vehicleModal.registerVehicleVisible;
-	});
+  const [isRouteActive, setIsRouteActive] = React.useState<boolean>(false);
 
-	const createRouteVisible: boolean = useSelector((state: RootState) => {
-		return state.routeModal.createRouteVisible;
-	});
+  const [breakdowns, setBreakdowns] = React.useState([]);
 
-	const getFirstname = (name: string): string | undefined => {
-		return name.trim().split(" ")[0];
-	};
+  const visible: boolean = useSelector((state: RootState) => {
+    return state.vehicleModal.registerVehicleVisible;
+  });
 
-	const handleLogout = async (): Promise<void> => {
-		await SecureStorage.deleteItemAsync("authToken");
+  const createRouteVisible: boolean = useSelector((state: RootState) => {
+    return state.routeModal.createRouteVisible;
+  });
 
-		dispatch(logOutReducer());
-	};
+  const breakdownVisible: boolean = useSelector((state: RootState) => {
+    return state.vehicleModal.breakdownReportVisible;
+  });
 
-	const routeFetch = async () => {
-		let response = await getRoutes(authToken);
+  const getFirstname = (name: string): string | undefined => {
+    return name.trim().split(" ")[0];
+  };
 
-		return response;
-	};
+  const handleLogout = async (): Promise<void> => {
+    await SecureStorage.deleteItemAsync("authToken");
 
-	const userProfileFetch = async (): Promise<void> => {
-		try {
-			setIsLoading(true);
-			let response = await getUserProfile({authToken});
+    dispatch(logOutReducer());
+  };
 
-			if (response.statusCode === 401) {
-				handleLogout();
+  const routeFetch = async () => {
+    let response = await getRoutes(authToken);
 
-				return;
-			}
+    return response;
+  };
 
-			if (response.isOwner) {
-				let vehicles = await getVehicles(authToken);
+  const userProfileFetch = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      let response = await getUserProfile({ authToken });
 
-				setVehicles(vehicles);
+      if (response.statusCode === 401) {
+        handleLogout();
 
-				dispatch(
-					ownerProfileReducer({
-						name: response.name,
-						email: response.email,
-						phoneNumber: response.phoneNumber,
-						vehicles: vehicles.length,
-						isOwner: response.isOwner,
-					})
-				);
+        return;
+      }
 
-				setIsLoading(false);
+      let routes = await routeFetch();
 
-				return;
-			}
+      if (response.isOwner) {
+        let vehicles = await getVehicles(authToken);
 
-			let routes = await routeFetch();
+        setVehicles(vehicles);
 
-			if (routes.length === 0) {
-				await handleLogout();
+        dispatch(
+          ownerProfileReducer({
+            name: response.name,
+            email: response.email,
+            phoneNumber: response.phoneNumber,
+            vehicles: vehicles.length,
+            isOwner: response.isOwner,
+          })
+        );
 
-				return;
-			}
+        setIsLoading(false);
 
-			let vehicle = await getVehicle(authToken, routes[0].vehicleId);
+        return;
+      }
 
-			setVehicles([vehicle]);
+      if (routes.length === 0) {
+        await handleLogout();
 
-			dispatch(
-				driverProfileReducer({
-					name: response.name,
-					email: response.email,
-					plateNumber: response.plateNumber,
-					licenseNo: response.licenseNo,
-					phoneNumber: response.phoneNumber,
-					isOwner: response.isOwner,
-				})
-			);
+        return;
+      }
 
-			setIsLoading(false);
+      let routeId: number = routes[0].id;
 
-			return;
-		} catch (error) {
-			console.log(error);
+      let vehicle = await getVehicle(authToken, routes[0].vehicleId);
+      let vehicleBreakdown = await getBreakdowns(routeId, authToken);
 
-			return;
-		}
-	};
+      let routeBreakdowns = [];
 
-	React.useEffect(() => {
-		userProfileFetch();
-	}, [visible]);
+      if (routes[0].viaRoad !== null) {
+        setIsRouteActive(true);
 
-	const breakdownVisible: boolean = useSelector((state: RootState) => {
-		return state.vehicleModal.breakdownReportVisible;
-	});
+        routeBreakdowns = await getRouteBreakdowns(
+          routes[0].viaRoad,
+          authToken
+        );
+      }
 
-	const handleRegisterVehicle = (): void => {
-		dispatch(registerVehicleVisibleReducer());
-	};
+      setBreakdowns(routeBreakdowns);
 
-	const handleBreakdownReport = (): void => {
-		dispatch(breakdownReportVisibleReducer());
-	};
+      // if (breakdown.length > 0) {
+      //   setIsHavingBreakdown(true);
+      // }
 
-	const renderItem = ({item}: {item: IVehicle}) => {
-		return (
-			<Vehicle
-				id={item.id}
-				plateNumber={item.plateNumber}
-				make={item.make}
-				model={item.model}
-			/>
-		);
-	};
+      setVehicles([
+        {
+          ...vehicle,
+          currentRoute: routes[0].viaRoad,
+          breakdown: vehicleBreakdown,
+        },
+      ]);
 
-	if (isLoading) {
-		return (
-			<>
-				<Loader />
-			</>
-		);
-	}
+      dispatch(
+        driverProfileReducer({
+          name: response.name,
+          email: response.email,
+          plateNumber: response.plateNumber,
+          licenseNo: response.licenseNo,
+          phoneNumber: response.phoneNumber,
+          isOwner: response.isOwner,
+        })
+      );
 
-	return (
-		<>
-			<Screen>
-				<Topbar title={`Hi , ${getFirstname(name)}`} />
+      setIsLoading(false);
 
-				<View style={styles.container}>
-					<FlatList
-						data={vehicles}
-						keyExtractor={(item) => item.id.toString()}
-						renderItem={renderItem}
-						contentContainerStyle={styles.contentContainer}
-					/>
+      return;
+    } catch (error) {
+      console.log(error);
 
-					{vehicles.length === 0 && isOwner && (
-						<View style={styles.emptyContainer}>
-							<MaterialCommunityIcons
-								name="truck-plus-outline"
-								size={240}
-								color={Color.lightgray}
-							/>
-							<HeadingS style={styles.msgText}>Register vehicle</HeadingS>
-						</View>
-					)}
+      return;
+    }
+  };
 
-					{!isOwner && <AlertTitle />}
+  // Notifications
+  const registerForPushNotifications = async () => {
+    try {
+      //   const { status: existingStatus } =
+      //     await Notifications.getPermissionsAsync();
+      //   let finalStatus = existingStatus;
 
-					{!isOwner && <Alert />}
-				</View>
+      //   if (existingStatus !== "granted") {
+      //     const { status } = await Notifications.requestPermissionsAsync();
+      //     finalStatus = status;
+      //   }
 
-				{isOwner && (
-					<FAB onPress={handleRegisterVehicle}>
-						<Foundation name="plus" size={30} color={Color.dimblack} />
-					</FAB>
-				)}
+      //   if (finalStatus !== "granted") {
+      //     console.log("Failed to get push token for notifications!");
+      //     return;
+      //   }
 
-				{!isOwner && (
-					<FAB onPress={handleBreakdownReport}>
-						<FontAwesome5
-							name="exclamation-triangle"
-							size={24}
-							color={Color.warning}
-						/>
-					</FAB>
-				)}
-			</Screen>
+      const tokenData = await Notifications.getExpoPushTokenAsync();
+      const pushToken = tokenData.data;
 
-			<Modal visible={visible} animationType="fade">
-				<RegisterVehicle />
-			</Modal>
+      let response = await updateProfile(
+        { notificationToken: pushToken },
+        authToken
+      );
 
-			<Modal visible={breakdownVisible} animationType="fade">
-				<ReportBreakdown />
-			</Modal>
+      return;
 
-			<Modal visible={createRouteVisible} animationType="fade">
-				<RegisterRoute />
-			</Modal>
-		</>
-	);
+      // You can store or send the push token to your server for future use
+    } catch (error) {
+      console.log("Error getting push token:", error);
+    }
+  };
+
+  React.useEffect(() => {
+    userProfileFetch();
+    registerForPushNotifications();
+  }, [visible, breakdownVisible, createRouteVisible]);
+
+  const handleRegisterVehicle = (): void => {
+    dispatch(registerVehicleVisibleReducer());
+  };
+
+  const handleBreakdownReport = (): void => {
+    dispatch(breakdownReportVisibleReducer());
+  };
+
+  const renderAlert = ({ item }: { item: AlertProps }) => {
+    return <Alert vehicle={item.vehicle} breakdown={item.breakdown} />;
+  };
+
+  const renderItem = ({ item }: { item: IVehicle }) => {
+    return (
+      <Vehicle
+        id={item.id}
+        plateNumber={item.plateNumber}
+        make={item.make}
+        model={item.model}
+        route={item.currentRoute}
+        breakdown={item.breakdown}
+      />
+    );
+  };
+
+  if (isLoading) {
+    return (
+      <>
+        <Loader />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Screen>
+        <Topbar title={`Hi , ${getFirstname(name)}`} />
+
+        <View style={styles.container}>
+          <FlatList
+            data={vehicles}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={renderItem}
+            contentContainerStyle={styles.contentContainer}
+          />
+
+          {vehicles.length === 0 && isOwner && (
+            <View style={styles.emptyContainer}>
+              <MaterialCommunityIcons
+                name="truck-plus-outline"
+                size={240}
+                color={Color.lightgray}
+              />
+              <HeadingS style={styles.msgText}>Register vehicle</HeadingS>
+            </View>
+          )}
+
+          {!isOwner && <AlertTitle />}
+
+          {!isOwner && (
+            <FlatList
+              data={breakdowns}
+              renderItem={renderAlert}
+              keyExtractor={(item) => item.vehicle.id.toString()}
+            />
+          )}
+        </View>
+
+        {isOwner && (
+          <FAB onPress={handleRegisterVehicle}>
+            <Foundation name="plus" size={30} color={Color.dimblack} />
+          </FAB>
+        )}
+
+        {!isOwner && isRouteActive && (
+          <FAB onPress={handleBreakdownReport}>
+            <FontAwesome5
+              name="exclamation-triangle"
+              size={24}
+              color={Color.warning}
+            />
+          </FAB>
+        )}
+      </Screen>
+
+      <Modal visible={visible} animationType="fade">
+        <RegisterVehicle />
+      </Modal>
+
+      <Modal visible={breakdownVisible} animationType="fade">
+        <ReportBreakdown />
+      </Modal>
+
+      <Modal visible={createRouteVisible} animationType="fade">
+        <RegisterRoute />
+      </Modal>
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flexDirection: "column",
-		marginTop: 20,
-		marginHorizontal: 15,
-	},
-	scrollContainer: {
-		paddingBottom: 70,
-	},
-	fab: {
-		backgroundColor: Color.lightblue,
-	},
-	startPostingContainer: {
-		flex: 1,
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	emptyImg: {
-		width: 240,
-		height: undefined,
-		aspectRatio: 10 / 10,
-	},
-	notifyContainer: {
-		backgroundColor: Color.white,
-		top: 20,
-		borderRadius: 100,
-	},
-	emptyContainer: {
-		alignItems: "center",
-		justifyContent: "center",
-		marginTop: 20,
-	},
-	msgText: {
-		color: Color.dimblack,
-		fontWeight: "bold",
-	},
-	contentContainer: {
-		width: "100%",
-	},
+  container: {
+    flexDirection: "column",
+    marginTop: 20,
+    marginHorizontal: 15,
+  },
+  scrollContainer: {
+    paddingBottom: 70,
+  },
+  fab: {
+    backgroundColor: Color.lightblue,
+  },
+  startPostingContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyImg: {
+    width: 240,
+    height: undefined,
+    aspectRatio: 10 / 10,
+  },
+  notifyContainer: {
+    backgroundColor: Color.white,
+    top: 20,
+    borderRadius: 100,
+  },
+  emptyContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+  },
+  msgText: {
+    color: Color.dimblack,
+    fontWeight: "bold",
+  },
+  contentContainer: {
+    width: "100%",
+  },
 });
 
 export default Home;

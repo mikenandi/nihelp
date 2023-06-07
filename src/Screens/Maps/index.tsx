@@ -1,81 +1,131 @@
 import React from "react";
-import {StyleSheet, Modal, FlatList, View, Image} from "react-native";
+import { StyleSheet, Modal, FlatList, View, Image } from "react-native";
 import Screen from "../../Layouts/Screen";
 import Color from "../../Components/Color";
-import {useDispatch, useSelector} from "react-redux";
-import {Body} from "../../Components/Typography";
-import MapView, {Marker, Polyline} from "react-native-maps";
-import {Notification} from "../../Components/Notification";
-import {FAB} from "../../Components/FAB";
+import { useDispatch, useSelector } from "react-redux";
+import { Body } from "../../Components/Typography";
+import MapView, { Marker } from "react-native-maps";
 import Topbar from "../../Layouts/Topbar";
+import { RootState } from "../../Redux";
+import {
+  getVehicle,
+  getVehicles,
+} from "../../Api/Services/Backend/Vehicle";
+import {
+  getBreakdowns,
+  getOwnerBreakdowns,
+  getRouteBreakdowns,
+} from "../../Api/Services/Backend/Breakdown";
+import { getRoutes } from "../../Api/Services/Backend/Route";
 
 const Maps: React.FC = (props) => {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	return (
-		<>
-			<Screen>
-				<Topbar title="Maps" />
+  const { authToken, isOwner } = useSelector((state: RootState) => {
+    return state.auth;
+  });
 
-				<MapView
-					style={{flex: 1}}
-					initialRegion={{
-						latitude: -6.823,
-						longitude: 39.26,
-						latitudeDelta: 2,
-						longitudeDelta: 2,
-					}}>
-					<Marker
-						coordinate={{latitude: -6.823, longitude: 39.26}}
-						title="T 123 ABZ needs car jack"
-					/>
-					<Marker
-						coordinate={{latitude: -8.9, longitude: 33.45}}
-						title="Mbeya"
-					/>
+  const routeFetch = async () => {
+    let response = await getRoutes(authToken);
 
-					{/* <Polyline
-						coordinates={[
-							{latitude: -6.823, longitude: 39.26},
-							{latitude: -6.823, longitude: 39.26},
-							{latitude: -8.9, longitude: 33.45},
-						]}
-						strokeWidth={3}
-						strokeColor={Color.warning}
-					/> */}
-				</MapView>
-			</Screen>
-		</>
-	);
+    return response;
+  };
+
+  const [breakdowns, setBreakdowns] = React.useState([]);
+
+  const breakdownsFetch = async (): Promise<void> => {
+    try {
+      if (isOwner) {
+        let breakdowns = await getOwnerBreakdowns(authToken);
+
+        setBreakdowns(breakdowns);
+        return;
+      }
+
+      let routes = await routeFetch();
+
+      if (routes[0].viaRoad === null) return;
+
+      let routeId: number = routes[0].id;
+
+      let breakdowns = await getRouteBreakdowns(
+        routes[0].viaRoad,
+        authToken
+      );
+
+      console.log(breakdowns);
+
+      setBreakdowns(breakdowns);
+
+      return;
+    } catch (error) {
+      console.log(error);
+
+      return;
+    }
+  };
+
+  React.useEffect(() => {
+    breakdownsFetch();
+  }, []);
+
+  return (
+    <>
+      <Screen>
+        <Topbar title="Maps" />
+
+        <MapView
+          style={{ flex: 1 }}
+          initialRegion={{
+            latitude: -6.823,
+            longitude: 39.26,
+            latitudeDelta: 2,
+            longitudeDelta: 2,
+          }}
+        >
+          {breakdowns.map((item: any) => (
+            <Marker
+              key={item.breakdown.id}
+              coordinate={{
+                latitude: Number(item.breakdown.latitude),
+                longitude: Number(item.breakdown.longitude),
+              }}
+              title={item.vehicle.plateNumber}
+            />
+          ))}
+        </MapView>
+      </Screen>
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flexDirection: "row",
-		justifyContent: "space-around",
-		marginTop: 20,
-	},
-	scrollContainer: {
-		paddingBottom: 70,
-	},
-	fab: {
-		backgroundColor: Color.lightblue,
-	},
-	startPostingContainer: {
-		flex: 1,
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	emptyImg: {
-		width: 240,
-		height: undefined,
-		aspectRatio: 10 / 10,
-	},
-	notifyContainer: {
-		backgroundColor: Color.white,
-		top: 20,
-		borderRadius: 100,
-	},
+  container: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 20,
+  },
+  scrollContainer: {
+    paddingBottom: 70,
+  },
+  fab: {
+    backgroundColor: Color.lightblue,
+  },
+  startPostingContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyImg: {
+    width: 240,
+    height: undefined,
+    aspectRatio: 10 / 10,
+  },
+  notifyContainer: {
+    backgroundColor: Color.white,
+    top: 20,
+    borderRadius: 100,
+  },
 });
 
 export default Maps;

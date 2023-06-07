@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 15,
 		paddingTop: 10,
 		backgroundColor: Color.primary,
-		borderBottomWidth: 4,
+		// borderBottomWidth: 4,
 		borderBottomColor: Color.lightgray,
 	},
 	logoText: {
