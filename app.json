@@ -8,9 +8,13 @@
     "scheme": "com.google.breakdown_alert",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/vbas-splash-3.png",
+      "image": "./assets/splash/vbas-splash-3.png",
       "resizeMode": "contain",
       "backgroundColor": "#FFFFFF"
+    },
+    "notification": {
+      "icon": "./assets/icon.png",
+      "iosDisplayInForeground": true
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
@@ -61,7 +65,8 @@
         "expo-notifications",
         {
           "icon": "./assets/adaptive-icon.png",
-          "color": "#ffffff"
+          "color": "#ffffff",
+          "sounds": ["./assets/notification/emergency_alert.mp3"]
         }
       ]
     ],

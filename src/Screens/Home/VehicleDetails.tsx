@@ -28,15 +28,14 @@ import { RootState } from "../../Redux";
 import { deleteVehicle } from "../../Api/Services/Backend/Vehicle";
 import { infoMsg } from "../../Redux/Components/ErrorMsgSlice";
 import { EditVehicle } from "./EditVehicle";
+import { Button } from "react-native-paper";
 
 const VehicleDetails: React.FC = () => {
   const dispatch = useDispatch();
 
-  const visible: boolean = useSelector(
-    (state: RootState) => {
-      return state.vehicleModal.editVehicleVisible;
-    }
-  );
+  const visible: boolean = useSelector((state: RootState) => {
+    return state.vehicleModal.editVehicleVisible;
+  });
 
   const {
     id,
@@ -54,17 +53,13 @@ const VehicleDetails: React.FC = () => {
     return state.vehicle;
   });
 
-  const authToken: string = useSelector(
-    (state: RootState) => {
-      return state.auth.authToken;
-    }
-  );
+  const authToken: string = useSelector((state: RootState) => {
+    return state.auth.authToken;
+  });
 
-  const isOwner: boolean = useSelector(
-    (state: RootState) => {
-      return state.auth.isOwner;
-    }
-  );
+  const isOwner: boolean = useSelector((state: RootState) => {
+    return state.auth.isOwner;
+  });
 
   const handleEdit = (): void => {
     dispatch(editVehicleVisibleReducer());
@@ -86,22 +81,13 @@ const VehicleDetails: React.FC = () => {
 
   return (
     <>
-      <ModalNavBack
-        title="Vehicle Details"
-        handleBack={handleBack}
-      />
+      <ModalNavBack title="Vehicle Details" handleBack={handleBack} />
 
-      <ScrollView
-        contentContainerStyle={styles.wrapperContainer}
-      >
+      <ScrollView contentContainerStyle={styles.wrapperContainer}>
         <View style={styles.container}>
           <View style={styles.detailContainer}>
             <View style={styles.iconContainer}>
-              <Fontisto
-                name="truck"
-                size={30}
-                color={Color.primary}
-              />
+              <Fontisto name="truck" size={30} color={Color.primary} />
             </View>
             <HeadingS style={styles.title}>
               Plate no: {plateNumber}
@@ -116,9 +102,7 @@ const VehicleDetails: React.FC = () => {
                 color={Color.primary}
               />
             </View>
-            <HeadingS style={styles.title}>
-              Make: {make}
-            </HeadingS>
+            <HeadingS style={styles.title}>Make: {make}</HeadingS>
           </View>
 
           <View style={styles.detailContainer}>
@@ -130,9 +114,7 @@ const VehicleDetails: React.FC = () => {
               />
             </View>
 
-            <HeadingS style={styles.title}>
-              Model: {model}
-            </HeadingS>
+            <HeadingS style={styles.title}>Model: {model}</HeadingS>
           </View>
 
           <View style={styles.detailContainer}>
@@ -169,9 +151,7 @@ const VehicleDetails: React.FC = () => {
                 color={Color.primary}
               />
             </View>
-            <HeadingS style={styles.title}>
-              Fuel: {fuelType}
-            </HeadingS>
+            <HeadingS style={styles.title}>Fuel: {fuelType}</HeadingS>
           </View>
 
           <View style={styles.detailContainer}>
@@ -195,9 +175,7 @@ const VehicleDetails: React.FC = () => {
                 color={Color.primary}
               />
             </View>
-            <HeadingS style={styles.title}>
-              Body Type: {bodyType}
-            </HeadingS>
+            <HeadingS style={styles.title}>Body Type: {bodyType}</HeadingS>
           </View>
 
           {/* <View style={styles.routeContainer}>
@@ -209,31 +187,23 @@ const VehicleDetails: React.FC = () => {
 
       {isOwner && (
         <View style={styles.bottomContainer}>
-          <TouchableOpacity
+          <Button
+            mode="elevated"
+            icon="pen"
+            textColor={Color.primary}
             onPress={handleEdit}
-            activeOpacity={0.8}
           >
-            <View style={styles.editContainer}>
-              <MaterialCommunityIcons
-                name="content-save-edit"
-                size={24}
-                color={Color.dimblack}
-              />
-            </View>
-          </TouchableOpacity>
+            Edit
+          </Button>
 
-          <TouchableOpacity
+          <Button
+            mode="elevated"
+            icon="delete"
+            textColor={Color.error}
             onPress={handleDelete}
-            activeOpacity={0.8}
           >
-            <View style={styles.deleteContainer}>
-              <MaterialCommunityIcons
-                name="delete"
-                size={24}
-                color={Color.dimblack}
-              />
-            </View>
-          </TouchableOpacity>
+            Delete
+          </Button>
         </View>
       )}
 
@@ -304,7 +274,9 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flexDirection: "row",
     marginLeft: 25,
-    marginBottom: 15,
+    marginBottom: 25,
+    width: "90%",
+    justifyContent: "space-between",
   },
   editContainer: {
     backgroundColor: Color.lightblue,

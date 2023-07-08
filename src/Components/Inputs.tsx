@@ -1,16 +1,15 @@
 import React from "react";
 import {
-  TextInput,
   StyleSheet,
   View,
-  TouchableOpacity,
   ViewStyle,
   KeyboardTypeOptions,
 } from "react-native";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 import { Body, BodyS } from "./Typography";
 import Color from "./Color";
 import { HeadingS } from "./Typography";
+import { TextInput } from "react-native-paper";
 
 interface Props {
   style?: ViewStyle;
@@ -43,19 +42,19 @@ const inputs = {
       <>
         <View style={styles.container}>
           <View>
-            <Body style={styles.inputTextLabel}>{label}</Body>
             <View
               style={{
                 ...styles.inputContainer,
-                borderWidth: 2.5,
-                borderColor: isFocused ? Color.primary : Color.lightgray,
-                backgroundColor: isFocused ? Color.white : Color.lightgray,
+                // borderColor: isFocused ? Color.primary : Color.lightgray,
+                // backgroundColor: isFocused ? Color.white : Color.lightgray,
                 ...style,
               }}
             >
               <TextInput
+                mode="outlined"
+                label={`  ${label}`}
                 placeholder={placeholder}
-                style={styles.inputText}
+                outlineStyle={styles.inputOutline}
                 maxLength={maxLength ? maxLength : 100}
                 value={value}
                 onChangeText={onChangeText}
@@ -63,6 +62,7 @@ const inputs = {
                 onFocus={(e) => {
                   setIsFocused(!isFocused);
                 }}
+                activeOutlineColor={Color.primary}
                 onBlur={(e) => {
                   setIsFocused(!isFocused);
                 }}
@@ -132,8 +132,6 @@ const inputs = {
   }: Props) {
     // setting states
     const [hide, setHide] = React.useState(true);
-    const [isPasswordFocused, setIsPasswordfocused] =
-      React.useState(false);
 
     const handleShow = () => {
       setHide(!hide);
@@ -143,94 +141,46 @@ const inputs = {
     return (
       <>
         <View style={styles.container}>
-          <View>
-            <Body style={styles.inputTextLabel}>{label}</Body>
-            <View
-              style={{
-                ...styles.inputPasswordContainer,
-                ...style,
-                borderWidth: 2.5,
-                borderColor: isPasswordFocused
-                  ? Color.primary
-                  : Color.lightgray,
-                backgroundColor: isPasswordFocused
-                  ? Color.white
-                  : Color.lightgray,
-              }}
-            >
-              <TextInput
-                placeholder={placeholder}
-                style={styles.inputPasswordText}
-                maxLength={maxLength ? maxLength : 100}
-                value={value}
-                secureTextEntry={hide}
-                onChangeText={onChangeText}
-                onFocus={(e) => {
-                  setIsPasswordfocused(!isPasswordFocused);
-                }}
-                onBlur={(e) => {
-                  setIsPasswordfocused(!isPasswordFocused);
-                }}
-              />
-
-              <TouchableOpacity
-                onPress={handleShow}
-                style={styles.eyeIconContainer}
-              >
-                <Entypo
-                  name={hide ? "eye" : "eye-with-line"}
-                  size={20}
-                  color={Color.dimblack}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </>
-    );
-  },
-  /* Input money */
-  InputMoney: function ({
-    label,
-    onChangeText,
-    style,
-    maxLength,
-    currency,
-    placeholder,
-    value,
-  }: Props) {
-    const [isMoneyFocused, setIsMoneyFocused] = React.useState(false);
-    return (
-      <>
-        <View style={styles.container}>
-          <Body style={styles.inputTextLabel}>{label}</Body>
           <View
             style={{
-              ...styles.inputMoneyContainer,
+              ...styles.inputContainer,
+              // borderColor: isFocused ? Color.primary : Color.lightgray,
+              // backgroundColor: isFocused ? Color.white : Color.lightgray,
               ...style,
-              borderWidth: 1.8,
-              borderColor: isMoneyFocused
-                ? Color.primary
-                : Color.lightgray,
-              backgroundColor: isMoneyFocused
-                ? Color.white
-                : Color.lightgray,
             }}
           >
-            <HeadingS style={styles.currencyText}>{currency}</HeadingS>
             <TextInput
               placeholder={placeholder}
-              style={styles.inputMoney}
-              maxLength={maxLength ? maxLength : 10}
+              outlineStyle={styles.inputOutline}
+              label={label}
+              mode="outlined"
+              maxLength={maxLength ? maxLength : 100}
               value={value}
+              // secureTextEntry
+              secureTextEntry={hide}
+              activeOutlineColor={Color.primary}
               onChangeText={onChangeText}
-              keyboardType="number-pad"
-              onFocus={(e) => {
-                setIsMoneyFocused(!isMoneyFocused);
-              }}
-              onBlur={(e) => {
-                setIsMoneyFocused(!isMoneyFocused);
-              }}
+              right={
+                <TextInput.Icon
+                  icon={() =>
+                    hide ? (
+                      <Ionicons
+                        name="eye-outline"
+                        size={24}
+                        color="black"
+                        onPress={handleShow}
+                      />
+                    ) : (
+                      <Ionicons
+                        name="eye-off-outline"
+                        size={24}
+                        color="black"
+                        onPress={handleShow}
+                      />
+                    )
+                  }
+                />
+              }
             />
           </View>
         </View>
@@ -248,18 +198,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputContainer: {
-    backgroundColor: Color.lightgray,
     width: "90%",
-    paddingHorizontal: 10,
     // paddingVertical: 10,
-    aspectRatio: 10 / 1.8,
-    borderRadius: 30,
+    aspectRatio: 10 / 1.6,
     justifyContent: "center",
   },
   inputPasswordText: {
-    fontSize: 16,
-    letterSpacing: 0.5,
-    width: "90%",
+    borderRadius: 50,
   },
   inputText: {
     fontSize: 16,
@@ -277,14 +222,9 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   inputPasswordContainer: {
-    backgroundColor: Color.lightgray,
-    width: "90%",
-    paddingHorizontal: 10,
-    // paddingVertical: 10,
-    aspectRatio: 10 / 1.8,
-    borderRadius: 30,
+    width: "100%",
+    aspectRatio: 10 / 1.6,
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
   },
   inputMoneyContainer: {
@@ -317,7 +257,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  inputOutline: {
+    borderRadius: 50,
+  },
 });
 
-export const { InputNumber, InputPassword, InputText, InputMoney } =
-  inputs;
+export const { InputNumber, InputPassword, InputText } = inputs;

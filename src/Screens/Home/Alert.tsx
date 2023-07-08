@@ -1,7 +1,11 @@
 import React from "react";
 import { Modal, StyleSheet, TouchableOpacity, View } from "react-native";
 import Color from "../../Components/Color";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { Body, BodyS, HeadingS } from "../../Components/Typography";
 import { useDispatch, useSelector } from "react-redux";
 import { breakdownVisibleReducer } from "../../Redux/Features/Vehicle/VehicleModalSlice";
@@ -10,6 +14,7 @@ import BreakdownMap from "./BreakdownMap";
 import { number } from "card-validator";
 import { breakdownLocationReducer } from "../../Redux/Features/ReportBreakdown/ReportBreakdownSlice";
 import { getReadableIssues } from "../../Helpers/BreakdownMsg";
+import { Text } from "react-native-paper";
 
 interface IVehicle {
   id: number;
@@ -71,22 +76,23 @@ export const Alert: React.FC<AlertProps> = (props) => {
     <>
       <View style={styles.container}>
         <MaterialCommunityIcons
-          name="tow-truck"
+          name="help-network-outline"
           size={24}
           color={Color.warning}
         />
         <View>
-          <HeadingS style={styles.alertText}>
+          <Text variant="titleMedium" style={styles.alertText}>
             {props.vehicle.plateNumber}
-          </HeadingS>
+          </Text>
 
           <View style={styles.locationContainer}>
-            <MaterialCommunityIcons
+            {/* <MaterialCommunityIcons
               name="car-info"
               size={24}
               color={Color.dimblack}
-            />
-            <Body style={styles.bodyText}>
+            /> */}
+            <Text variant="bodyLarge" style={styles.bodyText}>
+              Issue:{" "}
               {getReadableIssues({
                 engineFailure: props.breakdown.engineFailure,
                 flatTyre: props.breakdown.flatTyre,
@@ -98,7 +104,7 @@ export const Alert: React.FC<AlertProps> = (props) => {
                 electricalSystemFailure:
                   props.breakdown.electricalSystemFailure,
               })}
-            </Body>
+            </Text>
           </View>
 
           <TouchableOpacity
@@ -106,8 +112,14 @@ export const Alert: React.FC<AlertProps> = (props) => {
             onPress={handleBreakDownLocation}
           >
             <View style={styles.locationContainer}>
-              <Ionicons name="location" size={24} color={Color.primary} />
-              <BodyS style={styles.locationText}>View location</BodyS>
+              <MaterialCommunityIcons
+                name="location-enter"
+                size={20}
+                color={Color.primary}
+              />
+              <Text variant="labelMedium" style={styles.locationText}>
+                View location
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -142,6 +154,7 @@ const styles = StyleSheet.create({
   locationContainer: {
     flexDirection: "row",
     marginTop: 10,
+    alignItems: "center",
   },
   locationText: {
     color: Color.primary,

@@ -27,6 +27,7 @@ import { RootState } from "../../Redux";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { getRoutes } from "../../Api/Services/Backend/Route";
 import { postBreakdown } from "../../Api/Services/Backend/Breakdown";
+import { Button } from "react-native-paper";
 
 interface ReportBreakdownProps {}
 
@@ -204,13 +205,16 @@ export const ReportBreakdown: React.FC<ReportBreakdownProps> = (props) => {
             </HelpType>
           </View>
         </ScrollView>
-        <View style={styles.bottomContainer}>
-          {isLoading ? (
-            <ActivityIndicator size={36} color={Color.primary} />
-          ) : (
-            <ButtonL action="Send" onPress={handleSend} />
-          )}
-        </View>
+
+        <Button
+          mode="contained"
+          loading={isLoading}
+          onPress={handleSend}
+          buttonColor={Color.primary}
+          style={styles.reportButton}
+        >
+          Report
+        </Button>
       </ModalScreen>
     </>
   );
@@ -232,5 +236,9 @@ const styles = StyleSheet.create({
   bottomContainer: {
     alignItems: "center",
     marginBottom: 20,
+    width: "100%",
+  },
+  reportButton: {
+    margin: 20,
   },
 });
