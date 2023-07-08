@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Modal, View, FlatList } from "react-native";
+import { StyleSheet, Modal, View, FlatList, Platform } from "react-native";
 import Screen from "../../Layouts/Screen";
 import Color from "../../Components/Color";
 import { useDispatch, useSelector } from "react-redux";
@@ -226,6 +226,15 @@ const Home: React.FC = () => {
       //     console.log("Failed to get push token for notifications!");
       //     return;
       //   }
+
+      if (Platform.OS === "android") {
+        await Notifications.setNotificationChannelAsync("default", {
+          name: "default",
+          importance: Notifications.AndroidImportance.MAX,
+          vibrationPattern: [0, 250, 250, 250],
+          sound: "emergency_alert.mp3",
+        });
+      }
 
       const tokenData = await Notifications.getExpoPushTokenAsync();
       const pushToken = tokenData.data;

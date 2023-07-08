@@ -1,20 +1,16 @@
 {
   "expo": {
-    "name": "Breakdown Alert",
+    "name": "Nihelp",
     "slug": "breakdown-alert",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/adaptive-icon.png",
+    "icon": "./assets/nihelp-logo.png",
     "scheme": "com.google.breakdown_alert",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash/vbas-splash-3.png",
       "resizeMode": "contain",
       "backgroundColor": "#FFFFFF"
-    },
-    "notification": {
-      "icon": "./assets/icon.png",
-      "iosDisplayInForeground": true
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
@@ -37,7 +33,7 @@
         }
       },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/nihelp-logo.png",
         "backgroundColor": "#FFFFFF"
       },
       "permissions": [
@@ -64,7 +60,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/adaptive-icon.png",
+          "icon": "./assets/nihelp-logo.png",
           "color": "#ffffff",
           "sounds": ["./assets/notification/emergency_alert.mp3"]
         }

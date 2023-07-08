@@ -29,7 +29,8 @@ import {
   updateProfileVisibleReducer,
 } from "../../Redux/Features/Profile/ProfileModal";
 import { Privacy } from "./Privacy";
-import { PaperProvider } from "react-native-paper";
+import * as Linking from "expo-linking";
+import { Text } from "react-native-paper";
 
 interface ProfileProps {}
 
@@ -68,6 +69,14 @@ const Profile: React.FC<ProfileProps> = (props) => {
     return state.logout.logoutVisible;
   });
 
+  const handlePrivacyPolicy = () => {
+    Linking.openURL("https://nihelp.onrender.com");
+  };
+
+  const handleTermsOfService = () => {
+    Linking.openURL("https://nihelp.onrender.com/terms.html");
+  };
+
   const handleLogout = async () => {
     dispatch(logoutVisibleReducer());
 
@@ -76,112 +85,125 @@ const Profile: React.FC<ProfileProps> = (props) => {
 
   return (
     <>
-      <PaperProvider>
-        <Screen>
-          <Topbar title="Profile" />
-          <ScrollView contentContainerStyle={styles.scrollContainer}>
-            {/* Plate number */}
+      <Screen>
+        <Topbar title="Profile" />
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          {/* Plate number */}
 
-            <View style={styles.container}>
-              <View style={styles.plateNumberContainer}>
-                <View style={styles.carAvatar}>
-                  <Ionicons name="person" size={60} color={Color.grey} />
-                </View>
-                <View style={styles.plate}>
-                  <HeadingS>
-                    {isOwner ? "Owner Account" : "Driver Account"}
-                  </HeadingS>
+          <View style={styles.container}>
+            <View style={styles.plateNumberContainer}>
+              <View style={styles.carAvatar}>
+                <Ionicons name="person" size={60} color={Color.grey} />
+              </View>
+              <View style={styles.plate}>
+                <HeadingS>
+                  {isOwner ? "Owner Account" : "Driver Account"}
+                </HeadingS>
 
-                  <TouchableOpacity
-                    activeOpacity={0.9}
-                    onPress={handleEdit}
-                  >
-                    <Body style={styles.editText}>Edit Profile</Body>
-                  </TouchableOpacity>
-                </View>
-
-                <View style={styles.abInfo}>
-                  <MaterialCommunityIcons
-                    name="car-info"
-                    size={24}
-                    color={Color.dimblack}
-                  />
-                </View>
+                <TouchableOpacity activeOpacity={0.9} onPress={handleEdit}>
+                  <Body style={styles.editText}>Edit Profile</Body>
+                </TouchableOpacity>
               </View>
 
+              <View style={styles.abInfo}>
+                <MaterialCommunityIcons
+                  name="car-info"
+                  size={24}
+                  color={Color.dimblack}
+                />
+              </View>
+            </View>
+
+            <ProfileDetail
+              label={isOwner ? "Owner" : "Driver"}
+              value={name}
+            >
+              <Octicons
+                name="organization"
+                size={24}
+                color={Color.primary}
+              />
+            </ProfileDetail>
+
+            <ProfileDetail label="Email" value={email}>
+              <MaterialCommunityIcons
+                name="email-outline"
+                size={30}
+                color={Color.primary}
+              />
+            </ProfileDetail>
+
+            <ProfileDetail label="Mobile" value={phoneNumber}>
+              <MaterialCommunityIcons
+                name="phone-outline"
+                size={30}
+                color={Color.primary}
+              />
+            </ProfileDetail>
+
+            {isOwner && (
               <ProfileDetail
-                label={isOwner ? "Owner" : "Driver"}
-                value={name}
+                label="Vehicles"
+                value={`total of ${vehicles.toString()}`}
               >
-                <Octicons
-                  name="organization"
+                <MaterialCommunityIcons
+                  name="truck-fast-outline"
+                  size={28}
+                  color={Color.primary}
+                />
+              </ProfileDetail>
+            )}
+
+            {!isOwner && (
+              <ProfileDetail label="License" value={licenseNo}>
+                <FontAwesome
+                  name="drivers-license-o"
                   size={24}
                   color={Color.primary}
                 />
               </ProfileDetail>
+            )}
 
-              <ProfileDetail label="Email" value={email}>
-                <MaterialCommunityIcons
-                  name="email-outline"
-                  size={30}
-                  color={Color.primary}
-                />
+            <TouchableOpacity activeOpacity={0.85} onPress={handlePrivacy}>
+              <ProfileDetail label="Privacy" value="Password & account">
+                <Feather name="settings" size={24} color={Color.primary} />
               </ProfileDetail>
+            </TouchableOpacity>
 
-              <ProfileDetail label="Mobile" value={phoneNumber}>
-                <MaterialCommunityIcons
-                  name="phone-outline"
-                  size={30}
-                  color={Color.primary}
+            <TouchableOpacity onPress={handleLogout} activeOpacity={0.9}>
+              <View style={styles.logoutContainer}>
+                {/* <Entypo name="log-out" size={24} color={Color.error} /> */}
+                <FontAwesome
+                  name="power-off"
+                  size={24}
+                  color={Color.error}
                 />
-              </ProfileDetail>
+                <Body style={styles.logoutText}>Log out</Body>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
 
-              {isOwner && (
-                <ProfileDetail
-                  label="Vehicles"
-                  value={`total of ${vehicles.toString()}`}
-                >
-                  <MaterialCommunityIcons
-                    name="truck-fast-outline"
-                    size={28}
-                    color={Color.primary}
-                  />
-                </ProfileDetail>
-              )}
+        <View style={styles.conditionsContainer}>
+          <Text
+            variant="labelMedium"
+            style={styles.conditionText}
+            onPress={handlePrivacyPolicy}
+          >
+            Privacy policy{" "}
+          </Text>
 
-              {!isOwner && (
-                <ProfileDetail label="License" value={licenseNo}>
-                  <FontAwesome
-                    name="drivers-license-o"
-                    size={24}
-                    color={Color.primary}
-                  />
-                </ProfileDetail>
-              )}
+          <Entypo name="dot-single" size={12} color={Color.dimblack} />
 
-              <TouchableOpacity
-                activeOpacity={0.85}
-                onPress={handlePrivacy}
-              >
-                <ProfileDetail label="Privacy" value="Password & account">
-                  <Feather
-                    name="settings"
-                    size={24}
-                    color={Color.primary}
-                  />
-                </ProfileDetail>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={handleLogout} activeOpacity={0.9}>
-                <View style={styles.logoutContainer}>
-                  <Entypo name="log-out" size={24} color={Color.error} />
-                  <Body style={styles.logoutText}>Log out</Body>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-        </Screen>
-      </PaperProvider>
+          <Text
+            variant="labelMedium"
+            style={styles.conditionText}
+            onPress={handleTermsOfService}
+          >
+            Terms of service{" "}
+          </Text>
+        </View>
+      </Screen>
 
       <Modal visible={visible} animationType="fade" transparent>
         <LogoutModal />
@@ -256,6 +278,16 @@ const styles = StyleSheet.create({
   editText: {
     color: Color.primary,
     fontWeight: "bold",
+  },
+  conditionsContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingBottom: 15,
+    alignItems: "center",
+  },
+  conditionText: {
+    color: Color.dimblack,
   },
 });
 

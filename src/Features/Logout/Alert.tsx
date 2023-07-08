@@ -57,7 +57,6 @@ const LogoutAlert: React.FC = () => {
               onPress={handleConfirm}
               mode="elevated"
               textColor={Color.primary}
-              uppercase
             >
               Yes, sure
             </Button>

@@ -47,7 +47,7 @@ function Welcome(props: any) {
             color={Color.white}
           />
           <Text variant="headlineSmall" style={styles.descText}>
-            Vehicle breakdown reporting system
+            Breakdown report app
           </Text>
         </View>
         <BottomSheet />
