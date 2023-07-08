@@ -1,8 +1,6 @@
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { InputText } from "../../Components/Inputs";
-import { ButtonL } from "../../Components/Buttons";
 import { ModalNavBack } from "../../Components/ModalNavBack";
 import { RootState } from "../../Redux";
 import Loader from "../../Components/Loader";
@@ -18,23 +16,17 @@ import {
 } from "../../Redux/Features/Route/RouteSlice";
 import { destinationReducer } from "../../Redux/Features/Location/locationSlice";
 import { errorMsg } from "../../Redux/Components/ErrorMsgSlice";
-import {
-  getRoutes,
-  updateRoute,
-} from "../../Api/Services/Backend/Route";
+import { getRoutes, updateRoute } from "../../Api/Services/Backend/Route";
+import { Button } from "react-native-paper";
 
 export const RegisterRoute: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] =
-    React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  const [selectedValue, setSelectedValue] =
-    React.useState("");
+  const [selectedValue, setSelectedValue] = React.useState("");
 
-  const [routes, setRoutes] = React.useState(
-    viaRoadShortNames
-  );
+  const [routes, setRoutes] = React.useState(viaRoadShortNames);
 
   const handleBack = (): void => {
     dispatch(createRouteVisibleReducer());
@@ -46,11 +38,9 @@ export const RegisterRoute: React.FC = () => {
     }
   );
 
-  const authToken: string = useSelector(
-    (state: RootState) => {
-      return state.auth.authToken;
-    }
-  );
+  const authToken: string = useSelector((state: RootState) => {
+    return state.auth.authToken;
+  });
 
   const handleStart = (start: string): void => {
     dispatch(startReducer(start));
@@ -90,10 +80,7 @@ export const RegisterRoute: React.FC = () => {
 
   return (
     <>
-      <ModalNavBack
-        title="What is your route?"
-        handleBack={handleBack}
-      />
+      <ModalNavBack title="What is your route?" handleBack={handleBack} />
 
       <ScrollView contentContainerStyle={styles.container}>
         {/* <InputText
@@ -109,14 +96,8 @@ export const RegisterRoute: React.FC = () => {
         /> */}
 
         <View style={styles.routeContainer}>
-          <FontAwesome5
-            name="road"
-            size={24}
-            color={Color.primary}
-          />
-          <HeadingS style={styles.titleText}>
-            via road
-          </HeadingS>
+          <FontAwesome5 name="road" size={24} color={Color.dimblack} />
+          <HeadingS style={styles.titleText}>via road</HeadingS>
         </View>
 
         {/* <Body style={styles.routeDesc}>Dar Moro Iringa Mby</Body> */}
@@ -137,12 +118,15 @@ export const RegisterRoute: React.FC = () => {
             ))}
           </RadioButton.Group>
         </View>
-
-        <ButtonL
-          action="Register"
-          onPress={handleRegister}
-        />
       </ScrollView>
+      <Button
+        mode="contained"
+        onPress={handleRegister}
+        buttonColor={Color.primary}
+        style={styles.registerButton}
+      >
+        Register
+      </Button>
     </>
   );
 };
@@ -163,10 +147,10 @@ const styles = StyleSheet.create({
   routeContainer: {
     flexDirection: "row",
     marginTop: 15,
-    backgroundColor: Color.lightgray,
-    width: "80%",
+    backgroundColor: Color.liteprimary,
+    width: "90%",
     padding: 10,
-    borderRadius: 100,
+    borderRadius: 1,
     paddingHorizontal: 20,
   },
   routeDesc: {
@@ -177,5 +161,8 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "80%",
+  },
+  registerButton: {
+    margin: 25,
   },
 });

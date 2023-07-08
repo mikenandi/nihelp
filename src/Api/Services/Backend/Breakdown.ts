@@ -91,3 +91,26 @@ export const getOwnerBreakdowns = async (authToken: string) => {
     return error.response.data;
   }
 };
+
+export const patchBreakdown = async (
+  authToken: string,
+  breakdownId: string,
+  isRepaired: boolean
+) => {
+  try {
+    let response = await axios({
+      method: "PATCH",
+      url: `/breakdown/${breakdownId}`,
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+      data: {
+        isRepaired,
+      },
+    });
+
+    return response.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+};

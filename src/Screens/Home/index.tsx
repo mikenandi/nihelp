@@ -52,7 +52,7 @@ export interface IBreakdown {
   engineFailure?: boolean;
   flatTyre?: boolean;
   fuelSystemIssue?: boolean;
-  id?: number;
+  id?: string;
   isRepaired?: boolean;
   latitude?: string;
   longitude?: string;
@@ -256,22 +256,20 @@ const Home: React.FC = () => {
     dispatch(breakdownReportVisibleReducer());
   };
 
-  const renderAlert = ({ item }: { item: AlertProps }) => {
-    return <Alert vehicle={item.vehicle} breakdown={item.breakdown} />;
-  };
+  const renderAlert = ({ item }: { item: AlertProps }) => (
+    <Alert vehicle={item.vehicle} breakdown={item.breakdown} />
+  );
 
-  const renderItem = ({ item }: { item: IVehicle }) => {
-    return (
-      <Vehicle
-        id={item.id}
-        plateNumber={item.plateNumber}
-        make={item.make}
-        model={item.model}
-        route={item.currentRoute}
-        breakdown={item.breakdown}
-      />
-    );
-  };
+  const renderVehicle = ({ item }: { item: IVehicle }) => (
+    <Vehicle
+      id={item.id}
+      plateNumber={item.plateNumber}
+      make={item.make}
+      model={item.model}
+      route={item.currentRoute}
+      breakdown={item.breakdown}
+    />
+  );
 
   if (isLoading) {
     return (
@@ -290,7 +288,7 @@ const Home: React.FC = () => {
           <FlatList
             data={vehicles}
             keyExtractor={(item) => item.id.toString()}
-            renderItem={renderItem}
+            renderItem={renderVehicle}
             contentContainerStyle={styles.contentContainer}
           />
 
@@ -318,14 +316,14 @@ const Home: React.FC = () => {
 
         {isOwner && (
           <FAB onPress={handleRegisterVehicle}>
-            <Foundation name="plus" size={30} color={Color.dimblack} />
+            <Foundation name="plus" size={30} color={Color.warning} />
           </FAB>
         )}
 
         {!isOwner && isRouteActive && (
           <FAB onPress={handleBreakdownReport}>
             <FontAwesome5
-              name="exclamation-triangle"
+              name="exclamation"
               size={24}
               color={Color.warning}
             />
