@@ -5,6 +5,7 @@ import Color from "./Color";
 import { useDispatch, useSelector } from "react-redux";
 import { errorMsg } from "../Redux/Components/ErrorMsgSlice";
 import { RootState } from "../Redux";
+import { Text } from "react-native-paper";
 
 const ErrorMsg: React.FC = () => {
   const dispatch = useDispatch();
@@ -16,12 +17,16 @@ const ErrorMsg: React.FC = () => {
   React.useEffect(() => {
     setTimeout(() => {
       dispatch(errorMsg(""));
-    }, 5000);
+    }, 7000);
   }, [msg]);
 
   return (
     <>
-      {!!msg && <Body style={styles.errorMsg}>{msg}</Body>}
+      {!!msg && (
+        <Text variant="bodyLarge" style={styles.errorMsg}>
+          {msg}
+        </Text>
+      )}
     </>
   );
 };
@@ -31,9 +36,7 @@ const styles = StyleSheet.create({
     color: Color.error,
     marginTop: 6,
     width: "80%",
-    backgroundColor: Color.lightred,
-    padding: 10,
-    borderRadius: 6,
+    padding: 4,
     fontWeight: "bold",
   },
 });

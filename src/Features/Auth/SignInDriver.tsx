@@ -21,6 +21,9 @@ import { NavigationProp } from "@react-navigation/native";
 import { RootState } from "../../Redux";
 import { getVehicles } from "../../Api/Services/Backend/Vehicle";
 import { postRoute } from "../../Api/Services/Backend/Route";
+import { Button, Text } from "react-native-paper";
+import Color from "../../Components/Color";
+import { Feather } from "@expo/vector-icons";
 
 interface SignInDriverProps {
   navigation: NavigationProp<any>;
@@ -127,7 +130,7 @@ const SignInDriver: React.FC<SignInDriverProps> = (props) => {
   return (
     <>
       <AuthScreen>
-        <HeadingS>Sign in to your account</HeadingS>
+        <Text variant="titleLarge">Driver sign in</Text>
 
         <ErrorMsg />
 
@@ -138,7 +141,7 @@ const SignInDriver: React.FC<SignInDriverProps> = (props) => {
         />
 
         <InputText
-          label="email"
+          label="Email"
           value={email}
           onChangeText={handleEmail}
         />
@@ -153,22 +156,34 @@ const SignInDriver: React.FC<SignInDriverProps> = (props) => {
           {/* <TextButton action='forgot password' onPress={handleForgotPassword} /> */}
         </View>
 
-        <ButtonL action="sign in" onPress={handleSignIn} />
+        <Button
+          mode="contained"
+          onPress={handleSignIn}
+          buttonColor={Color.primary}
+          style={styles.buttonStyle}
+          contentStyle={styles.buttonContent}
+          loading={isLoading}
+          icon={() => (
+            <Feather name="arrow-right" size={14} color="white" />
+          )}
+        >
+          Sign in
+        </Button>
 
         <View style={styles.bottomQuestionContainer}>
-          <Body style={styles.questionText}>Don't have acount?</Body>
+          <Text variant="bodyMedium" style={styles.questionText}>
+            Don't have acount?
+          </Text>
 
-          <TextButton
-            action="Register"
+          <Button
+            mode="text"
             onPress={handleSignUp}
-            style={styles.registerBtn}
-          />
+            textColor={Color.primary}
+          >
+            Sign up
+          </Button>
         </View>
       </AuthScreen>
-
-      <Modal animationType="fade" visible={isLoading} transparent={false}>
-        <Loader />
-      </Modal>
     </>
   );
 };
@@ -181,14 +196,16 @@ const styles = StyleSheet.create({
   bottomQuestionContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 5,
+    marginTop: 10,
   },
   questionText: {
-    marginTop: 15,
-    marginRight: 5,
+    marginRight: 2,
   },
-  registerBtn: {
-    fontSize: 20,
+  buttonStyle: {
+    width: "80%",
+  },
+  buttonContent: {
+    flexDirection: "row-reverse",
   },
 });
 

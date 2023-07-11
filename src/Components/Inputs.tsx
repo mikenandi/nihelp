@@ -5,10 +5,9 @@ import {
   ViewStyle,
   KeyboardTypeOptions,
 } from "react-native";
-import { Entypo, Ionicons } from "@expo/vector-icons";
-import { Body, BodyS } from "./Typography";
+import { Ionicons } from "@expo/vector-icons";
+import { Body } from "./Typography";
 import Color from "./Color";
-import { HeadingS } from "./Typography";
 import { TextInput } from "react-native-paper";
 
 interface Props {
@@ -202,6 +201,7 @@ const styles = StyleSheet.create({
     // paddingVertical: 10,
     aspectRatio: 10 / 1.6,
     justifyContent: "center",
+    marginBottom: 16,
   },
   inputPasswordText: {
     borderRadius: 50,

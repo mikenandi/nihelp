@@ -10,12 +10,20 @@ import RecoverPassword from "../Features/Auth/RecoverPassword";
 import Welcome from "../Features/Auth/Welcome";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Components/Loader";
-import { logInReducer } from "../Redux/Features/Auth/AuthSlice";
+import {
+  isConnectedReducer,
+  logInReducer,
+} from "../Redux/Features/Auth/AuthSlice";
 import { useFonts } from "expo-font";
 import * as Notifications from "expo-notifications";
 import SignInDriver from "../Features/Auth/SignInDriver";
 import { updateProfile } from "../Api/Services/Backend/Profile";
 import { RootState } from "../Redux";
+import { View } from "react-native";
+import { Text } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Color from "../Components/Color";
+import NetInfo from "@react-native-community/netinfo";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,9 +44,11 @@ const Auth: React.FC = () => {
     poppins: require("../../assets/fonts/barlow-condensed/BarlowCondensed-Medium.ttf"),
   });
 
-  const { isLogedOut, authToken } = useSelector((state: RootState) => {
-    return state.auth;
-  });
+  const { isLogedOut, authToken, isConnected } = useSelector(
+    (state: RootState) => {
+      return state.auth;
+    }
+  );
 
   // Call the function to register for push notifications
   // React.useEffect(() => {
@@ -51,7 +61,11 @@ const Auth: React.FC = () => {
       try {
         let savedToken = await SecureStore.getItemAsync("authToken");
 
-        let savedUserId: any = await AsyncStorage.getItem("userId");
+        let connectionState = await NetInfo.fetch();
+
+        if (connectionState.isConnected) {
+          dispatch(isConnectedReducer());
+        }
 
         if (!!savedToken) {
           dispatch(

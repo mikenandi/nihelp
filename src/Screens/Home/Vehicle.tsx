@@ -127,7 +127,9 @@ export const Vehicle: React.FC<VehicleProps> = (props) => {
                   size={18}
                   color="white"
                 />
-                <Text variant="bodyMedium">{props.route}</Text>
+                <Text variant="bodyMedium" numberOfLines={1}>
+                  {props.route.substring(0, 12) + "..."}
+                </Text>
               </View>
             )}
           </View>
