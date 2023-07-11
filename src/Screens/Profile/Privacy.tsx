@@ -1,17 +1,11 @@
 import React from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { ModalScreen } from "../../Layouts/ModalScreen";
 import { ModalNavBack } from "../../Components/ModalNavBack";
 import { useDispatch, useSelector } from "react-redux";
-import { ButtonL } from "../../Components/Buttons";
 import { RootState } from "../../Redux";
 import {
-  cleanSignupDataReducer,
+  cleanAuthDataReducer,
   logOutReducer,
   passwordReducer,
 } from "../../Redux/Features/Auth/AuthSlice";
@@ -21,9 +15,7 @@ import {
   updateProfile,
 } from "../../Api/Services/Backend/Profile";
 import { privacyProfileVisibleReducer } from "../../Redux/Features/Profile/ProfileModal";
-import Loader from "../../Components/Loader";
 import { errorMsg } from "../../Redux/Components/ErrorMsgSlice";
-import { Body } from "../../Components/Typography";
 import Color from "../../Components/Color";
 import * as SecureStorage from "expo-secure-store";
 import { Button } from "react-native-paper";
@@ -73,18 +65,10 @@ const Privacy: React.FC = () => {
 
     await SecureStorage.deleteItemAsync("authToken");
 
-    dispatch(cleanSignupDataReducer());
+    dispatch(cleanAuthDataReducer());
 
     dispatch(logOutReducer());
   };
-
-  if (isLoading) {
-    return (
-      <>
-        <Loader />
-      </>
-    );
-  }
 
   return (
     <>
@@ -103,12 +87,13 @@ const Privacy: React.FC = () => {
             buttonColor={Color.primary}
             style={styles.btn}
             onPress={handleEdit}
+            loading={isLoading}
           >
-            Update password
+            Change password
           </Button>
 
           <Button
-            mode="elevated"
+            mode="outlined"
             icon="delete"
             textColor={Color.error}
             onPress={handleDelete}

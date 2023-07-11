@@ -1,19 +1,13 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  Image,
-  ScrollView,
-  ActivityIndicator,
-} from "react-native";
+import { StyleSheet, View, Image, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { ButtonL } from "../../Components/Buttons";
 import Color from "../../Components/Color";
 import { ModalNavBack } from "../../Components/ModalNavBack";
 import { getGpsLocation } from "../../Helpers/Location";
 import { ModalScreen } from "../../Layouts/ModalScreen";
 import {
   brakingSystemMalfunctionReducer,
+  clearBreakdownReducer,
   deadBatteryReducer,
   electricalSystemFailureReducer,
   engineFailureReducer,
@@ -24,7 +18,11 @@ import {
 import { HelpType } from "./HelpType";
 import { breakdownReportVisibleReducer } from "../../Redux/Features/Vehicle/VehicleModalSlice";
 import { RootState } from "../../Redux";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import {
+  Feather,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { getRoutes } from "../../Api/Services/Backend/Route";
 import { postBreakdown } from "../../Api/Services/Backend/Breakdown";
 import { Button } from "react-native-paper";
@@ -38,6 +36,7 @@ export const ReportBreakdown: React.FC<ReportBreakdownProps> = (props) => {
 
   const handleBack = (): void => {
     dispatch(breakdownReportVisibleReducer());
+    dispatch(clearBreakdownReducer());
   };
 
   const {
@@ -86,6 +85,8 @@ export const ReportBreakdown: React.FC<ReportBreakdownProps> = (props) => {
 
   const handleSend = async () => {
     try {
+      setIsLoading(true);
+
       let location = await getGpsLocation();
 
       let latitude, longitude;
@@ -109,7 +110,11 @@ export const ReportBreakdown: React.FC<ReportBreakdownProps> = (props) => {
         longitude,
       };
 
-      let response = await postBreakdown(inputs, routeId, authToken);
+      await postBreakdown(inputs, routeId, authToken);
+
+      dispatch(clearBreakdownReducer());
+
+      setIsLoading(false);
 
       handleBack();
 
@@ -212,6 +217,10 @@ export const ReportBreakdown: React.FC<ReportBreakdownProps> = (props) => {
           onPress={handleSend}
           buttonColor={Color.primary}
           style={styles.reportButton}
+          contentStyle={styles.buttonContent}
+          icon={() => (
+            <Feather name="arrow-right" size={14} color="white" />
+          )}
         >
           Report
         </Button>
@@ -240,5 +249,8 @@ const styles = StyleSheet.create({
   },
   reportButton: {
     margin: 20,
+  },
+  buttonContent: {
+    flexDirection: "row-reverse",
   },
 });

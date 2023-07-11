@@ -84,20 +84,6 @@ const authSlice = createSlice({
     phoneNumberReducer: (state, actions) => {
       state.phoneNumber = actions.payload;
     },
-    cleanSignupDataReducer: (state) => {
-      state.authToken = "";
-      state.name = "";
-      state.email = "";
-      state.password = "";
-      state.plateNumber = "";
-      state.userType = "";
-      state.licenseNo = "";
-      state.phoneNumber = "";
-    },
-    cleanSigninDataReducer: (state) => {
-      state.email = "";
-      state.password = "";
-    },
     driverProfileReducer: (state, actions: PayloadAction<IDriver>) => {
       state.name = actions.payload.name;
       state.email = actions.payload.email;
@@ -116,6 +102,9 @@ const authSlice = createSlice({
     isConnectedReducer: (state) => {
       state.isConnected = !state.isConnected;
     },
+    cleanAuthDataReducer: (state) => {
+      Object.assign(state, initialState);
+    },
   },
 });
 
@@ -129,11 +118,10 @@ export const {
   userTypeReducer,
   licenseNoReducer,
   phoneNumberReducer,
-  cleanSignupDataReducer,
-  cleanSigninDataReducer,
   ownerProfileReducer,
   driverProfileReducer,
   isConnectedReducer,
+  cleanAuthDataReducer,
 } = authSlice.actions;
 
 export default authSlice.reducer;

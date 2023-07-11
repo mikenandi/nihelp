@@ -6,7 +6,7 @@ import { InputText, InputPassword } from "../../Components/Inputs";
 import { ButtonL, TextButton } from "../../Components/Buttons";
 import { useDispatch } from "react-redux";
 import {
-  cleanSignupDataReducer,
+  cleanAuthDataReducer,
   emailReducer,
   licenseNoReducer,
   logInReducer,
@@ -24,6 +24,9 @@ import { errorMsg } from "../../Redux/Components/ErrorMsgSlice";
 import { isEmail } from "../../Helpers/EmailCheck";
 import Loader from "../../Components/Loader";
 import * as SecureStore from "expo-secure-store";
+import { Button, Text } from "react-native-paper";
+import Color from "../../Components/Color";
+import { Feather } from "@expo/vector-icons";
 
 type SignUpProps = {
   navigation: NavigationProp<any>;
@@ -39,13 +42,13 @@ const SignUp: React.FC<SignUpProps> = (props) => {
     });
 
   const handleSignIn = (): void => {
-    dispatch(cleanSignupDataReducer());
+    dispatch(cleanAuthDataReducer());
 
     props.navigation.navigate("SignIn");
   };
 
   const handleDriverSignup = (): void => {
-    dispatch(cleanSignupDataReducer());
+    dispatch(cleanAuthDataReducer());
 
     props.navigation.navigate("SignInDriver");
   };
@@ -153,7 +156,7 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 
         dispatch(logInReducer({ authToken: response.access_token }));
 
-        dispatch(cleanSignupDataReducer());
+        dispatch(cleanAuthDataReducer());
 
         return;
       }
@@ -168,22 +171,14 @@ const SignUp: React.FC<SignUpProps> = (props) => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <>
-        <Loader />
-      </>
-    );
-  }
-
   return (
     <>
       <AuthScreen>
-        <HeadingS>Create account</HeadingS>
+        <Text variant="titleLarge">Create account</Text>
 
         <ErrorMsg />
 
-        <InputText label="name" value={name} onChangeText={handleName} />
+        <InputText label="Name" value={name} onChangeText={handleName} />
 
         <DropdownInput />
 
@@ -196,7 +191,7 @@ const SignUp: React.FC<SignUpProps> = (props) => {
         )}
 
         <InputText
-          label="phone"
+          label="Phone"
           value={phoneNumber}
           keyboardType="number-pad"
           onChangeText={handlePhoneNumber}
@@ -204,7 +199,7 @@ const SignUp: React.FC<SignUpProps> = (props) => {
         />
 
         <InputText
-          label="email"
+          label="Email"
           value={email}
           onChangeText={handleEmail}
         />
@@ -215,11 +210,32 @@ const SignUp: React.FC<SignUpProps> = (props) => {
           onChangeText={handlePassword}
         />
 
-        <ButtonL action="sign up" onPress={handleSignup} />
+        <Button
+          mode="contained"
+          buttonColor={Color.primary}
+          onPress={handleSignup}
+          style={styles.buttonStyle}
+          contentStyle={styles.buttonContent}
+          loading={isLoading}
+          icon={() => (
+            <Feather name="arrow-right" size={14} color="white" />
+          )}
+        >
+          Sign up
+        </Button>
 
         <View style={styles.bottomQuestionContainer}>
-          <Body style={styles.questionText}>Have account?</Body>
-          <TextButton action="sign in" onPress={handleSignIn} />
+          <Text variant="bodyMedium" style={styles.questionText}>
+            Have account?
+          </Text>
+          {/* <TextButton action="sign in" onPress={handleSignIn} /> */}
+          <Button
+            mode="text"
+            textColor={Color.primary}
+            onPress={handleSignIn}
+          >
+            Sign in
+          </Button>
         </View>
       </AuthScreen>
     </>
@@ -234,11 +250,17 @@ const styles = StyleSheet.create({
   bottomQuestionContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 5,
+    marginTop: 16,
   },
   questionText: {
-    marginTop: 15,
+    // marginTop: 15,
     marginRight: 5,
+  },
+  buttonStyle: {
+    width: "80%",
+  },
+  buttonContent: {
+    flexDirection: "row-reverse",
   },
 });
 

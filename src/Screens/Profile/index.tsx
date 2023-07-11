@@ -96,12 +96,14 @@ const Profile: React.FC<ProfileProps> = (props) => {
                 <Ionicons name="person" size={60} color={Color.grey} />
               </View>
               <View style={styles.plate}>
-                <HeadingS>
+                <Text variant="titleLarge">
                   {isOwner ? "Owner Account" : "Driver Account"}
-                </HeadingS>
+                </Text>
 
                 <TouchableOpacity activeOpacity={0.9} onPress={handleEdit}>
-                  <Body style={styles.editText}>Edit Profile</Body>
+                  <Text variant="bodyLarge" style={styles.editText}>
+                    Edit Profile
+                  </Text>
                 </TouchableOpacity>
               </View>
 

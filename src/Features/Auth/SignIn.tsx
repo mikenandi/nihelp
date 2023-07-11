@@ -1,155 +1,176 @@
 import React from "react";
-import {StyleSheet, View, Modal} from "react-native";
-import {Body, HeadingS} from "../../Components/Typography";
+import { StyleSheet, View } from "react-native";
+import { HeadingS } from "../../Components/Typography";
 import AuthScreen from "../../Layouts/AuthScreen";
-import {InputText, InputPassword} from "../../Components/Inputs";
-import {ButtonL, TextButton} from "../../Components/Buttons";
-import {signIn} from "../../Api/Auth/Auth";
-import {ErrorMsg} from "../../Components/ErrorMsg";
-import {errorMsg} from "../../Redux/Components/ErrorMsgSlice";
-import {useDispatch, useSelector} from "react-redux";
+import { InputText, InputPassword } from "../../Components/Inputs";
+import { signIn } from "../../Api/Auth/Auth";
+import { ErrorMsg } from "../../Components/ErrorMsg";
+import { errorMsg } from "../../Redux/Components/ErrorMsgSlice";
+import { useDispatch, useSelector } from "react-redux";
 import {
-	logInReducer,
-	passwordReducer,
-	emailReducer,
-	cleanSigninDataReducer,
+  logInReducer,
+  passwordReducer,
+  emailReducer,
+  cleanAuthDataReducer,
 } from "../../Redux/Features/Auth/AuthSlice";
 import * as SecureStore from "expo-secure-store";
-import Loader from "../../Components/Loader";
-import {NavigationProp} from "@react-navigation/native";
+import { NavigationProp } from "@react-navigation/native";
+import { Button, Text } from "react-native-paper";
+import Color from "../../Components/Color";
+import { Feather } from "@expo/vector-icons";
 
 interface SignInProps {
-	navigation: NavigationProp<any>;
+  navigation: NavigationProp<any>;
 }
 
 const SignIn: React.FC<SignInProps> = (props) => {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	// Seting states
-	const [isLoading, setIsLoading] = React.useState(false);
+  // Seting states
+  const [isLoading, setIsLoading] = React.useState(false);
 
-	const {email, password} = useSelector((state: any) => {
-		return state.auth;
-	});
+  const { email, password } = useSelector((state: any) => {
+    return state.auth;
+  });
 
-	// Input function for email entry
-	const handleEmail = (email: string): void => {
-		dispatch(emailReducer(email));
-	};
+  // Input function for email entry
+  const handleEmail = (email: string): void => {
+    dispatch(emailReducer(email));
+  };
 
-	// Input function for password entry
-	const handlePassword = (password: string): void => {
-		dispatch(passwordReducer(password));
+  // Input function for password entry
+  const handlePassword = (password: string): void => {
+    dispatch(passwordReducer(password));
 
-		return;
-	};
+    return;
+  };
 
-	// Handling SingIn
-	const handleSignIn = async () => {
-		if (!email || !password) {
-			dispatch(errorMsg("fill all fields"));
+  // Handling SingIn
+  const handleSignIn = async () => {
+    if (!email || !password) {
+      dispatch(errorMsg("fill all fields"));
 
-			return;
-		}
+      return;
+    }
 
-		if (password.length < 6) {
-			dispatch(errorMsg("password must have 6 charracters or more"));
+    if (password.length < 6) {
+      dispatch(errorMsg("password must have 6 charracters or more"));
 
-			return;
-		}
+      return;
+    }
 
-		setIsLoading(true);
+    setIsLoading(true);
 
-		let response = await signIn({email, password});
+    let response = await signIn({ email, password });
 
-		if (response.access_token) {
-			await SecureStore.setItemAsync("authToken", response.access_token);
+    if (response.access_token) {
+      await SecureStore.setItemAsync("authToken", response.access_token);
 
-			dispatch(
-				logInReducer({
-					authToken: response.access_token,
-				})
-			);
+      dispatch(
+        logInReducer({
+          authToken: response.access_token,
+        })
+      );
 
-			setIsLoading(false);
+      dispatch(cleanAuthDataReducer());
 
-			return;
-		}
+      setIsLoading(false);
 
-		setIsLoading(false);
+      return;
+    }
 
-		dispatch(errorMsg(response.message));
+    setIsLoading(false);
 
-		return;
-	};
+    dispatch(errorMsg(response.message));
 
-	// Navigate to sign up screen
-	const handleSignUp = (): void => {
-		dispatch(cleanSigninDataReducer());
+    return;
+  };
 
-		props.navigation.navigate("SignUp");
+  // Navigate to sign up screen
+  const handleSignUp = (): void => {
+    dispatch(cleanAuthDataReducer());
 
-		return;
-	};
+    props.navigation.navigate("SignUp");
 
-	return (
-		<>
-			<AuthScreen>
-				{/* <Logo /> */}
+    return;
+  };
 
-				<HeadingS>Sign in to your account</HeadingS>
+  return (
+    <>
+      <AuthScreen>
+        {/* <Logo /> */}
 
-				<ErrorMsg />
+        <Text variant="titleLarge">Owner sign in </Text>
 
-				<InputText label="email" value={email} onChangeText={handleEmail} />
+        <ErrorMsg />
 
-				<InputPassword
-					label="Password"
-					value={password}
-					onChangeText={handlePassword}
-				/>
+        <InputText
+          label="Email"
+          value={email}
+          onChangeText={handleEmail}
+        />
 
-				<View style={styles.forgotPasswordContainer}>
-					{/* <TextButton action='forgot password' onPress={handleForgotPassword} /> */}
-				</View>
+        <InputPassword
+          label="Password"
+          value={password}
+          onChangeText={handlePassword}
+        />
 
-				<ButtonL action="sign in" onPress={handleSignIn} />
+        <View style={styles.forgotPasswordContainer}>
+          {/* <TextButton action='forgot password' onPress={handleForgotPassword} /> */}
+        </View>
 
-				<View style={styles.bottomQuestionContainer}>
-					<Body style={styles.questionText}>Don't have acount?</Body>
+        <Button
+          mode="contained"
+          onPress={handleSignIn}
+          buttonColor={Color.primary}
+          style={styles.buttonStyle}
+          contentStyle={styles.buttonContent}
+          loading={isLoading}
+          icon={() => (
+            <Feather name="arrow-right" size={14} color="white" />
+          )}
+        >
+          Sign in
+        </Button>
 
-					<TextButton
-						action="Register"
-						onPress={handleSignUp}
-						style={styles.registerBtn}
-					/>
-				</View>
-			</AuthScreen>
+        <View style={styles.bottomQuestionContainer}>
+          <Text variant="bodyMedium" style={styles.questionText}>
+            Don't have acount?
+          </Text>
 
-			<Modal animationType="fade" visible={isLoading} transparent={false}>
-				<Loader />
-			</Modal>
-		</>
-	);
+          <Button
+            mode="text"
+            onPress={handleSignUp}
+            textColor={Color.primary}
+          >
+            Sign up
+          </Button>
+        </View>
+      </AuthScreen>
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
-	forgotPasswordContainer: {
-		width: 260,
-		alignItems: "flex-end",
-	},
-	bottomQuestionContainer: {
-		flexDirection: "row",
-		alignItems: "center",
-		marginBottom: 5,
-	},
-	questionText: {
-		marginTop: 15,
-		marginRight: 5,
-	},
-	registerBtn: {
-		fontSize: 20,
-	},
+  forgotPasswordContainer: {
+    width: 260,
+    alignItems: "flex-end",
+  },
+  bottomQuestionContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  questionText: {
+    marginRight: 2,
+  },
+  buttonStyle: {
+    width: "80%",
+  },
+  buttonContent: {
+    flexDirection: "row-reverse",
+  },
 });
 
 export default React.memo(SignIn);

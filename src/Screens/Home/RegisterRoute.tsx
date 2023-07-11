@@ -3,9 +3,8 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { ModalNavBack } from "../../Components/ModalNavBack";
 import { RootState } from "../../Redux";
-import Loader from "../../Components/Loader";
 import { HeadingS } from "../../Components/Typography";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { Feather, FontAwesome5 } from "@expo/vector-icons";
 import Color from "../../Components/Color";
 import { createRouteVisibleReducer } from "../../Redux/Features/Route/RouteModal";
 import { RadioButton } from "react-native-paper";
@@ -71,30 +70,11 @@ export const RegisterRoute: React.FC = () => {
     return;
   };
 
-  if (isLoading)
-    return (
-      <>
-        <Loader />
-      </>
-    );
-
   return (
     <>
       <ModalNavBack title="What is your route?" handleBack={handleBack} />
 
       <ScrollView contentContainerStyle={styles.container}>
-        {/* <InputText
-          label="Start"
-          value={start}
-          onChangeText={handleStart}
-        /> */}
-
-        {/* <InputText
-          label="Destination"
-          value={destination}
-          onChangeText={handleDestination}
-        /> */}
-
         <View style={styles.routeContainer}>
           <FontAwesome5 name="road" size={24} color={Color.dimblack} />
           <HeadingS style={styles.titleText}>via road</HeadingS>
@@ -124,6 +104,9 @@ export const RegisterRoute: React.FC = () => {
         onPress={handleRegister}
         buttonColor={Color.primary}
         style={styles.registerButton}
+        loading={isLoading}
+        contentStyle={styles.buttonContent}
+        icon={() => <Feather name="arrow-right" size={14} color="white" />}
       >
         Register
       </Button>
@@ -164,5 +147,8 @@ const styles = StyleSheet.create({
   },
   registerButton: {
     margin: 25,
+  },
+  buttonContent: {
+    flexDirection: "row-reverse",
   },
 });

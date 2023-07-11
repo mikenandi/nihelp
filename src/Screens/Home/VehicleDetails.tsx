@@ -5,16 +5,8 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Modal,
-} from "react-native";
+import { View, StyleSheet, ScrollView, Modal } from "react-native";
 import Color from "../../Components/Color";
-import { HeadingS } from "../../Components/Typography";
-import { ModalNavBack } from "../../Components/ModalNavBack";
 import { useDispatch, useSelector } from "react-redux";
 import {
   editVehicleVisibleReducer,
@@ -28,7 +20,8 @@ import { RootState } from "../../Redux";
 import { deleteVehicle } from "../../Api/Services/Backend/Vehicle";
 import { infoMsg } from "../../Redux/Components/ErrorMsgSlice";
 import { EditVehicle } from "./EditVehicle";
-import { Button } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
+import { ModalNavBack } from "../../Components/ModalNavBack";
 
 const VehicleDetails: React.FC = () => {
   const dispatch = useDispatch();
@@ -87,11 +80,11 @@ const VehicleDetails: React.FC = () => {
         <View style={styles.container}>
           <View style={styles.detailContainer}>
             <View style={styles.iconContainer}>
-              <Fontisto name="truck" size={30} color={Color.primary} />
+              <Fontisto name="truck" size={30} color={Color.liteprimary} />
             </View>
-            <HeadingS style={styles.title}>
+            <Text variant="titleLarge" style={styles.title}>
               Plate no: {plateNumber}
-            </HeadingS>
+            </Text>
           </View>
 
           <View style={styles.detailContainer}>
@@ -99,10 +92,12 @@ const VehicleDetails: React.FC = () => {
               <MaterialCommunityIcons
                 name="robot-industrial"
                 size={30}
-                color={Color.primary}
+                color={Color.liteprimary}
               />
             </View>
-            <HeadingS style={styles.title}>Make: {make}</HeadingS>
+            <Text variant="titleLarge" style={styles.title}>
+              Make: {make}
+            </Text>
           </View>
 
           <View style={styles.detailContainer}>
@@ -110,11 +105,13 @@ const VehicleDetails: React.FC = () => {
               <MaterialIcons
                 name="merge-type"
                 size={35}
-                color={Color.primary}
+                color={Color.liteprimary}
               />
             </View>
 
-            <HeadingS style={styles.title}>Model: {model}</HeadingS>
+            <Text variant="titleLarge" style={styles.title}>
+              Model: {model}
+            </Text>
           </View>
 
           <View style={styles.detailContainer}>
@@ -122,12 +119,12 @@ const VehicleDetails: React.FC = () => {
               <FontAwesome5
                 name="business-time"
                 size={24}
-                color={Color.primary}
+                color={Color.liteprimary}
               />
             </View>
-            <HeadingS style={styles.title}>
+            <Text variant="titleLarge" style={styles.title}>
               Model Year: {modelYear}
-            </HeadingS>
+            </Text>
           </View>
 
           <View style={styles.detailContainer}>
@@ -135,12 +132,12 @@ const VehicleDetails: React.FC = () => {
               <FontAwesome5
                 name="truck-loading"
                 size={24}
-                color={Color.primary}
+                color={Color.liteprimary}
               />
             </View>
-            <HeadingS style={styles.title}>
+            <Text variant="titleLarge" style={styles.title}>
               Chasis: {chassisNumber}
-            </HeadingS>
+            </Text>
           </View>
 
           <View style={styles.detailContainer}>
@@ -148,10 +145,12 @@ const VehicleDetails: React.FC = () => {
               <MaterialCommunityIcons
                 name="fuel"
                 size={35}
-                color={Color.primary}
+                color={Color.liteprimary}
               />
             </View>
-            <HeadingS style={styles.title}>Fuel: {fuelType}</HeadingS>
+            <Text variant="titleLarge" style={styles.title}>
+              Fuel: {fuelType}
+            </Text>
           </View>
 
           <View style={styles.detailContainer}>
@@ -159,12 +158,12 @@ const VehicleDetails: React.FC = () => {
               <MaterialCommunityIcons
                 name="engine"
                 size={30}
-                color={Color.primary}
+                color={Color.liteprimary}
               />
             </View>
-            <HeadingS style={styles.title}>
+            <Text variant="titleLarge" style={styles.title}>
               Engine Type: {engineType}
-            </HeadingS>
+            </Text>
           </View>
 
           <View style={styles.detailContainer}>
@@ -172,10 +171,12 @@ const VehicleDetails: React.FC = () => {
               <MaterialCommunityIcons
                 name="truck"
                 size={30}
-                color={Color.primary}
+                color={Color.liteprimary}
               />
             </View>
-            <HeadingS style={styles.title}>Body Type: {bodyType}</HeadingS>
+            <Text variant="titleLarge" style={styles.title}>
+              Body Type: {bodyType}
+            </Text>
           </View>
 
           {/* <View style={styles.routeContainer}>

@@ -1,67 +1,68 @@
 import React from "react";
 import Color from "../Components/Color";
-import {HeadingS} from "../Components/Typography";
-import {StyleSheet, View} from "react-native";
-import {useDispatch} from "react-redux";
-import {RootState} from "../Redux";
+import { HeadingS } from "../Components/Typography";
+import { StyleSheet, View } from "react-native";
+import { useDispatch } from "react-redux";
+import { RootState } from "../Redux";
+import { Appbar, Text } from "react-native-paper";
 
 interface TopbarProps {
-	title: string;
+  title: string;
 }
 
 const Topbar: React.FC<TopbarProps> = (props) => {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	return (
-		<>
-			<View style={styles.container}>
-				<HeadingS style={styles.logoText}>{props.title}</HeadingS>
-			</View>
-		</>
-	);
+  return (
+    <>
+      <Appbar style={styles.container}>
+        <Appbar.Content color={Color.white} title={props.title} />
+      </Appbar>
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "space-between",
-		paddingHorizontal: 20,
-		paddingBottom: 15,
-		paddingTop: 10,
-		backgroundColor: Color.primary,
-		// borderBottomWidth: 4,
-		borderBottomColor: Color.lightgray,
-	},
-	logoText: {
-		color: Color.white,
-		fontWeight: "bold",
-		fontFamily: "poppins",
-		// fontSize: ,
-	},
-	icon: {},
-	avatar: {
-		width: "14%",
-		aspectRatio: 10 / 10,
-		borderRadius: 100,
-		borderWidth: 2,
-		borderColor: Color.lightgray,
-	},
-	dot: {
-		borderWidth: 2,
-		borderColor: Color.white,
-		width: 12,
-		aspectRatio: 1 / 1,
-		backgroundColor: Color.error,
-		borderRadius: 20,
-		position: "absolute",
-		right: 3,
-		top: 2,
-	},
-	logoDot: {
-		color: Color.warning,
-		fontSize: 56,
-	},
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingBottom: 15,
+    paddingTop: 10,
+    backgroundColor: Color.primary,
+    // borderBottomWidth: 4,
+    borderBottomColor: Color.lightgray,
+  },
+  logoText: {
+    color: Color.white,
+    fontWeight: "bold",
+    fontFamily: "poppins",
+    // fontSize: ,
+  },
+  icon: {},
+  avatar: {
+    width: "14%",
+    aspectRatio: 10 / 10,
+    borderRadius: 100,
+    borderWidth: 2,
+    borderColor: Color.lightgray,
+  },
+  dot: {
+    borderWidth: 2,
+    borderColor: Color.white,
+    width: 12,
+    aspectRatio: 1 / 1,
+    backgroundColor: Color.error,
+    borderRadius: 20,
+    position: "absolute",
+    right: 3,
+    top: 2,
+  },
+  logoDot: {
+    color: Color.warning,
+    fontSize: 56,
+  },
 });
 
 export default React.memo(Topbar);

@@ -79,6 +79,9 @@ const helpTypeSlice = createSlice({
       state.location.longitude = actions.payload.longitude;
       state.plateNumber = actions.payload.plateNumber;
     },
+    clearBreakdownReducer: (state) => {
+      Object.assign(state, initialState);
+    },
   },
 });
 
@@ -93,6 +96,7 @@ export const {
   electricalSystemFailureReducer,
   alternatorFailureReducer,
   breakdownLocationReducer,
+  clearBreakdownReducer,
 } = helpTypeSlice.actions;
 
 export default helpTypeSlice.reducer;

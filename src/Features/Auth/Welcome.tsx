@@ -8,8 +8,12 @@ import { useDispatch } from "react-redux";
 import WelcomeSvg from "../../../assets/svg/welcome_landlord.svg";
 import { ModalScreenWhite } from "../../Layouts/ModalScreen";
 import { BottomSheet, PostQn } from "../../Components/PostQn";
-import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Text } from "react-native-paper";
+import {
+  Entypo,
+  FontAwesome,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+import { Button, Text } from "react-native-paper";
 
 function Welcome(props: any) {
   const dispatch = useDispatch();
@@ -52,23 +56,38 @@ function Welcome(props: any) {
         </View>
         <BottomSheet />
 
-        <ButtonL
-          action="Register"
-          onPress={handleSignUp}
-          style={styles.buttonAbsolute}
-        />
+        <View style={styles.buttonsContainer}>
+          <Button
+            mode="contained"
+            onPress={handleSignUp}
+            buttonColor={Color.primary}
+            style={styles.buttonStyle}
+            icon={() => (
+              <FontAwesome name="arrow-right" size={16} color="white" />
+            )}
+            contentStyle={styles.buttonContent}
+          >
+            Create Account
+          </Button>
 
-        <OutlineButtonL
-          action="Sign in as owner"
-          onPress={handleSignIn}
-          style={styles.buttonAbsolute1}
-        />
+          <Button
+            mode="outlined"
+            onPress={handleSignIn}
+            style={styles.buttonStyle}
+            textColor={Color.primary}
+          >
+            Sign in as Owner
+          </Button>
 
-        <OutlineButtonL
-          action="Sign in as Driver"
-          onPress={handleSignInDriver}
-          style={styles.buttonAbsolute2}
-        />
+          <Button
+            mode="outlined"
+            onPress={handleSignInDriver}
+            textColor={Color.primary}
+            style={styles.buttonStyle}
+          >
+            Sign in as Driver
+          </Button>
+        </View>
       </View>
     </>
   );
@@ -79,10 +98,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     backgroundColor: Color.white,
-  },
-  forgotPasswordContainer: {
-    width: 260,
-    alignItems: "flex-end",
   },
   bottomQuestionContainer: {
     flexDirection: "row",
@@ -106,17 +121,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     // textTransform: "uppercase",
   },
-  buttonAbsolute: {
+  buttonsContainer: {
+    width: "80%",
     position: "absolute",
-    bottom: 240,
-  },
-  buttonAbsolute1: {
-    position: "absolute",
-    bottom: 160,
-  },
-  buttonAbsolute2: {
-    position: "absolute",
-    bottom: 80,
+    bottom: 90,
   },
   WelcomeContainer: {
     width: "100%",
@@ -135,6 +143,10 @@ const styles = StyleSheet.create({
   dot: {
     color: Color.warning,
     fontSize: 64,
+  },
+  buttonStyle: { marginTop: 16 },
+  buttonContent: {
+    flexDirection: "row-reverse",
   },
 });
 

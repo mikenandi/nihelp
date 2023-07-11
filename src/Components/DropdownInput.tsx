@@ -40,9 +40,10 @@ const styles = StyleSheet.create({
     backgroundColor: Color.white,
     width: "80%",
     borderRadius: 100,
-    marginTop: 20,
+    marginTop: 10,
     borderWidth: 1,
     borderColor: Color.dimblack,
+    height: 50,
   },
   labelText: {
     color: Color.dimblack,

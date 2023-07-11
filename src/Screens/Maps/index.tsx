@@ -1,18 +1,12 @@
 import React from "react";
-import { StyleSheet, Modal, FlatList, View, Image } from "react-native";
+import { StyleSheet } from "react-native";
 import Screen from "../../Layouts/Screen";
 import Color from "../../Components/Color";
 import { useDispatch, useSelector } from "react-redux";
-import { Body } from "../../Components/Typography";
 import MapView, { Marker } from "react-native-maps";
 import Topbar from "../../Layouts/Topbar";
 import { RootState } from "../../Redux";
 import {
-  getVehicle,
-  getVehicles,
-} from "../../Api/Services/Backend/Vehicle";
-import {
-  getBreakdowns,
   getOwnerBreakdowns,
   getRouteBreakdowns,
 } from "../../Api/Services/Backend/Breakdown";
@@ -52,8 +46,6 @@ const Maps: React.FC = (props) => {
         routes[0].viaRoad,
         authToken
       );
-
-      console.log(breakdowns);
 
       setBreakdowns(breakdowns);
 

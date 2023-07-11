@@ -92,29 +92,6 @@ const Auth: React.FC = () => {
     };
   }, []);
 
-  if (!isConnected) {
-    return (
-      <>
-        <Screen>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              flex: 1,
-            }}
-          >
-            <MaterialCommunityIcons
-              name="wifi-cancel"
-              size={160}
-              color={Color.grey}
-            />
-            <Text variant="bodyLarge">No internet connection</Text>
-          </View>
-        </Screen>
-      </>
-    );
-  }
-
   if (isLoading || !fontsLoaded) {
     return (
       <>

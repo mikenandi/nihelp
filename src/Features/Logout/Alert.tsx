@@ -1,14 +1,15 @@
 import * as React from "react";
 import { StyleSheet, View } from "react-native";
 import Color from "../../Components/Color";
-import { HeadingS, Body, BodyS } from "../../Components/Typography";
+import { HeadingS } from "../../Components/Typography";
 import { useDispatch } from "react-redux";
 import { Card } from "../../Components/Card";
-import { TextButton } from "../../Components/Buttons";
-import { logOutReducer } from "../../Redux/Features/Auth/AuthSlice";
+import {
+  cleanAuthDataReducer,
+  logOutReducer,
+} from "../../Redux/Features/Auth/AuthSlice";
 import { logoutVisibleReducer } from "../../Redux/Features/Logout/LogoutModalSlice";
 import * as SecureStore from "expo-secure-store";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Button } from "react-native-paper";
 
 const LogoutAlert: React.FC = () => {
@@ -22,6 +23,8 @@ const LogoutAlert: React.FC = () => {
     dispatch(logOutReducer());
 
     dispatch(logoutVisibleReducer());
+
+    dispatch(cleanAuthDataReducer());
 
     return;
   };
