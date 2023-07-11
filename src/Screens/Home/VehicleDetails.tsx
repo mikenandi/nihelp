@@ -4,7 +4,7 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, ScrollView, Modal } from "react-native";
 import Color from "../../Components/Color";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +29,7 @@ const VehicleDetails: React.FC = () => {
   const visible: boolean = useSelector((state: RootState) => {
     return state.vehicleModal.editVehicleVisible;
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
     id,
@@ -65,11 +66,15 @@ const VehicleDetails: React.FC = () => {
   };
 
   const handleDelete = async (): Promise<void> => {
-    let response = await deleteVehicle(authToken, id);
+    setIsLoading(true);
+
+    await deleteVehicle(authToken, id);
 
     handleBack();
 
     dispatch(infoMsg("successfully deleted"));
+
+    setIsLoading(false);
   };
 
   return (

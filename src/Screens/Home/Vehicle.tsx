@@ -194,11 +194,13 @@ export const Vehicle: React.FC<VehicleProps> = (props) => {
               </Text>
             </View>
 
-            <Switch
-              value={isSwitchOn}
-              onValueChange={onToggleSwitch}
-              color={Color.warning}
-            />
+            {!isOwner && (
+              <Switch
+                value={isSwitchOn}
+                onValueChange={onToggleSwitch}
+                color={Color.warning}
+              />
+            )}
           </View>
         )}
       </Card>
