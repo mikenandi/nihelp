@@ -66,13 +66,13 @@ const SignIn: React.FC<SignInProps> = (props) => {
     if (response.access_token) {
       await SecureStore.setItemAsync("authToken", response.access_token);
 
+      dispatch(cleanAuthDataReducer());
+
       dispatch(
         logInReducer({
           authToken: response.access_token,
         })
       );
-
-      dispatch(cleanAuthDataReducer());
 
       setIsLoading(false);
 
