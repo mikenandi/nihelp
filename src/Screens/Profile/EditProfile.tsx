@@ -3,19 +3,11 @@ import { ScrollView, StyleSheet } from "react-native";
 import { ModalScreen } from "../../Layouts/ModalScreen";
 import { ModalNavBack } from "../../Components/ModalNavBack";
 import { useDispatch, useSelector } from "react-redux";
-import { ButtonL } from "../../Components/Buttons";
 import { RootState } from "../../Redux";
-import {
-  emailReducer,
-  licenseNoReducer,
-  nameReducer,
-  passwordReducer,
-  phoneNumberReducer,
-} from "../../Redux/Features/Auth/AuthSlice";
+import { inputAuthReducer } from "../../Redux/Features/Auth/AuthSlice";
 import { InputText } from "../../Components/Inputs";
 import { updateProfile } from "../../Api/Services/Backend/Profile";
 import { updateProfileVisibleReducer } from "../../Redux/Features/Profile/ProfileModal";
-import Loader from "../../Components/Loader";
 import { Button } from "react-native-paper";
 import Color from "../../Components/Color";
 import { Feather } from "@expo/vector-icons";
@@ -23,15 +15,29 @@ import { Feather } from "@expo/vector-icons";
 const EditProfile: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] =
+    React.useState<boolean>(false);
 
-  const { name, email, phoneNumber, isOwner, licenseNo, authToken } =
-    useSelector((state: RootState) => {
-      return state.auth;
-    });
+  const {
+    name,
+    email,
+    phoneNumber,
+    isOwner,
+    licenseNo,
+    authToken,
+  } = useSelector((state: RootState) => {
+    return state.auth;
+  });
 
   const handleBack = (): void => {
     dispatch(updateProfileVisibleReducer());
+  };
+
+  const handleChange = (
+    name: string,
+    value: string
+  ): void => {
+    dispatch(inputAuthReducer({ name, value }));
   };
 
   const handleEdit = async (): Promise<void> => {
@@ -51,57 +57,58 @@ const EditProfile: React.FC = () => {
     handleBack();
   };
 
-  const handlePassword = (password: string): void => {
-    dispatch(passwordReducer(password));
-  };
-
-  const handleName = (name: string): void => {
-    dispatch(nameReducer(name));
-  };
-
-  const handleEmail = (email: string): void => {
-    dispatch(emailReducer(email));
-  };
-
-  const handleLicenseNo = (licenseNo: string): void => {
-    dispatch(licenseNoReducer(licenseNo));
-  };
-
-  const handlePhoneNumber = (phoneNumber: string): void => {
-    dispatch(phoneNumberReducer(phoneNumber));
-  };
-
   return (
     <>
       <ModalScreen>
-        <ModalNavBack title="Edit profile" handleBack={handleBack} />
+        <ModalNavBack
+          title="Edit profile"
+          handleBack={handleBack}
+        />
 
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-          <InputText label="name" value={name} onChangeText={handleName} />
+        <ScrollView
+          contentContainerStyle={styles.contentContainer}
+        >
+          <InputText
+            label="name"
+            value={name}
+            onChangeText={(value) => {
+              handleChange("name", value);
+            }}
+          />
 
           {!isOwner && (
             <InputText
               label="license"
               value={licenseNo}
-              onChangeText={handleLicenseNo}
+              onChangeText={(value) => {
+                handleChange("lecenseNo", value);
+              }}
             />
           )}
 
           <InputText
             label="phone"
             value={phoneNumber}
-            onChangeText={handlePhoneNumber}
+            onChangeText={(value) => {
+              handleChange("phoneNumber", value);
+            }}
           />
 
           <InputText
             label="email"
             value={email}
-            onChangeText={handleEmail}
+            onChangeText={(value) => {
+              handleChange("email", value);
+            }}
           />
 
           <Button
             icon={() => (
-              <Feather name="arrow-right" size={20} color="white" />
+              <Feather
+                name="arrow-right"
+                size={20}
+                color="white"
+              />
             )}
             buttonColor={Color.primary}
             mode="contained"

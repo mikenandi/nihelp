@@ -1,18 +1,15 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Body, HeadingS } from "../../Components/Typography";
 import AuthScreen from "../../Layouts/AuthScreen";
-import { InputText, InputPassword } from "../../Components/Inputs";
-import { ButtonL, TextButton } from "../../Components/Buttons";
+import {
+  InputText,
+  InputPassword,
+} from "../../Components/Inputs";
 import { useDispatch } from "react-redux";
 import {
   cleanAuthDataReducer,
-  emailReducer,
-  licenseNoReducer,
+  inputAuthReducer,
   logInReducer,
-  nameReducer,
-  passwordReducer,
-  phoneNumberReducer,
 } from "../../Redux/Features/Auth/AuthSlice";
 import { ErrorMsg } from "../../Components/ErrorMsg";
 import { useSelector } from "react-redux";
@@ -22,7 +19,6 @@ import { RootState } from "../../Redux";
 import { signUp } from "../../Api/Auth/Auth";
 import { errorMsg } from "../../Redux/Components/ErrorMsgSlice";
 import { isEmail } from "../../Helpers/EmailCheck";
-import Loader from "../../Components/Loader";
 import * as SecureStore from "expo-secure-store";
 import { Button, Text } from "react-native-paper";
 import Color from "../../Components/Color";
@@ -34,12 +30,19 @@ type SignUpProps = {
 
 const SignUp: React.FC<SignUpProps> = (props) => {
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] =
+    React.useState<boolean>(false);
 
-  const { name, email, password, userType, licenseNo, phoneNumber } =
-    useSelector((state: RootState) => {
-      return state.auth;
-    });
+  const {
+    name,
+    email,
+    password,
+    userType,
+    licenseNo,
+    phoneNumber,
+  } = useSelector((state: RootState) => {
+    return state.auth;
+  });
 
   const handleSignIn = (): void => {
     dispatch(cleanAuthDataReducer());
@@ -47,30 +50,10 @@ const SignUp: React.FC<SignUpProps> = (props) => {
     props.navigation.navigate("SignIn");
   };
 
-  const handleDriverSignup = (): void => {
+  const handleDriverSignIn = (): void => {
     dispatch(cleanAuthDataReducer());
 
     props.navigation.navigate("SignInDriver");
-  };
-
-  const handlePassword = (password: string): void => {
-    dispatch(passwordReducer(password));
-  };
-
-  const handleName = (name: string): void => {
-    dispatch(nameReducer(name));
-  };
-
-  const handleEmail = (email: string): void => {
-    dispatch(emailReducer(email));
-  };
-
-  const handleLicenseNo = (licenseNo: string): void => {
-    dispatch(licenseNoReducer(licenseNo));
-  };
-
-  const handlePhoneNumber = (phoneNumber: string): void => {
-    dispatch(phoneNumberReducer(phoneNumber));
   };
 
   const checkFields = (
@@ -100,6 +83,13 @@ const SignUp: React.FC<SignUpProps> = (props) => {
     return null;
   };
 
+  const handleTextChange = (
+    name: string,
+    value: string
+  ): void => {
+    dispatch(inputAuthReducer({ name, value }));
+  };
+
   const handleSignup = async () => {
     try {
       let isAnyFieldBlank = checkFields(
@@ -117,7 +107,9 @@ const SignUp: React.FC<SignUpProps> = (props) => {
       }
 
       if (phoneNumber.length !== 10) {
-        dispatch(errorMsg("phone number should have 10 characters"));
+        dispatch(
+          errorMsg("phone number should have 10 characters")
+        );
 
         return;
       }
@@ -129,7 +121,11 @@ const SignUp: React.FC<SignUpProps> = (props) => {
       }
 
       if (password.length < 6) {
-        dispatch(errorMsg("password should have at least 6 charracters"));
+        dispatch(
+          errorMsg(
+            "password should have at least 6 charracters"
+          )
+        );
 
         return;
       }
@@ -147,16 +143,23 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 
       if (response.access_token) {
         if (userType !== "owner") {
-          handleDriverSignup();
+          handleDriverSignIn();
 
           return;
         }
 
-        await SecureStore.setItemAsync("authToken", response.access_token);
+        await SecureStore.setItemAsync(
+          "authToken",
+          response.access_token
+        );
 
-        dispatch(logInReducer({ authToken: response.access_token }));
+        // dispatch(cleanAuthDataReducer());
 
-        dispatch(cleanAuthDataReducer());
+        dispatch(
+          logInReducer({
+            authToken: response.access_token,
+          })
+        );
 
         return;
       }
@@ -178,7 +181,13 @@ const SignUp: React.FC<SignUpProps> = (props) => {
 
         <ErrorMsg />
 
-        <InputText label="Name" value={name} onChangeText={handleName} />
+        <InputText
+          label="Name"
+          value={name}
+          onChangeText={(value) => {
+            handleTextChange("name", value);
+          }}
+        />
 
         <DropdownInput />
 
@@ -186,7 +195,9 @@ const SignUp: React.FC<SignUpProps> = (props) => {
           <InputText
             label="license"
             value={licenseNo}
-            onChangeText={handleLicenseNo}
+            onChangeText={(value) => {
+              handleTextChange("licenseNo", value);
+            }}
           />
         )}
 
@@ -194,20 +205,26 @@ const SignUp: React.FC<SignUpProps> = (props) => {
           label="Phone"
           value={phoneNumber}
           keyboardType="number-pad"
-          onChangeText={handlePhoneNumber}
+          onChangeText={(value) => {
+            handleTextChange("phoneNumber", value);
+          }}
           maxLength={10}
         />
 
         <InputText
           label="Email"
           value={email}
-          onChangeText={handleEmail}
+          onChangeText={(value) => {
+            handleTextChange("email", value);
+          }}
         />
 
         <InputPassword
           label="Password"
           value={password}
-          onChangeText={handlePassword}
+          onChangeText={(value) => {
+            handleTextChange("password", value);
+          }}
         />
 
         <Button
@@ -218,17 +235,24 @@ const SignUp: React.FC<SignUpProps> = (props) => {
           contentStyle={styles.buttonContent}
           loading={isLoading}
           icon={() => (
-            <Feather name="arrow-right" size={14} color="white" />
+            <Feather
+              name="arrow-right"
+              size={14}
+              color="white"
+            />
           )}
         >
           Sign up
         </Button>
 
         <View style={styles.bottomQuestionContainer}>
-          <Text variant="bodyMedium" style={styles.questionText}>
+          <Text
+            variant="bodyMedium"
+            style={styles.questionText}
+          >
             Have account?
           </Text>
-          {/* <TextButton action="sign in" onPress={handleSignIn} /> */}
+
           <Button
             mode="text"
             textColor={Color.primary}

@@ -7,10 +7,18 @@ import {
   MaterialCommunityIcons,
   Octicons,
 } from "@expo/vector-icons";
-import { View, StyleSheet, Modal, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Modal,
+  TouchableOpacity,
+} from "react-native";
 import Color from "../../Components/Color";
 import { Card } from "../../Components/Card";
-import { Body, HeadingS } from "../../Components/Typography";
+import {
+  Body,
+  HeadingS,
+} from "../../Components/Typography";
 import { useDispatch, useSelector } from "react-redux";
 import { vehicleDetailsVisibleReducer } from "../../Redux/Features/Vehicle/VehicleModalSlice";
 import { RootState } from "../../Redux";
@@ -43,17 +51,21 @@ interface IAuth {
 export const Vehicle: React.FC<VehicleProps> = (props) => {
   const dispatch = useDispatch();
 
-  const visible: boolean = useSelector((state: RootState) => {
-    return state.vehicleModal.vehicleDetailsVisible;
-  });
+  const visible: boolean = useSelector(
+    (state: RootState) => {
+      return state.vehicleModal.vehicleDetailsVisible;
+    }
+  );
 
   const [isSwitchOn, setIsSwitchOn] = React.useState(true);
 
   const [issues, setIssues] = React.useState("");
 
-  const { authToken, isOwner }: IAuth = useSelector((state: RootState) => {
-    return state.auth;
-  });
+  const { authToken, isOwner }: IAuth = useSelector(
+    (state: RootState) => {
+      return state.auth;
+    }
+  );
 
   useEffect(() => {
     if (
@@ -88,7 +100,10 @@ export const Vehicle: React.FC<VehicleProps> = (props) => {
   };
 
   const handleVehicleDetails = async (): Promise<void> => {
-    let response: VehicleState = await getVehicle(authToken, props.id);
+    let response: VehicleState = await getVehicle(
+      authToken,
+      props.id
+    );
 
     dispatch(saveVehicleReducer({ ...response }));
 
@@ -105,12 +120,19 @@ export const Vehicle: React.FC<VehicleProps> = (props) => {
               activeOpacity={0.9}
             >
               <Card style={styles.iconContainer}>
-                <Fontisto name="truck" size={24} color={Color.primary} />
+                <Fontisto
+                  name="truck"
+                  size={24}
+                  color={Color.primary}
+                />
               </Card>
             </TouchableOpacity>
 
             <View>
-              <Text variant="titleLarge" style={styles.title}>
+              <Text
+                variant="titleLarge"
+                style={styles.title}
+              >
                 {props.plateNumber}
               </Text>
               <Text variant="bodySmall" style={styles.text}>
@@ -127,7 +149,10 @@ export const Vehicle: React.FC<VehicleProps> = (props) => {
                   size={18}
                   color="white"
                 />
-                <Text variant="bodyMedium" numberOfLines={1}>
+                <Text
+                  variant="bodyMedium"
+                  numberOfLines={1}
+                >
                   {props.route.substring(0, 12) + "..."}
                 </Text>
               </View>
@@ -159,50 +184,68 @@ export const Vehicle: React.FC<VehicleProps> = (props) => {
               <View style={styles.routeContainer}>
                 <FontAwesome5
                   name="route"
-                  size={20}
+                  size={14}
                   color={Color.primary}
                 />
-                <Body style={styles.routeText}>Not on road</Body>
+                <Text
+                  variant="bodyMedium"
+                  style={styles.routeText}
+                >
+                  Not on road
+                </Text>
               </View>
             )}
           </View>
         </View>
 
-        {props.breakdown && props.breakdown.length !== 0 && (
-          <View style={styles.breakdownContainer}>
-            <View style={styles.breakdownTextContainer}>
-              <Text variant="bodyLarge" style={styles.reportText}>
-                Breakdown
-              </Text>
-              <Text
-                variant="bodyMedium"
-                style={styles.breakdownDescriptionText}
-              >
-                {getReadableIssues({
-                  engineFailure:
-                    props.breakdown[0]?.engineFailure ?? false,
-                  flatTyre: props.breakdown[0]?.flatTyre ?? false,
-                  deadBattery: props.breakdown[0]?.deadBattery ?? false,
-                  overHeating: props.breakdown[0]?.overHeating ?? false,
-                  fuelSystemIssue:
-                    props.breakdown[0]?.fuelSystemIssue ?? false,
-                  brakingSystemMalfunction:
-                    props.breakdown[0]?.brakingSystemMalfunction ?? false,
-                  electricalSystemFailure:
-                    props.breakdown[0]?.electricalSystemFailure ?? false,
-                })}
-              </Text>
-            </View>
+        {props.breakdown &&
+          props.breakdown.length !== 0 && (
+            <View style={styles.breakdownContainer}>
+              <View style={styles.breakdownTextContainer}>
+                <Text
+                  variant="bodyMedium"
+                  style={styles.reportText}
+                >
+                  Breakdown
+                </Text>
+                <Text
+                  variant="bodyLarge"
+                  style={styles.breakdownDescriptionText}
+                >
+                  {getReadableIssues({
+                    engineFailure:
+                      props.breakdown[0]?.engineFailure ??
+                      false,
+                    flatTyre:
+                      props.breakdown[0]?.flatTyre ?? false,
+                    deadBattery:
+                      props.breakdown[0]?.deadBattery ??
+                      false,
+                    overHeating:
+                      props.breakdown[0]?.overHeating ??
+                      false,
+                    fuelSystemIssue:
+                      props.breakdown[0]?.fuelSystemIssue ??
+                      false,
+                    brakingSystemMalfunction:
+                      props.breakdown[0]
+                        ?.brakingSystemMalfunction ?? false,
+                    electricalSystemFailure:
+                      props.breakdown[0]
+                        ?.electricalSystemFailure ?? false,
+                  })}
+                </Text>
+              </View>
 
-            {!isOwner && (
-              <Switch
-                value={isSwitchOn}
-                onValueChange={onToggleSwitch}
-                color={Color.warning}
-              />
-            )}
-          </View>
-        )}
+              {!isOwner && (
+                <Switch
+                  value={isSwitchOn}
+                  onValueChange={onToggleSwitch}
+                  color={Color.warning}
+                />
+              )}
+            </View>
+          )}
       </Card>
 
       <Modal visible={visible} animationType="fade">
@@ -274,7 +317,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   reportText: {
-    color: Color.black,
+    color: Color.dimblack,
     fontWeight: "500",
     // width: "80%",
     marginLeft: 10,
@@ -299,7 +342,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   breakdownDescriptionText: {
-    color: Color.dimblack,
+    color: Color.black,
     fontWeight: "500",
     marginLeft: 10,
   },

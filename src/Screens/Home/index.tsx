@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, Modal, View, FlatList, Platform } from "react-native";
+import {
+  StyleSheet,
+  Modal,
+  View,
+  FlatList,
+  Platform,
+} from "react-native";
 import Screen from "../../Layouts/Screen";
 import Color from "../../Components/Color";
 import { useDispatch, useSelector } from "react-redux";
@@ -80,31 +86,45 @@ interface IVehicle {
 const Home: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] =
+    React.useState<boolean>(false);
 
-  const { authToken, isOwner, name } = useSelector((state: RootState) => {
-    return state.auth;
-  });
+  const { authToken, isOwner, name } = useSelector(
+    (state: RootState) => {
+      return state.auth;
+    }
+  );
 
-  const [vehicles, setVehicles] = React.useState<IVehicle[]>([]);
+  const [vehicles, setVehicles] = React.useState<
+    IVehicle[]
+  >([]);
 
-  const [isRouteActive, setIsRouteActive] = React.useState<boolean>(false);
+  const [isRouteActive, setIsRouteActive] =
+    React.useState<boolean>(false);
 
   const [breakdowns, setBreakdowns] = React.useState([]);
 
-  const visible: boolean = useSelector((state: RootState) => {
-    return state.vehicleModal.registerVehicleVisible;
-  });
+  const visible: boolean = useSelector(
+    (state: RootState) => {
+      return state.vehicleModal.registerVehicleVisible;
+    }
+  );
 
-  const createRouteVisible: boolean = useSelector((state: RootState) => {
-    return state.routeModal.createRouteVisible;
-  });
+  const createRouteVisible: boolean = useSelector(
+    (state: RootState) => {
+      return state.routeModal.createRouteVisible;
+    }
+  );
 
-  const breakdownVisible: boolean = useSelector((state: RootState) => {
-    return state.vehicleModal.breakdownReportVisible;
-  });
+  const breakdownVisible: boolean = useSelector(
+    (state: RootState) => {
+      return state.vehicleModal.breakdownReportVisible;
+    }
+  );
 
-  const getFirstname = (name: string): string | undefined => {
+  const getFirstname = (
+    name: string
+  ): string | undefined => {
     return name.trim().split(" ")[0];
   };
 
@@ -161,8 +181,14 @@ const Home: React.FC = () => {
 
       let routeId: number = routes[0].id;
 
-      let vehicle = await getVehicle(authToken, routes[0].vehicleId);
-      let vehicleBreakdown = await getBreakdowns(routeId, authToken);
+      let vehicle = await getVehicle(
+        authToken,
+        routes[0].vehicleId
+      );
+      let vehicleBreakdown = await getBreakdowns(
+        routeId,
+        authToken
+      );
 
       let routeBreakdowns = [];
 
@@ -228,15 +254,19 @@ const Home: React.FC = () => {
       //   }
 
       if (Platform.OS === "android") {
-        await Notifications.setNotificationChannelAsync("default", {
-          name: "default",
-          importance: Notifications.AndroidImportance.MAX,
-          vibrationPattern: [0, 250, 250, 250],
-          sound: "emergency_alert.mp3",
-        });
+        await Notifications.setNotificationChannelAsync(
+          "default",
+          {
+            name: "default",
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            sound: "emergency_alert.mp3",
+          }
+        );
       }
 
-      const tokenData = await Notifications.getExpoPushTokenAsync();
+      const tokenData =
+        await Notifications.getExpoPushTokenAsync();
       const pushToken = tokenData.data;
 
       let response = await updateProfile(
@@ -266,7 +296,10 @@ const Home: React.FC = () => {
   };
 
   const renderAlert = ({ item }: { item: AlertProps }) => (
-    <Alert vehicle={item.vehicle} breakdown={item.breakdown} />
+    <Alert
+      vehicle={item.vehicle}
+      breakdown={item.breakdown}
+    />
   );
 
   const renderVehicle = ({ item }: { item: IVehicle }) => (
@@ -308,7 +341,9 @@ const Home: React.FC = () => {
                 size={240}
                 color={Color.lightgray}
               />
-              <HeadingS style={styles.msgText}>Register vehicle</HeadingS>
+              <HeadingS style={styles.msgText}>
+                Register vehicle
+              </HeadingS>
             </View>
           )}
 
@@ -318,14 +353,20 @@ const Home: React.FC = () => {
             <FlatList
               data={breakdowns}
               renderItem={renderAlert}
-              keyExtractor={(item) => item.vehicle.id.toString()}
+              keyExtractor={(item) =>
+                item.vehicle.id.toString()
+              }
             />
           )}
         </View>
 
         {isOwner && (
           <FAB onPress={handleRegisterVehicle}>
-            <Foundation name="plus" size={30} color={Color.warning} />
+            <Foundation
+              name="plus"
+              size={30}
+              color={Color.warning}
+            />
           </FAB>
         )}
 
@@ -344,11 +385,17 @@ const Home: React.FC = () => {
         <RegisterVehicle />
       </Modal>
 
-      <Modal visible={breakdownVisible} animationType="fade">
+      <Modal
+        visible={breakdownVisible}
+        animationType="fade"
+      >
         <ReportBreakdown />
       </Modal>
 
-      <Modal visible={createRouteVisible} animationType="fade">
+      <Modal
+        visible={createRouteVisible}
+        animationType="fade"
+      >
         <RegisterRoute />
       </Modal>
     </>
