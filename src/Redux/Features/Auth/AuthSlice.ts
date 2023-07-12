@@ -62,27 +62,13 @@ const authSlice = createSlice({
       state.authToken = "";
       state.isLogedOut = true;
     },
+    inputAuthReducer: (
+      state,
+      actions: PayloadAction<{ name: string; value: string }>
+    ) => {
+      const { name, value } = actions.payload;
 
-    nameReducer: (state, actions: PayloadAction<string>) => {
-      state.name = actions.payload;
-    },
-    emailReducer: (state, actions: PayloadAction<string>) => {
-      state.email = actions.payload;
-    },
-    passwordReducer: (state, actions: PayloadAction<string>) => {
-      state.password = actions.payload;
-    },
-    platenumberReducer: (state, actions: PayloadAction<string>) => {
-      state.plateNumber = actions.payload;
-    },
-    userTypeReducer: (state, actions: PayloadAction<string>) => {
-      state.userType = actions.payload;
-    },
-    licenseNoReducer: (state, actions: PayloadAction<string>) => {
-      state.licenseNo = actions.payload;
-    },
-    phoneNumberReducer: (state, actions) => {
-      state.phoneNumber = actions.payload;
+      (state as Record<string, any>)[name] = value;
     },
     driverProfileReducer: (state, actions: PayloadAction<IDriver>) => {
       state.name = actions.payload.name;
@@ -111,13 +97,7 @@ const authSlice = createSlice({
 export const {
   logInReducer,
   logOutReducer,
-  nameReducer,
-  emailReducer,
-  passwordReducer,
-  platenumberReducer,
-  userTypeReducer,
-  licenseNoReducer,
-  phoneNumberReducer,
+  inputAuthReducer,
   ownerProfileReducer,
   driverProfileReducer,
   isConnectedReducer,

@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { HeadingS } from "../../Components/Typography";
 import AuthScreen from "../../Layouts/AuthScreen";
 import { InputText, InputPassword } from "../../Components/Inputs";
 import { signIn } from "../../Api/Auth/Auth";
@@ -9,9 +8,8 @@ import { errorMsg } from "../../Redux/Components/ErrorMsgSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   logInReducer,
-  passwordReducer,
-  emailReducer,
   cleanAuthDataReducer,
+  inputAuthReducer,
 } from "../../Redux/Features/Auth/AuthSlice";
 import * as SecureStore from "expo-secure-store";
 import { NavigationProp } from "@react-navigation/native";
@@ -33,16 +31,8 @@ const SignIn: React.FC<SignInProps> = (props) => {
     return state.auth;
   });
 
-  // Input function for email entry
-  const handleEmail = (email: string): void => {
-    dispatch(emailReducer(email));
-  };
-
-  // Input function for password entry
-  const handlePassword = (password: string): void => {
-    dispatch(passwordReducer(password));
-
-    return;
+  const handleTextChange = (name: string, value: string): void => {
+    dispatch(inputAuthReducer({ name, value }));
   };
 
   // Handling SingIn
@@ -107,18 +97,18 @@ const SignIn: React.FC<SignInProps> = (props) => {
         <InputText
           label="Email"
           value={email}
-          onChangeText={handleEmail}
+          onChangeText={(value) => {
+            handleTextChange("email", value);
+          }}
         />
 
         <InputPassword
           label="Password"
           value={password}
-          onChangeText={handlePassword}
+          onChangeText={(value) => {
+            handleTextChange("password", value);
+          }}
         />
-
-        <View style={styles.forgotPasswordContainer}>
-          {/* <TextButton action='forgot password' onPress={handleForgotPassword} /> */}
-        </View>
 
         <Button
           mode="contained"

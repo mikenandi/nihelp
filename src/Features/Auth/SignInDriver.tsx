@@ -1,22 +1,17 @@
 import React from "react";
-import { StyleSheet, View, Modal } from "react-native";
-import { Body, HeadingS } from "../../Components/Typography";
+import { StyleSheet, View } from "react-native";
 import AuthScreen from "../../Layouts/AuthScreen";
 import { InputText, InputPassword } from "../../Components/Inputs";
-import { ButtonL, TextButton } from "../../Components/Buttons";
 import { signIn } from "../../Api/Auth/Auth";
 import { ErrorMsg } from "../../Components/ErrorMsg";
 import { errorMsg } from "../../Redux/Components/ErrorMsgSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   logInReducer,
-  passwordReducer,
-  emailReducer,
-  platenumberReducer,
+  inputAuthReducer,
+  cleanAuthDataReducer,
 } from "../../Redux/Features/Auth/AuthSlice";
 import * as SecureStore from "expo-secure-store";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Loader from "../../Components/Loader";
 import { NavigationProp } from "@react-navigation/native";
 import { RootState } from "../../Redux";
 import { getVehicles } from "../../Api/Services/Backend/Vehicle";
@@ -40,16 +35,8 @@ const SignInDriver: React.FC<SignInDriverProps> = (props) => {
     }
   );
 
-  // Input function for email entry
-  const handleEmail = (email: string): void => {
-    dispatch(emailReducer(email));
-  };
-
-  // Input function for password entry
-  const handlePassword = (password: string): void => {
-    dispatch(passwordReducer(password));
-
-    return;
+  const handleTextChange = (name: string, value: string): void => {
+    dispatch(inputAuthReducer({ name, value }));
   };
 
   // Handling SingIn
@@ -116,15 +103,11 @@ const SignInDriver: React.FC<SignInDriverProps> = (props) => {
 
   // Navigate to sign up screen
   const handleSignUp = () => {
-    dispatch(passwordReducer(""));
+    dispatch(cleanAuthDataReducer());
 
     props.navigation.navigate("SignUp");
 
     return;
-  };
-
-  const handlePlateNumber = (platenumber: string): void => {
-    dispatch(platenumberReducer(platenumber));
   };
 
   return (
@@ -137,24 +120,26 @@ const SignInDriver: React.FC<SignInDriverProps> = (props) => {
         <InputText
           label="Plate number"
           value={plateNumber}
-          onChangeText={handlePlateNumber}
+          onChangeText={(value) => {
+            handleTextChange("plateNumber", value);
+          }}
         />
 
         <InputText
           label="Email"
           value={email}
-          onChangeText={handleEmail}
+          onChangeText={(value) => {
+            handleTextChange("email", value);
+          }}
         />
 
         <InputPassword
           label="Password"
           value={password}
-          onChangeText={handlePassword}
+          onChangeText={(value) => {
+            handleTextChange("password", value);
+          }}
         />
-
-        <View style={styles.forgotPasswordContainer}>
-          {/* <TextButton action='forgot password' onPress={handleForgotPassword} /> */}
-        </View>
 
         <Button
           mode="contained"

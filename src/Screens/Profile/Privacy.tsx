@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux";
 import {
   cleanAuthDataReducer,
+  inputAuthReducer,
   logOutReducer,
-  passwordReducer,
 } from "../../Redux/Features/Auth/AuthSlice";
 import { InputPassword } from "../../Components/Inputs";
 import {
@@ -30,7 +30,7 @@ const Privacy: React.FC = () => {
   });
 
   const handleBack = (): void => {
-    dispatch(passwordReducer(""));
+    dispatch(inputAuthReducer({ name: "password", value: "" }));
     dispatch(privacyProfileVisibleReducer());
   };
 
@@ -56,10 +56,6 @@ const Privacy: React.FC = () => {
     handleBack();
   };
 
-  const handlePassword = (password: string): void => {
-    dispatch(passwordReducer(password));
-  };
-
   const handleDelete = async (): Promise<void> => {
     let response = await deleteUser(authToken);
 
@@ -79,7 +75,11 @@ const Privacy: React.FC = () => {
           <InputPassword
             label="Change Password"
             value={password}
-            onChangeText={handlePassword}
+            onChangeText={(password) =>
+              dispatch(
+                inputAuthReducer({ name: "password", value: password })
+              )
+            }
           />
 
           <Button
