@@ -4,7 +4,7 @@
     "slug": "breakdown-alert",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/nihelp-logo.png",
+    "icon": "./assets/nihelp-app-icon.png",
     "scheme": "com.google.breakdown_alert",
     "userInterfaceStyle": "light",
     "splash": {
@@ -33,7 +33,7 @@
         }
       },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/nihelp-logo.png",
+        "foregroundImage": "./assets/nihelp-app-icon.png",
         "backgroundColor": "#FFFFFF"
       },
       "permissions": [
@@ -62,7 +62,9 @@
         {
           "icon": "./assets/nihelp-logo.png",
           "color": "#ffffff",
-          "sounds": ["./assets/notification/emergency_alert.mp3"]
+          "sounds": [
+            "./assets/notification/emergency_alert.mp3"
+          ]
         }
       ]
     ],
